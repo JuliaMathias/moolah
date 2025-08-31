@@ -10,7 +10,7 @@ defmodule Moolah.MixProject do
       start_permanent: Mix.env() == :prod,
       consolidate_protocols: Mix.env() != :dev,
       aliases: aliases(),
-     deps: deps(),
+      deps: deps(),
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -96,7 +96,7 @@ defmodule Moolah.MixProject do
       {:telemetry_metrics, "~> 1.1"},
       {:telemetry_poller, "~> 1.3"},
       # Override to fix Elixir 1.18.4 compatibility
-      {:ex_aws, "~> 2.5", override: true},
+      {:ex_aws, "~> 2.5", override: true}
     ]
   end
 
