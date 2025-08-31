@@ -24,10 +24,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Elixir
-        uses: erlef/setup-elixir@885971a72ed1f9240973bd92ab57af8c1aa68f24
+        uses: erlef/setup-elixir@v1
         with:
           elixir-version: "1.18.4"
-          otp-version: "27"
+          otp-version: "27.0"
       - name: Restore dependencies cache
         uses: actions/cache@v4
         with:
@@ -47,7 +47,7 @@ jobs:
         id: plt-cache
         with:
           path: priv/plts
-          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          key: ${{ runner.os }}-27.0-1.18.4-plts-${{ hashFiles('**/mix.lock') }}
       - name: Create PLTs
         if: steps.plt-cache.outputs.cache-hit != 'true'
         run: |
