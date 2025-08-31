@@ -43,6 +43,7 @@ npm-debug.log
 .DS_Store
 /**/tmp
 /node_modules
+/priv/plts
 
 dist/
 deploy/rendered
