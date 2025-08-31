@@ -10,7 +10,19 @@ defmodule Moolah.MixProject do
       start_permanent: Mix.env() == :prod,
       consolidate_protocols: Mix.env() != :dev,
       aliases: aliases(),
-      deps: deps()
+     deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ],
+      dialyzer: [
+        plt_add_apps: [:ex_unit],
+        plt_add_deps: :app_tree,
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"}
+      ]
     ]
   end
 
@@ -48,6 +60,8 @@ defmodule Moolah.MixProject do
       {:bcrypt_elixir, "~> 3.3"},
       {:beacon, "~> 0.5"},
       {:beacon_live_admin, "~> 0.4"},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:dns_cluster, "~> 0.2"},
       {:ecto_sql, "~> 3.13"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
