@@ -1,4 +1,10 @@
 defmodule MoolahWeb.AuthOverrides do
+  @moduledoc """
+  UI overrides for AshAuthentication Phoenix components.
+
+  Allows customization of authentication UI components like
+  banners, sign-in forms, and other authentication-related views.
+  """
   use AshAuthentication.Phoenix.Overrides
 
   # configure your UI overrides here

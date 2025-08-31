@@ -1,4 +1,11 @@
 defmodule Moolah.Ledger.Balance do
+  @moduledoc """
+  Represents account balance snapshots after each transfer.
+
+  Balances act as a materialized view for account balances, providing
+  efficient querying of account balances at specific points in time
+  without needing to recalculate from all historical transfers.
+  """
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
     data_layer: AshPostgres.DataLayer,

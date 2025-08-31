@@ -1,4 +1,10 @@
 defmodule Moolah.Accounts.Token do
+  @moduledoc """
+  Represents authentication tokens for users.
+
+  Tokens are used for various authentication purposes including
+  session management, password reset, and email confirmation.
+  """
   use Ash.Resource,
     otp_app: :moolah,
     domain: Moolah.Accounts,

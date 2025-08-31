@@ -1,4 +1,10 @@
 defmodule MoolahWeb.CmsEndpoint do
+  @moduledoc """
+  CMS-specific Phoenix endpoint for Beacon integration.
+
+  Handles content management system requests with dedicated
+  routing and configuration separate from the main application.
+  """
   use Phoenix.Endpoint, otp_app: :moolah
 
   @session_options Application.compile_env!(:moolah, :session_options)
