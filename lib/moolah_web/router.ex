@@ -59,6 +59,7 @@ defmodule MoolahWeb.Router do
     if Application.compile_env(:beacon, :cms) == [] do
       get "/", PageController, :home
     end
+
     get "/removed", PageController, :home
     auth_routes AuthController, Moolah.Accounts.User, path: "/auth"
     sign_out_route AuthController
