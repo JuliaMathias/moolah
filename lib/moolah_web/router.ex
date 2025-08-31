@@ -55,7 +55,10 @@ defmodule MoolahWeb.Router do
 
   scope "/", MoolahWeb do
     pipe_through :browser
-    # removed by beacon.gen.site due to a conflict with beacon_site "/"
+    # Home route - enabled when Beacon CMS is not configured
+    if Application.compile_env(:beacon, :cms) == [] do
+      get "/", PageController, :home
+    end
     get "/removed", PageController, :home
     auth_routes AuthController, Moolah.Accounts.User, path: "/auth"
     sign_out_route AuthController
@@ -112,8 +115,11 @@ defmodule MoolahWeb.Router do
     end
   end
 
-  scope "/", alias: MoolahWeb do
-    pipe_through [:browser, :beacon]
-    beacon_site "/", site: :cms
+  # Only enable Beacon routes if CMS is configured
+  if Application.compile_env(:beacon, :cms) != [] do
+    scope "/", alias: MoolahWeb do
+      pipe_through [:browser, :beacon]
+      beacon_site "/", site: :cms
+    end
   end
 end

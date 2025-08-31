@@ -7,11 +7,18 @@ defmodule Moolah.Application do
 
   @impl true
   def start(_type, _args) do
+    beacon_children =
+      case Application.get_env(:beacon, :cms) do
+        [] -> []
+        cms_config when not is_nil(cms_config) -> [{Beacon, [sites: [cms_config]]}]
+        _ -> []
+      end
+
     children = [
       MoolahWeb.Telemetry,
       Moolah.Repo,
-      {DNSCluster, query: Application.get_env(:moolah, :dns_cluster_query) || :ignore},
-      {Beacon, [sites: [Application.fetch_env!(:beacon, :cms)]]},
+      {DNSCluster, query: Application.get_env(:moolah, :dns_cluster_query) || :ignore}
+    ] ++ beacon_children ++ [
       {Oban,
        AshOban.config(
          Application.fetch_env!(:moolah, :ash_domains),
