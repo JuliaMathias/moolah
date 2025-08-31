@@ -62,6 +62,7 @@ defmodule Moolah.MixProject do
       {:beacon_live_admin, "~> 0.4"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.18", only: :test},
       {:dns_cluster, "~> 0.2"},
       {:ecto_sql, "~> 3.13"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
@@ -94,6 +95,8 @@ defmodule Moolah.MixProject do
        depth: 1},
       {:telemetry_metrics, "~> 1.1"},
       {:telemetry_poller, "~> 1.3"},
+      # Override to fix Elixir 1.18.4 compatibility
+      {:ex_aws, "~> 2.5", override: true},
     ]
   end
 
