@@ -1,5 +1,6 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
+/_dializer/
 
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
@@ -34,4 +35,15 @@ moolah-*.tar
 # In case you use Node.js/npm, you want to ignore these.
 npm-debug.log
 /assets/node_modules/
+
+# Ignore auto generated files
+/**/.elixir_ls/*
+.erlang.cookie
+.vscode
+.DS_Store
+/**/tmp
+/node_modules
+
+dist/
+deploy/rendered
 
