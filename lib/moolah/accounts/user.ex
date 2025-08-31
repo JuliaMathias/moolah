@@ -1,4 +1,11 @@
 defmodule Moolah.Accounts.User do
+  @moduledoc """
+  Represents a user in the system with authentication capabilities.
+
+  Supports multiple authentication strategies including password-based
+  and magic link authentication. Users can be confirmed via email and
+  have comprehensive password reset functionality.
+  """
   use Ash.Resource,
     otp_app: :moolah,
     domain: Moolah.Accounts,
@@ -46,6 +53,7 @@ defmodule Moolah.Accounts.User do
       magic_link do
         identity_field :email
         registration_enabled? true
+        require_interaction? true
 
         sender Moolah.Accounts.User.Senders.SendMagicLinkEmail
       end

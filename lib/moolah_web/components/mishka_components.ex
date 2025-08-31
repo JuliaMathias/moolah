@@ -1,4 +1,10 @@
 defmodule MoolahWeb.Components.MishkaComponents do
+  @moduledoc """
+  Convenience module for importing all Mishka Chelekom UI components.
+
+  Provides a single point to import all the available UI components
+  including buttons, forms, modals, navigation, and layout components.
+  """
   defmacro __using__(_) do
     quote do
       import MoolahWeb.Components.Accordion,

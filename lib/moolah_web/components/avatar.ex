@@ -573,7 +573,7 @@ defmodule MoolahWeb.Components.Avatar do
 
   defp space_class(params) when is_binary(params), do: params
 
-  defp default_classes() do
+  defp default_classes do
     [
       "relative inline-flex items-center justify-center p-0.5 [&.border-avatar:has(.indicator)]:box-content"
     ]

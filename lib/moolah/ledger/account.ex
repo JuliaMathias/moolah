@@ -1,4 +1,11 @@
 defmodule Moolah.Ledger.Account do
+  @moduledoc """
+  Represents a ledger account in the double-entry bookkeeping system.
+
+  Accounts can represent various types of financial accounts like bank accounts,
+  credit cards, expense categories, or revenue streams. Each account maintains
+  a running balance and supports multi-currency transactions.
+  """
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
     data_layer: AshPostgres.DataLayer,

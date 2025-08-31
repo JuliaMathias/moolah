@@ -330,7 +330,7 @@ defmodule MoolahWeb.Components.Stepper do
     """
   end
 
-  defp step_visibility() do
+  defp step_visibility do
     [
       "[&_.stepper-icon]:hidden",
       "[&_.stepper-icon]:invisible",

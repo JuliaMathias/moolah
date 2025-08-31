@@ -288,7 +288,7 @@ defmodule MoolahWeb.Components.Dropdown do
     """
   end
 
-  defp tirgger_dropdown(),
+  defp tirgger_dropdown,
     do: "[&>.dropdown-content]:hover:visible [&>.dropdown-content]:hover:opacity-100"
 
   defp dropdown_position("bottom") do

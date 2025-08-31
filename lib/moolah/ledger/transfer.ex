@@ -1,4 +1,11 @@
 defmodule Moolah.Ledger.Transfer do
+  @moduledoc """
+  Represents money transfers between accounts in the double-entry system.
+
+  Each transfer moves money from one account to another, ensuring the
+  fundamental accounting principle that debits equal credits. Transfers
+  are immutable once created to maintain audit integrity.
+  """
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
     data_layer: AshPostgres.DataLayer,

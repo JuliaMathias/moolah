@@ -1,4 +1,10 @@
 defmodule Moolah.Secrets do
+  @moduledoc """
+  Provides secret management for AshAuthentication.
+
+  Handles secure retrieval of authentication secrets like
+  token signing keys from application configuration.
+  """
   use AshAuthentication.Secret
 
   def secret_for(
