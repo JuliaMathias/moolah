@@ -57,6 +57,8 @@ jobs:
         run: MIX_ENV=test mix dialyzer --format github
       - name: Build esbuild
         run: mix esbuild.install
+      - name: Install tailwind
+        run: mix tailwind.install --no-assets
       - name: Run tests
         run: mix coveralls.github
         env:
