@@ -54,7 +54,9 @@ jobs:
           mkdir -p priv/plts
           mix dialyzer --plt
       - name: Run dialyzer
-        run: mix dialyzer --no-check
+        run: mix dialyzer --no-
+      - name: Build esbuild
+        run: mix esbuild.install
       - name: Run tests
         run: mix coveralls.github
         env:
