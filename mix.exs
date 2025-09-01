@@ -12,9 +12,9 @@ defmodule Moolah.MixProject do
       aliases: aliases(),
       deps: deps(),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
-       test_coverage: [tool: ExCoveralls],
+      test_coverage: [tool: ExCoveralls],
       listeners: [Phoenix.CodeReloader],
-       preferred_cli_env: [
+      preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
         "coveralls.post": :test,
@@ -100,7 +100,7 @@ defmodule Moolah.MixProject do
        depth: 1},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:dns_cluster, "~> 0.2.0"},
+      {:dns_cluster, "~> 0.2.0"}
     ]
   end
 
