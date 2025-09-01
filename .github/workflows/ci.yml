@@ -60,6 +60,6 @@ jobs:
       - name: Install tailwind
         run: mix tailwind.install --no-assets
       - name: Run tests
-        run: mix coveralls.github
+        run: MIX_ENV=test mix coveralls.github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

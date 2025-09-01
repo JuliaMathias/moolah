@@ -8,9 +8,9 @@ defmodule Moolah.Accounts.Token do
   use Ash.Resource,
     otp_app: :moolah,
     domain: Moolah.Accounts,
+    data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication.TokenResource],
-    data_layer: AshPostgres.DataLayer
+    extensions: [AshAuthentication.TokenResource]
 
   postgres do
     table "tokens"
@@ -49,6 +49,15 @@ defmodule Moolah.Accounts.Token do
       argument :token, :string, allow_nil?: false, sensitive?: true
 
       change AshAuthentication.TokenResource.RevokeTokenChange
+    end
+
+    create :revoke_jti do
+      description "Revoke a token by JTI. Creates a revocation token corresponding to the provided jti."
+      accept [:extra_data]
+      argument :subject, :string, allow_nil?: false, sensitive?: true
+      argument :jti, :string, allow_nil?: false, sensitive?: true
+
+      change AshAuthentication.TokenResource.RevokeJtiChange
     end
 
     create :store_token do

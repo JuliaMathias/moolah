@@ -38,9 +38,7 @@ defmodule MoolahWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller,
-        formats: [:html, :json],
-        layouts: [html: MoolahWeb.Layouts]
+      use Phoenix.Controller, formats: [:html, :json]
 
       use Gettext, backend: MoolahWeb.Gettext
 
@@ -52,8 +50,7 @@ defmodule MoolahWeb do
 
   def live_view do
     quote do
-      use Phoenix.LiveView,
-        layout: {MoolahWeb.Layouts, :app}
+      use Phoenix.LiveView
 
       unquote(html_helpers())
     end
@@ -90,7 +87,8 @@ defmodule MoolahWeb do
       # Core UI components
       use MoolahWeb.Components.MishkaComponents
 
-      # Shortcut for generating JS commands
+      # Common modules used in templates
+      alias MoolahWeb.Layouts
       alias Phoenix.LiveView.JS
 
       # Routes generation with the ~p sigil

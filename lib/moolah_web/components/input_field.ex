@@ -24,6 +24,7 @@ defmodule MoolahWeb.Components.InputField do
   """
 
   use Phoenix.Component
+  import MoolahWeb.Components.Icon, only: [icon: 1]
 
   alias Phoenix.HTML.Form
 
@@ -129,7 +130,7 @@ defmodule MoolahWeb.Components.InputField do
         {@rest}
       >
         <option :if={@prompt} value="">{@prompt}</option>
-        {Form.options_for_select(@options, @value)}
+        {Phoenix.HTML.Form.options_for_select(@options, @value)}
       </select>
 
       <.error :for={msg <- @errors}>{msg}</.error>
@@ -150,7 +151,7 @@ defmodule MoolahWeb.Components.InputField do
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
         {@rest}
-      >{Form.normalize_value("textarea", @value)}</textarea>
+      >{Phoenix.HTML.Form.normalize_value("textarea", @value)}</textarea>
       <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
@@ -166,7 +167,7 @@ defmodule MoolahWeb.Components.InputField do
         type={@type}
         name={@name}
         id={@id}
-        value={Form.normalize_value(@type, @value)}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 dark:text-zinc-200 focus:ring-0 sm:text-sm sm:leading-6",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
@@ -225,20 +226,5 @@ defmodule MoolahWeb.Components.InputField do
     else
       Gettext.dgettext(MoolahWeb.Gettext, "errors", msg, opts)
     end
-  end
-
-  attr :name, :string, required: true, doc: "Specifies the name of the element"
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-
-  defp icon(%{name: "hero-" <> _, class: class} = assigns) when is_list(class) do
-    ~H"""
-    <span class={[@name] ++ @class} />
-    """
-  end
-
-  defp icon(%{name: "hero-" <> _} = assigns) do
-    ~H"""
-    <span class={[@name, @class]} />
-    """
   end
 end

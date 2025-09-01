@@ -1,13 +1,16 @@
-defmodule MoolahWeb.CmsEndpoint do
+defmodule MoolahWeb.MySiteEndpoint do
   @moduledoc """
-  CMS-specific Phoenix endpoint for Beacon integration.
+  The endpoint created by `mix beacon.gen.site --site my_site --path /
 
-  Handles content management system requests with dedicated
-  routing and configuration separate from the main application.
   """
   use Phoenix.Endpoint, otp_app: :moolah
 
-  @session_options Application.compile_env!(:moolah, :session_options)
+  @session_options [
+    store: :cookie,
+    key: "_moolah_key",
+    signing_salt: "0IfWIPCq",
+    same_site: "Lax"
+  ]
 
   def proxy_endpoint, do: MoolahWeb.ProxyEndpoint
 
@@ -30,6 +33,7 @@ defmodule MoolahWeb.CmsEndpoint do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
+    plug AshPhoenix.Plug.CheckCodegenStatus
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :moolah
   end
 

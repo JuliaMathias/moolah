@@ -17,6 +17,6 @@ defmodule Moolah.Repo do
 
   @impl true
   def min_pg_version do
-    %Version{major: 16, minor: 0, patch: 0}
+    %Version{major: 14, minor: 17, patch: 0}
   end
 end

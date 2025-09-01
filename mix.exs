@@ -11,7 +11,9 @@ defmodule Moolah.MixProject do
       consolidate_protocols: Mix.env() != :dev,
       aliases: aliases(),
       deps: deps(),
+      compilers: [:phoenix_live_view] ++ Mix.compilers(),
       test_coverage: [tool: ExCoveralls],
+      listeners: [Phoenix.CodeReloader],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
@@ -36,6 +38,12 @@ defmodule Moolah.MixProject do
     ]
   end
 
+  def cli do
+    [
+      preferred_envs: [precommit: :test]
+    ]
+  end
+
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
@@ -45,58 +53,55 @@ defmodule Moolah.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:ash, "~> 3.5"},
+      {:mishka_chelekom, "~> 0.0", only: [:dev]},
+      {:ash, "~> 3.0"},
       {:ash_admin, "~> 0.13"},
-      {:ash_archival, "~> 2.0"},
-      {:ash_authentication, "~> 4.9"},
-      {:ash_authentication_phoenix, "~> 2.10"},
+      {:ash_authentication, "~> 4.0"},
+      {:ash_authentication_phoenix, "~> 2.0"},
       {:ash_double_entry, "~> 1.0"},
-      {:ash_money, "~> 0.2.4"},
+      {:ash_money, "~> 0.2"},
       {:ash_oban, "~> 0.4"},
-      {:ash_paper_trail, "~> 0.5.6"},
-      {:ash_phoenix, "~> 2.3"},
-      {:ash_postgres, "~> 2.6"},
-      {:bandit, "~> 1.8"},
-      {:bcrypt_elixir, "~> 3.3"},
-      {:beacon, "~> 0.5"},
-      {:beacon_live_admin, "~> 0.4"},
+      {:ash_phoenix, "~> 2.0"},
+      {:ash_postgres, "~> 2.0"},
+      {:bandit, "~> 1.5"},
+      {:bcrypt_elixir, "~> 3.0"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
-      {:dns_cluster, "~> 0.2"},
       {:ecto_sql, "~> 3.13"},
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
-      {:ex_money_sql, "~> 1.11"},
-      {:finch, "~> 0.20"},
-      {:floki, ">= 0.30.0"},
+      {:ex_cldr, "~> 2.0"},
+      {:ex_money_sql, "~> 1.0"},
+      {:igniter, "~> 0.6"},
       {:gettext, "~> 0.26"},
-      {:igniter, "~> 0.6", only: [:dev, :test]},
-      {:jason, "~> 1.4"},
+      {:jason, "~> 1.2"},
+      {:lazy_html, ">= 0.1.0", only: :test},
       {:live_debugger, "~> 0.4", only: [:dev]},
-      {:mishka_chelekom, "~> 0.0", only: [:dev]},
-      {:oban, "~> 2.20"},
-      {:phoenix, "~> 1.8"},
-      {:phoenix_ecto, "~> 4.6"},
-      {:phoenix_html, "~> 4.2"},
-      {:phoenix_live_dashboard, "~> 0.8.7"},
-      {:phoenix_live_reload, "~> 1.6", only: :dev},
-      {:phoenix_live_view, "~> 1.1"},
+      {:oban, "~> 2.0"},
+      {:oban_web, "~> 2.0"},
+      {:phoenix, "~> 1.8.1"},
+      {:phoenix_ecto, "~> 4.5"},
+      {:phoenix_html, "~> 4.1"},
+      {:phoenix_live_dashboard, "~> 0.8.3"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_view, "~> 1.1.0"},
       {:picosat_elixir, "~> 0.2"},
-      {:postgrex, ">= 0.21.0"},
-      {:sourceror, "~> 1.10", only: [:dev, :test]},
-      {:swoosh, "~> 1.19"},
+      {:postgrex, ">= 0.0.0"},
+      {:sourceror, "~> 1.8"},
+      {:req, "~> 0.5"},
+      {:swoosh, "~> 1.16"},
       {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
+      {:tidewave, "~> 0.4", only: [:dev]},
       {:heroicons,
        github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
+       tag: "v2.2.0",
        sparse: "optimized",
        app: false,
        compile: false,
        depth: 1},
-      {:telemetry_metrics, "~> 1.1"},
-      {:telemetry_poller, "~> 1.3"},
-      # Override to fix Elixir 1.18.4 compatibility
-      {:ex_aws, "~> 2.5", override: true}
+      {:telemetry_metrics, "~> 1.0"},
+      {:telemetry_poller, "~> 1.0"},
+      {:dns_cluster, "~> 0.2.0"}
     ]
   end
 
@@ -113,12 +118,13 @@ defmodule Moolah.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ash.setup --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind moolah", "esbuild moolah"],
+      "assets.build": ["compile", "tailwind moolah", "esbuild moolah"],
       "assets.deploy": [
         "tailwind moolah --minify",
         "esbuild moolah --minify",
         "phx.digest"
       ],
+      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
     ]
   end
