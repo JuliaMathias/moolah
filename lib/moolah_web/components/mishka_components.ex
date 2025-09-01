@@ -1,4 +1,18 @@
 defmodule MoolahWeb.Components.MishkaComponents do
+  @moduledoc """
+  Provides imports for all Mishka Chelekom UI components.
+
+  This module acts as a convenient way to import all the Mishka Chelekom
+  components into your Phoenix LiveView or template modules.
+
+  ## Usage
+
+      use MoolahWeb.Components.MishkaComponents
+
+  This will import all available Mishka Chelekom components for use in your
+  templates and LiveView modules.
+  """
+
   defmacro __using__(_) do
     quote do
       import MoolahWeb.Components.Accordion,
