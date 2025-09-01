@@ -12,6 +12,7 @@ defmodule Moolah.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
+      listeners: [Phoenix.CodeReloader],
       preferred_cli_env: [
         coveralls: :test,
         "coveralls.detail": :test,
