@@ -53,7 +53,7 @@ defmodule Moolah.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:mishka_chelekom, "~> 0.0.7"},
+      {:mishka_chelekom, "~> 0.0", only: [:dev]},
       {:ash, "~> 3.0"},
       {:ash_admin, "~> 0.13"},
       {:ash_authentication, "~> 4.0"},

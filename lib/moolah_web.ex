@@ -85,7 +85,7 @@ defmodule MoolahWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
-      import MoolahWeb.CoreComponents
+      use MoolahWeb.Components.MishkaComponents
 
       # Common modules used in templates
       alias MoolahWeb.Layouts
