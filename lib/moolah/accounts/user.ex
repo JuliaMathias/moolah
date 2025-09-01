@@ -9,9 +9,9 @@ defmodule Moolah.Accounts.User do
   use Ash.Resource,
     otp_app: :moolah,
     domain: Moolah.Accounts,
+    data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer],
-    extensions: [AshAuthentication],
-    data_layer: AshPostgres.DataLayer
+    extensions: [AshAuthentication]
 
   authentication do
     add_ons do
@@ -41,6 +41,7 @@ defmodule Moolah.Accounts.User do
     strategies do
       password :password do
         identity_field :email
+        hash_provider AshAuthentication.BcryptProvider
 
         resettable do
           sender Moolah.Accounts.User.Senders.SendPasswordResetEmail

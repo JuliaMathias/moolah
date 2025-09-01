@@ -1,7 +1,8 @@
 import Config
 config :moolah, Oban, testing: :manual
-config :moolah, token_signing_secret: "KsQjw4A7TxkbinayOT45KnXSx05/bX/Z"
+config :moolah, token_signing_secret: "WPgJTw9VQbbux40Qv9yZUIk7pV4ydCQZ"
 config :bcrypt_elixir, log_rounds: 1
+config :ash, policies: [show_policy_breakdowns?: true], disable_async?: true
 
 # Configure your database
 #
@@ -20,7 +21,7 @@ config :moolah, Moolah.Repo,
 # you can enable the server option below.
 config :moolah, MoolahWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "tfgLrgyhB1QMU3DKBLgh6zvQYosw9qRRtRFJrskuWNGKXrWeMPxkLy0RlVPaIvND",
+  secret_key_base: "RvnV+xsYZhR6iRO2gjjpfCshta3WTBH7NRjgiMJ5aicREXYurDeoZXuKrWd4qbj1",
   server: false
 
 # In test we don't send emails
@@ -38,6 +39,3 @@ config :phoenix, :plug_init_mode, :runtime
 # Enable helpful, but potentially expensive runtime checks
 config :phoenix_live_view,
   enable_expensive_runtime_checks: true
-
-# Disable Beacon CMS during tests to avoid startup issues
-config :beacon, cms: []

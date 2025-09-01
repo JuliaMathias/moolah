@@ -7,29 +7,6 @@
 # General application configuration
 import Config
 
-signing_salt = "/Gf5RiWr"
-
-config :moolah,
-       MoolahWeb.CmsEndpoint,
-       url: [host: "localhost"],
-       adapter: Bandit.PhoenixAdapter,
-       render_errors: [
-         formats: [html: Beacon.Web.ErrorHTML],
-         layout: false
-       ],
-       pubsub_server: Moolah.PubSub,
-       live_view: [signing_salt: signing_salt]
-
-config :moolah,
-       MoolahWeb.ProxyEndpoint,
-       adapter: Bandit.PhoenixAdapter,
-       pubsub_server: Moolah.PubSub,
-       render_errors: [
-         formats: [html: Beacon.Web.ErrorHTML],
-         layout: false
-       ],
-       live_view: [signing_salt: signing_salt]
-
 config :ex_cldr, default_backend: Moolah.Cldr
 config :ash_oban, pro?: false
 
@@ -89,24 +66,18 @@ config :spark,
 config :moolah,
   ecto_repos: [Moolah.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Moolah.Ledger, Moolah.Accounts],
-  session_options: [
-    store: :cookie,
-    key: "_moolah_key",
-    signing_salt: signing_salt,
-    same_site: "Lax"
-  ]
+  ash_domains: [Moolah.Ledger, Moolah.Accounts]
 
 # Configures the endpoint
 config :moolah, MoolahWeb.Endpoint,
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
-    formats: [html: Beacon.Web.ErrorHTML, json: MoolahWeb.ErrorJSON],
+    formats: [html: MoolahWeb.ErrorHTML, json: MoolahWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Moolah.PubSub,
-  live_view: [signing_salt: signing_salt]
+  live_view: [signing_salt: "da7pndsG"]
 
 # Configures the mailer
 #
@@ -119,28 +90,27 @@ config :moolah, Moolah.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.17.11",
+  version: "0.25.4",
   moolah: [
     args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+      ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
     cd: Path.expand("../assets", __DIR__),
-    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+    env: %{"NODE_PATH" => [Path.expand("../deps", __DIR__), Mix.Project.build_path()]}
   ]
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.3",
+  version: "4.1.7",
   moolah: [
     args: ~w(
-      --config=tailwind.config.js
-      --input=css/app.css
-      --output=../priv/static/assets/app.css
+      --input=assets/css/app.css
+      --output=priv/static/assets/css/app.css
     ),
-    cd: Path.expand("../assets", __DIR__)
+    cd: Path.expand("..", __DIR__)
   ]
 
 # Configures Elixir's Logger
-config :logger, :console,
+config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

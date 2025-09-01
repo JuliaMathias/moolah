@@ -29,11 +29,11 @@ defmodule Moolah.Accounts.User.Senders.SendMagicLinkEmail do
   end
 
   defp body(params) do
-    url = url(~p"/auth/user/magic_link/?token=#{params[:token]}")
+    # NOTE: You may have to change this to match your magic link acceptance URL.
 
     """
     <p>Hello, #{params[:email]}! Click this link to sign in:</p>
-    <p><a href="#{url}">#{url}</a></p>
+    <p><a href="#{url(~p"/magic_link/#{params[:token]}")}">#{url(~p"/magic_link/#{params[:token]}")}</a></p>
     """
   end
 end

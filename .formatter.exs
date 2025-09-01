@@ -1,7 +1,5 @@
 [
   import_deps: [
-    :beacon_live_admin,
-    :beacon,
     :ash_double_entry,
     :ash_oban,
     :oban,
