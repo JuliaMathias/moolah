@@ -53,6 +53,7 @@ defmodule Moolah.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:mishka_chelekom, "~> 0.0.7"},
       {:ash, "~> 3.0"},
       {:ash_admin, "~> 0.13"},
       {:ash_authentication, "~> 4.0"},
@@ -71,7 +72,7 @@ defmodule Moolah.MixProject do
       {:esbuild, "~> 0.10", runtime: Mix.env() == :dev},
       {:ex_cldr, "~> 2.0"},
       {:ex_money_sql, "~> 1.0"},
-      {:igniter, "~> 0.6", only: [:dev, :test]},
+      {:igniter, "~> 0.6"},
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:lazy_html, ">= 0.1.0", only: :test},
@@ -86,7 +87,7 @@ defmodule Moolah.MixProject do
       {:phoenix_live_view, "~> 1.1.0"},
       {:picosat_elixir, "~> 0.2"},
       {:postgrex, ">= 0.0.0"},
-      {:sourceror, "~> 1.8", only: [:dev, :test]},
+      {:sourceror, "~> 1.8"},
       {:req, "~> 0.5"},
       {:swoosh, "~> 1.16"},
       {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
