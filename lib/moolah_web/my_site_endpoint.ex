@@ -5,7 +5,12 @@ defmodule MoolahWeb.MySiteEndpoint do
   """
   use Phoenix.Endpoint, otp_app: :moolah
 
-  @session_options Application.compile_env!(:moolah, :session_options)
+  @session_options [
+    store: :cookie,
+    key: "_moolah_key",
+    signing_salt: "0IfWIPCq",
+    same_site: "Lax"
+  ]
 
   def proxy_endpoint, do: MoolahWeb.ProxyEndpoint
 
