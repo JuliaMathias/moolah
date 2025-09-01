@@ -1,15 +1,7 @@
 import Config
 
-# Configure Beacon CMS only if not in test environment
-unless config_env() == :test do
-  config :beacon,
-    cms: [
-      site: :cms,
-      repo: Moolah.Repo,
-      endpoint: MoolahWeb.CmsEndpoint,
-      router: MoolahWeb.Router
-    ]
-end
+config :beacon,
+  cms: [site: :cms, repo: Moolah.Repo, endpoint: MoolahWeb.CmsEndpoint, router: MoolahWeb.Router]
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the

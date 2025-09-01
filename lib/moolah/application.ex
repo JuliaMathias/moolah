@@ -7,37 +7,27 @@ defmodule Moolah.Application do
 
   @impl true
   def start(_type, _args) do
-    beacon_children =
-      case Application.get_env(:beacon, :cms) do
-        [] -> []
-        cms_config when not is_nil(cms_config) -> [{Beacon, [sites: [cms_config]]}]
-        _ -> []
-      end
-
-    children =
-      [
-        MoolahWeb.Telemetry,
-        Moolah.Repo,
-        {DNSCluster, query: Application.get_env(:moolah, :dns_cluster_query) || :ignore}
-      ] ++
-        beacon_children ++
-        [
-          {Oban,
-           AshOban.config(
-             Application.fetch_env!(:moolah, :ash_domains),
-             Application.fetch_env!(:moolah, Oban)
-           )},
-          # Start the Finch HTTP client for sending emails
-          # Start a worker by calling: Moolah.Worker.start_link(arg)
-          # {Moolah.Worker, arg},
-          # Start to serve requests, typically the last entry
-          {Phoenix.PubSub, name: Moolah.PubSub},
-          {Finch, name: Moolah.Finch},
-          MoolahWeb.CmsEndpoint,
-          MoolahWeb.Endpoint,
-          {AshAuthentication.Supervisor, [otp_app: :moolah]},
-          MoolahWeb.ProxyEndpoint
-        ]
+    children = [
+      MoolahWeb.Telemetry,
+      Moolah.Repo,
+      {DNSCluster, query: Application.get_env(:moolah, :dns_cluster_query) || :ignore},
+      {Beacon, [sites: [Application.fetch_env!(:beacon, :cms)]]},
+      {Oban,
+       AshOban.config(
+         Application.fetch_env!(:moolah, :ash_domains),
+         Application.fetch_env!(:moolah, Oban)
+       )},
+      # Start the Finch HTTP client for sending emails
+      # Start a worker by calling: Moolah.Worker.start_link(arg)
+      # {Moolah.Worker, arg},
+      # Start to serve requests, typically the last entry
+      {Phoenix.PubSub, name: Moolah.PubSub},
+      {Finch, name: Moolah.Finch},
+      MoolahWeb.CmsEndpoint,
+      MoolahWeb.Endpoint,
+      {AshAuthentication.Supervisor, [otp_app: :moolah]},
+      MoolahWeb.ProxyEndpoint
+    ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
