@@ -14,6 +14,7 @@ defmodule MoolahWeb.Components.MishkaComponents do
   """
 
   defmacro __using__(_) do
+    # credo:disable-for-lines:165 Credo.Check.Refactor.LongQuoteBlocks
     quote do
       import MoolahWeb.Components.Accordion,
         only: [
