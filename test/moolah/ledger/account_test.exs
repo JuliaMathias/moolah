@@ -27,6 +27,7 @@ defmodule Moolah.Ledger.AccountTest do
 
       for account_type <- account_types do
         identifier = "test-#{account_type}"
+
         assert {:ok, account} =
                  Account
                  |> Ash.Changeset.for_create(:open, %{
@@ -52,10 +53,11 @@ defmodule Moolah.Ledger.AccountTest do
 
       # Check that account_type field is required
       assert %Ash.Error.Invalid{} = error
+
       assert Enum.any?(error.errors, fn
-        %Ash.Error.Changes.Required{field: :account_type} -> true
-        _ -> false
-      end)
+               %Ash.Error.Changes.Required{field: :account_type} -> true
+               _ -> false
+             end)
     end
 
     test "fails to create account with invalid account_type" do
@@ -70,10 +72,11 @@ defmodule Moolah.Ledger.AccountTest do
 
       # Check that constraint validation fails
       assert %Ash.Error.Invalid{} = error
+
       assert Enum.any?(error.errors, fn
-        %Ash.Error.Changes.InvalidAttribute{field: :account_type} -> true
-        _ -> false
-      end)
+               %Ash.Error.Changes.InvalidAttribute{field: :account_type} -> true
+               _ -> false
+             end)
     end
 
     test "fails to create account without identifier" do
@@ -86,10 +89,11 @@ defmodule Moolah.Ledger.AccountTest do
                |> Ash.create()
 
       assert %Ash.Error.Invalid{} = error
+
       assert Enum.any?(error.errors, fn
-        %Ash.Error.Changes.Required{field: :identifier} -> true
-        _ -> false
-      end)
+               %Ash.Error.Changes.Required{field: :identifier} -> true
+               _ -> false
+             end)
     end
 
     test "fails to create account without currency" do
@@ -102,10 +106,11 @@ defmodule Moolah.Ledger.AccountTest do
                |> Ash.create()
 
       assert %Ash.Error.Invalid{} = error
+
       assert Enum.any?(error.errors, fn
-        %Ash.Error.Changes.Required{field: :currency} -> true
-        _ -> false
-      end)
+               %Ash.Error.Changes.Required{field: :currency} -> true
+               _ -> false
+             end)
     end
 
     test "enforces unique identifier constraint" do
@@ -130,10 +135,11 @@ defmodule Moolah.Ledger.AccountTest do
                |> Ash.create()
 
       assert %Ash.Error.Invalid{} = error
+
       assert Enum.any?(error.errors, fn
-        %Ash.Error.Changes.InvalidAttribute{field: :identifier} -> true
-        _ -> false
-      end)
+               %Ash.Error.Changes.InvalidAttribute{field: :identifier} -> true
+               _ -> false
+             end)
     end
   end
 
@@ -191,6 +197,7 @@ defmodule Moolah.Ledger.AccountTest do
   describe "account validation rules" do
     test "validates account_type is one of allowed values" do
       allowed_types = [:bank_account, :money_account, :investment_account]
+
       for account_type <- allowed_types do
         assert {:ok, _account} =
                  Account
@@ -213,16 +220,18 @@ defmodule Moolah.Ledger.AccountTest do
       # Test missing each required field
       for field <- [:identifier, :currency, :account_type] do
         params = Map.delete(required_params, field)
+
         assert {:error, error} =
                  Account
                  |> Ash.Changeset.for_create(:open, params)
                  |> Ash.create()
 
         assert %Ash.Error.Invalid{} = error
+
         assert Enum.any?(error.errors, fn
-          %Ash.Error.Changes.Required{field: ^field} -> true
-          _ -> false
-        end)
+                 %Ash.Error.Changes.Required{field: ^field} -> true
+                 _ -> false
+               end)
       end
     end
   end
