@@ -31,7 +31,7 @@ defmodule Moolah.Ledger.Account do
     defaults [:read]
 
     create :open do
-      accept [:identifier, :currency]
+      accept [:identifier, :currency, :account_type]
     end
 
     read :lock_accounts do
@@ -48,6 +48,11 @@ defmodule Moolah.Ledger.Account do
     end
 
     attribute :currency, :string do
+      allow_nil? false
+    end
+
+    attribute :account_type, :atom do
+      constraints one_of: [:bank_account, :money_account, :investment_account]
       allow_nil? false
     end
 
