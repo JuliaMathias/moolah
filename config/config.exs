@@ -66,7 +66,7 @@ config :spark,
 config :moolah,
   ecto_repos: [Moolah.Repo],
   generators: [timestamp_type: :utc_datetime],
-  ash_domains: [Moolah.Ledger, Moolah.Accounts]
+  ash_domains: [Moolah.Ledger, Moolah.Accounts, Moolah.Finance]
 
 # Configures the endpoint
 config :moolah, MoolahWeb.Endpoint,
