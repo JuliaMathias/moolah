@@ -10,5 +10,6 @@ defmodule Moolah.Finance do
 
   resources do
     resource Moolah.Finance.BudgetCategory
+    resource Moolah.Finance.LifeAreaCategory
   end
 end
