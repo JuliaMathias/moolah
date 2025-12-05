@@ -23,11 +23,11 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       root = create_category(%{name: "Test Root", transaction_type: :debit})
 
       create_category(%{
-          name: "Test Child",
-          parent_id: root.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Test Child",
+        parent_id: root.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       assert {:ok, categories} = Ash.read(LifeAreaCategory)
       assert length(categories) >= 2
@@ -63,13 +63,13 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
 
     test "verifies all attributes present on read" do
       create_category(%{
-          name: "Complete Category",
-          description: "Test description",
-          icon: "hero-star-solid",
-          color: "#FF0000",
-          transaction_type: :both,
-          depth: 0
-        })
+        name: "Complete Category",
+        description: "Test description",
+        icon: "hero-star-solid",
+        color: "#FF0000",
+        transaction_type: :both,
+        depth: 0
+      })
 
       assert {:ok, categories} = Ash.read(LifeAreaCategory)
       read_category = Enum.find(categories, &(&1.name == "Complete Category"))
@@ -565,11 +565,11 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
       create_category(%{
-          name: "Child",
-          parent_id: parent.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Child",
+        parent_id: parent.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       assert {:error, error} =
                parent
@@ -584,18 +584,18 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
       create_category(%{
-          name: "Child 1",
-          parent_id: parent.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Child 1",
+        parent_id: parent.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       create_category(%{
-          name: "Child 2",
-          parent_id: parent.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Child 2",
+        parent_id: parent.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       assert {:error, error} =
                parent
@@ -606,8 +606,6 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       assert error_message_contains?(error, "categories")
     end
   end
-
-
 
   describe "relationship queries" do
     test "loads parent from child" do
@@ -629,18 +627,18 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
       create_category(%{
-          name: "Child 1",
-          parent_id: parent.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Child 1",
+        parent_id: parent.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       create_category(%{
-          name: "Child 2",
-          parent_id: parent.id,
-          transaction_type: :debit,
-          depth: 1
-        })
+        name: "Child 2",
+        parent_id: parent.id,
+        transaction_type: :debit,
+        depth: 1
+      })
 
       assert {:ok, parent_with_children} = Ash.load(parent, :children)
       assert length(parent_with_children.children) == 2
