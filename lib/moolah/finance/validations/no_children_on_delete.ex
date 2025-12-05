@@ -15,6 +15,7 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDelete do
   """
 
   use Ash.Resource.Validation
+  require Logger
 
   @impl true
   @spec init(keyword()) :: {:ok, keyword()}
@@ -56,7 +57,11 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDelete do
            "cannot delete category that has #{count} child #{pluralize(count, "category", "categories")}"}
 
       {:error, reason} ->
-        {:error, field: :id, message: "error checking for children: #{inspect(reason)}"}
+        Logger.error(
+          "Error checking for children in NoChildrenOnDelete validation: #{inspect(reason)}"
+        )
+
+        {:error, field: :id, message: "error checking for children"}
     end
   end
 
