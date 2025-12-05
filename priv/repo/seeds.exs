@@ -13,7 +13,7 @@
 alias Moolah.Finance.BudgetCategory
 alias Moolah.Finance.LifeAreaCategory
 
-# Helper module for seeing resources safely
+# Helper module for seeding resources safely
 defmodule SeedHelper do
   @spec seed_resource(module(), map()) :: map()
   def seed_resource(resource, data) do
