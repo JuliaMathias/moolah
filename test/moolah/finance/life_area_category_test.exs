@@ -22,8 +22,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       # Create some test categories
       root = create_category(%{name: "Test Root", transaction_type: :debit})
 
-      _child =
-        create_category(%{
+      create_category(%{
           name: "Test Child",
           parent_id: root.id,
           transaction_type: :debit,
@@ -37,10 +36,9 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     test "reads only root categories using :roots action" do
       # Create mix of root and child categories
       root1 = create_category(%{name: "Root 1", transaction_type: :debit})
-      _root2 = create_category(%{name: "Root 2", transaction_type: :credit})
+      create_category(%{name: "Root 2", transaction_type: :credit})
 
-      _child =
-        create_category(%{name: "Child", parent_id: root1.id, transaction_type: :debit, depth: 1})
+      create_category(%{name: "Child", parent_id: root1.id, transaction_type: :debit, depth: 1})
 
       assert {:ok, roots} = Ash.read(LifeAreaCategory, action: :roots)
 
@@ -53,8 +51,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     test "reads categories with children preloaded using :with_children action" do
       root = create_category(%{name: "Parent", transaction_type: :debit})
 
-      _child =
-        create_category(%{name: "Child", parent_id: root.id, transaction_type: :debit, depth: 1})
+      create_category(%{name: "Child", parent_id: root.id, transaction_type: :debit, depth: 1})
 
       assert {:ok, categories} = Ash.read(LifeAreaCategory, action: :with_children)
 
@@ -65,8 +62,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     end
 
     test "verifies all attributes present on read" do
-      _category =
-        create_category(%{
+      create_category(%{
           name: "Complete Category",
           description: "Test description",
           icon: "hero-star-solid",
@@ -568,8 +564,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     test "prevents deleting parent with children" do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
-      _child =
-        create_category(%{
+      create_category(%{
           name: "Child",
           parent_id: parent.id,
           transaction_type: :debit,
@@ -588,16 +583,14 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     test "provides helpful error message on delete with children" do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
-      _child1 =
-        create_category(%{
+      create_category(%{
           name: "Child 1",
           parent_id: parent.id,
           transaction_type: :debit,
           depth: 1
         })
 
-      _child2 =
-        create_category(%{
+      create_category(%{
           name: "Child 2",
           parent_id: parent.id,
           transaction_type: :debit,
@@ -614,14 +607,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     end
   end
 
-  # Note: Seeded data tests are commented out because tests run in async mode
-  # with database sandboxing, which means seeds loaded in one test won't be
-  # available in another test. To verify seeds, run: mix run priv/repo/seeds.exs
-  # and manually check the database, or run these tests in a non-sandboxed environment.
-  #
-  # If you want to test that seeds work, you can run them manually:
-  # - Run: mix ash.setup
-  # - Then check the database to verify categories exist
+
 
   describe "relationship queries" do
     test "loads parent from child" do
@@ -642,16 +628,14 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
     test "loads children from parent" do
       parent = create_category(%{name: "Parent", transaction_type: :debit})
 
-      _child1 =
-        create_category(%{
+      create_category(%{
           name: "Child 1",
           parent_id: parent.id,
           transaction_type: :debit,
           depth: 1
         })
 
-      _child2 =
-        create_category(%{
+      create_category(%{
           name: "Child 2",
           parent_id: parent.id,
           transaction_type: :debit,
