@@ -277,8 +277,9 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
           depth: 2
         })
 
-      # This should fail because C can't have children (depth limit)
-      # But if it could, trying to make A a child of C would create cycle
+      # This should fail because C can't have children (depth limit), but since
+      # we use create_category helper which uses Ash.Seed.seed!, validations are bypassed.
+      # This allows us to create an invalid hierarchy to test circular reference detection.
       assert {:error, error} =
                cat_a
                |> Ash.Changeset.for_update(:update, %{parent_id: cat_c.id})
