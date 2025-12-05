@@ -91,7 +91,7 @@ defmodule Moolah.MixProject do
       {:sourceror, "~> 1.8"},
       {:req, "~> 0.5"},
       {:swoosh, "~> 1.16"},
-      {:tailwind, "~> 0.3", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4", runtime: Mix.env() == :dev},
       {:tidewave, "~> 0.4", only: [:dev]},
       {:heroicons,
        github: "tailwindlabs/heroicons",
