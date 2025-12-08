@@ -58,7 +58,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
       parent = Enum.find(categories, &(&1.name == "Parent"))
       assert parent != nil
       assert Ash.Resource.loaded?(parent, :children)
-      assert length(parent.children) > 0
+      refute Enum.empty?(parent.children)
     end
 
     test "verifies all attributes present on read" do
@@ -662,7 +662,7 @@ defmodule Moolah.Finance.LifeAreaCategoryTest do
 
       # Load root with children
       assert {:ok, root_with_children} = Ash.load(root, :children)
-      assert length(root_with_children.children) > 0
+      refute Enum.empty?(root_with_children.children)
       assert Enum.any?(root_with_children.children, &(&1.name == "Child"))
     end
   end

@@ -28,7 +28,7 @@ defmodule Moolah.Finance.BudgetCategoryTest do
 
       # Read it back
       assert {:ok, categories} = Ash.read(BudgetCategory)
-      assert length(categories) > 0
+      refute Enum.empty?(categories)
       assert Enum.any?(categories, &(&1.name == "Test Category"))
     end
 
@@ -202,7 +202,7 @@ defmodule Moolah.Finance.BudgetCategoryTest do
 
       # Should be able to read without authorization issues
       assert {:ok, categories} = Ash.read(BudgetCategory)
-      assert length(categories) > 0
+      refute Enum.empty?(categories)
     end
 
     test "update action is allowed" do
