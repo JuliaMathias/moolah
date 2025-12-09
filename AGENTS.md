@@ -1,3 +1,5 @@
+# Project Agents Guidelines
+
 This is a web application written using the Phoenix web framework.
 
 ## Project guidelines
@@ -34,7 +36,7 @@ custom classes must fully style the input
 - Out of the box **only the app.js and app.css bundles are supported**
   - You cannot reference an external vendor'd script `src` or link `href` in the layouts
   - You must import the vendor deps into app.js and app.css to use them
-  - **Never write inline <script>custom js</script> tags within templates**
+  - **Never write inline `<script>custom js</script>` tags within templates**
 
 ### UI/UX & design guidelines
 
@@ -42,7 +44,6 @@ custom classes must fully style the input
 - Implement **subtle micro-interactions** (e.g., button hover effects, and smooth transitions)
 - Ensure **clean typography, spacing, and layout balance** for a refined, premium look
 - Focus on **delightful details** like hover effects, loading states, and smooth page transitions
-
 
 <!-- usage-rules-start -->
 
@@ -109,7 +110,6 @@ custom classes must fully style the input
 
 - `Phoenix.View` no longer is needed or included with Phoenix, don't use it
 <!-- phoenix:phoenix-end -->
-
 
 <!-- phoenix:html-start -->
 ## Phoenix HTML guidelines
