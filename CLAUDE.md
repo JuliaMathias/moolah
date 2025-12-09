@@ -5,19 +5,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 ### Setup
+
 - `mix setup` - Install dependencies, setup Ash resources, build assets, and run seeds
 - `mix deps.get` - Install Elixir dependencies
 - `mix ash.setup` - Setup Ash resources and database
 
 ### Server
+
 - `mix phx.server` - Start Phoenix server on port 4000
 - `iex -S mix phx.server` - Start server with IEx console
 
 ### Testing
+
 - `mix test` - Run all tests (automatically runs `mix ash.setup --quiet` first)
 - `mix coveralls.github` - Generate test coverage report
 
 ### Code Quality
+
 - `mix format` - Format code
 - `mix format --check-formatted` - Check if code is formatted
 - `mix compile --warnings-as-errors` - Compile with warnings as errors
@@ -26,18 +30,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `mix dialyzer --plt` - Create/update PLT files (stored in priv/plts)
 
 ### Assets
+
 - `mix assets.setup` - Install Tailwind and ESBuild if missing
 - `mix assets.build` - Build CSS and JS assets
 - `mix assets.deploy` - Build minified assets for production
 
 ### Database
+
 - `mix ecto.setup` - Create database, run migrations, and seed data
 - `mix ecto.reset` - Drop and recreate database
 
 ## Architecture Overview
 
 ### Phoenix Application Structure
+
 This is a Phoenix 1.7+ application with:
+
 - **Multiple Phoenix Endpoints**: Main endpoint, CMS endpoint, and Proxy endpoint
 - **Ash Framework**: Primary data layer using Ash domains for business logic
 - **Beacon CMS**: Content management system integration
@@ -46,10 +54,12 @@ This is a Phoenix 1.7+ application with:
 - **UI Components**: Mishka Chelekom component library + custom Phoenix components
 
 ### Key Domains
+
 - **Moolah.Ledger** (`lib/moolah/ledger.ex`): Double-entry bookkeeping with Account, Balance, and Transfer resources
 - **Moolah.Accounts** (`lib/moolah/accounts.ex`): User management with User and Token resources
 
 ### Important Dependencies
+
 - **Ash Framework**: `ash`, `ash_postgres`, `ash_phoenix`, `ash_admin` - Main data layer
 - **Authentication**: `ash_authentication`, `ash_authentication_phoenix`
 - **Ledger**: `ash_double_entry`, `ash_money` - Financial transaction handling
@@ -59,6 +69,7 @@ This is a Phoenix 1.7+ application with:
 - **Assets**: `tailwind`, `esbuild`, `heroicons`
 
 ### File Structure Patterns
+
 - `lib/moolah/` - Core business logic and Ash domains
 - `lib/moolah_web/` - Phoenix web layer with extensive component library
 - `lib/moolah_web/components/` - Large collection of reusable UI components
@@ -67,6 +78,7 @@ This is a Phoenix 1.7+ application with:
 - `priv/` - Static assets, database files, gettext translations
 
 ### Development Notes
+
 - Uses Ash.Domain instead of traditional Phoenix contexts
 - Extensive use of LiveView components
 - Multi-tenant architecture preparation with Ash
@@ -76,6 +88,7 @@ This is a Phoenix 1.7+ application with:
 ## Code Style Guidelines
 
 ### Documentation and Type Specifications
+
 - **ALWAYS add @spec for ALL public functions** - Include parameter types and return types
 - **ALWAYS add @spec for ALL private functions** - Helps with type checking and documentation
 - **ALWAYS add @doc for public functions** - Explain what the function does, parameters, and return values
@@ -83,6 +96,7 @@ This is a Phoenix 1.7+ application with:
 - Include examples in documentation where helpful
 
 **Example:**
+
 ```elixir
 @doc """
 Validates that a category does not create a circular reference.
@@ -103,7 +117,9 @@ end
 ```
 
 ### CI/CD
+
 The project includes GitHub Actions workflow (`.github/workflows/ci.yml`) that runs:
+
 - Formatting checks
 - Compilation with warnings as errors
 - Credo static analysis
@@ -116,6 +132,7 @@ The project includes GitHub Actions workflow (`.github/workflows/ci.yml`) that r
 
 - Use `{:ok, result}` / `{:error, reason}` tuples in Elixir
 - Prefer `with` statements over pattern matching that could crash:
+
   ```elixir
   # Good - handles errors gracefully
   with {:ok, result} <- some_function() do
@@ -128,6 +145,7 @@ The project includes GitHub Actions workflow (`.github/workflows/ci.yml`) that r
   # Avoid - crashes on unexpected results
   {:ok, result} = some_function()
   ```
+
 - GraphQL errors return structured error responses
 - Frontend uses Apollo error handling with user-friendly messages
 
@@ -138,6 +156,7 @@ The project includes GitHub Actions workflow (`.github/workflows/ci.yml`) that r
 Before implementing any UI component or form element:
 
 1. **Search the codebase first**:
+
    ```bash
    # For LiveView components
    grep -r "def component_name" lib/moolah_web/components/
@@ -175,6 +194,7 @@ The component helpers provide robust, DOM-aware test utilities that are more rel
 #### When to Use Component Helpers
 
 ✅ **Use component helpers for:**
+
 - Checking if elements exist: `find_one(html, "input[name='query']")`
 - Reading form values: `value(html, "input[name='query']")`
 - Reading attributes: `attribute(html, "form", "phx-change")`
@@ -182,6 +202,7 @@ The component helpers provide robust, DOM-aware test utilities that are more rel
 - Counting elements: `count_elements(html, ".list-item")`
 
 ❌ **Avoid using regex for:**
+
 - Form values: `html =~ ~s(value="foo")` → Use `value/2` instead
 - Attributes: `html =~ ~s(phx-change="search")` → Use `attribute/3` instead
 - Element existence: `html =~ "<input"` → Use `find_one/2` instead
