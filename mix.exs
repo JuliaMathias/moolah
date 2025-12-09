@@ -60,7 +60,7 @@ defmodule Moolah.MixProject do
       {:ash_authentication_phoenix, "~> 2.0"},
       {:ash_double_entry, "~> 1.0"},
       {:ash_money, "~> 0.2"},
-      {:ash_oban, "~> 0.4"},
+      {:ash_oban, "~> 0.7"},
       {:ash_phoenix, "~> 2.0"},
       {:ash_postgres, "~> 2.0"},
       {:bandit, "~> 1.5"},
