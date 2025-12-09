@@ -169,8 +169,8 @@ defmodule Moolah.Ledger.AccountTest do
       bank_accounts = Enum.filter(all_accounts, &(&1.account_type == :bank_account))
       investment_accounts = Enum.filter(all_accounts, &(&1.account_type == :investment_account))
 
-      assert length(bank_accounts) >= 1
-      assert length(investment_accounts) >= 1
+      refute Enum.empty?(bank_accounts)
+      refute Enum.empty?(investment_accounts)
       assert bank_account.id in Enum.map(bank_accounts, & &1.id)
       assert investment_account.id in Enum.map(investment_accounts, & &1.id)
     end

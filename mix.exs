@@ -73,7 +73,7 @@ defmodule Moolah.MixProject do
       {:ex_cldr, "~> 2.0"},
       {:ex_money_sql, "~> 1.0"},
       {:igniter, "~> 0.6"},
-      {:gettext, "~> 0.26"},
+      {:gettext, "~> 1.0.2"},
       {:jason, "~> 1.2"},
       {:lazy_html, ">= 0.1.0", only: :test},
       {:live_debugger, "~> 0.4", only: [:dev]},

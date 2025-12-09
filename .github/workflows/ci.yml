@@ -58,7 +58,7 @@ jobs:
       - name: Build esbuild
         run: mix esbuild.install
       - name: Install tailwind
-        run: mix tailwind.install --no-assets
+        run: mix tailwind.install
       - name: Run tests
         run: MIX_ENV=test mix coveralls.github
         env:
