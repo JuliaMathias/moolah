@@ -53,13 +53,13 @@ Moolah is architected using **Ash Framework**, a declarative, resource-oriented 
 
 ### 🏦 Account Management
 
-- **Multi-Type Support**: distinguish between different financial vessels:
+- **Multi-Type Support**: Distinguish between different financial vessels:
 
   - **Bank Accounts**: Standard checking/savings.
   - **Money Accounts**: Cash or physical wallets.
   - **Investment Accounts**: For brokerage and asset holdings.
 
-- **Secure Ledger**: underlying double-entry system ensures that every cent is accounted for.
+- **Secure Ledger**: Underlying double-entry system ensures that every cent is accounted for.
 
 ---
 
