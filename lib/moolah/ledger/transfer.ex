@@ -3,8 +3,10 @@ defmodule Moolah.Ledger.Transfer do
   Represents money transfers between accounts in the double-entry system.
 
   Each transfer moves money from one account to another, ensuring the
-  fundamental accounting principle that debits equal credits. Transfers
-  are immutable once created to maintain audit integrity.
+  fundamental accounting principle that debits equal credits.
+
+  Note: While transfers are generally immutable, a `:destroy` action is provided exclusively
+  for internal corrections and atomic transaction updates to maintain system consistency.
   """
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
