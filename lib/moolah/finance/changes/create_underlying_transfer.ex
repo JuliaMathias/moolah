@@ -61,15 +61,17 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     account_id = Changeset.get_attribute(changeset, :account_id)
     target_account_id = Changeset.get_attribute(changeset, :target_account_id)
 
-    # We use budget_category for the virtual account link
-    category_id = Changeset.get_attribute(changeset, :budget_category_id)
+    budget_category_id = Changeset.get_attribute(changeset, :budget_category_id)
+    life_area_category_id = Changeset.get_attribute(changeset, :life_area_category_id)
 
     case type do
       :debit ->
-        create_debit_transfer(account_id, category_id, source_amount, source_currency)
+        # Debits use Budget Category for the virtual account
+        create_debit_transfer(account_id, budget_category_id, source_amount, source_currency)
 
       :credit ->
-        create_credit_transfer(account_id, category_id, amount, currency)
+        # Credits use Life Area Category for the virtual account (Income)
+        create_credit_transfer(account_id, life_area_category_id, amount, currency)
 
       :transfer ->
         create_account_transfer(
