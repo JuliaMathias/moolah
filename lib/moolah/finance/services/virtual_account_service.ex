@@ -16,29 +16,20 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
   @spec get_or_create(Ecto.UUID.t(), :expense | :income, String.t()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
   def get_or_create(category_id, key_prefix, currency \\ "BRL") do
-    # Construct a stable identifier using the UUID
-    identifier = "#{key_prefix}:#{category_id}"
+    # Construct a stable identifier using prefix, currency, and the category UUID
+    identifier = "#{key_prefix}:#{currency}:#{category_id}"
     account_type = if key_prefix == :expense, do: :expense_category, else: :income_category
 
     Moolah.Ledger.Account
-    |> Ash.Query.filter(identifier == ^identifier)
-    |> Ash.read_one()
-    |> case do
-      {:ok, account} when not is_nil(account) ->
-        {:ok, account}
-
-      {:ok, nil} ->
-        Moolah.Ledger.Account
-        |> Ash.Changeset.for_create(:open, %{
-          identifier: identifier,
-          currency: currency,
-          account_type: account_type
-        })
-        |> Ash.create()
-
-      error ->
-        error
-    end
+    |> Ash.Changeset.for_create(:open, %{
+      identifier: identifier,
+      currency: currency,
+      account_type: account_type
+    })
+    |> Ash.Changeset.set_context(%{
+      private: %{upsert?: true, upsert_identity: :unique_identifier}
+    })
+    |> Ash.create()
   end
 
   @doc """
@@ -73,20 +64,14 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
     identifier = "trading:#{currency}"
 
     Moolah.Ledger.Account
-    |> Ash.Query.filter(identifier == ^identifier)
-    |> Ash.read_one!()
-    |> case do
-      nil ->
-        Moolah.Ledger.Account
-        |> Ash.Changeset.for_create(:open, %{
-          identifier: identifier,
-          currency: currency,
-          account_type: :trading_account
-        })
-        |> Ash.create!()
-
-      account ->
-        account
-    end
+    |> Ash.Changeset.for_create(:open, %{
+      identifier: identifier,
+      currency: currency,
+      account_type: :trading_account
+    })
+    |> Ash.Changeset.set_context(%{
+      private: %{upsert?: true, upsert_identity: :unique_identifier}
+    })
+    |> Ash.create!()
   end
 end
