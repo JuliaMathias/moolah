@@ -400,6 +400,27 @@ defmodule Moolah.Finance.TransactionTest do
     assert updated_transaction.source_amount == Money.new(60, :BRL)
   end
 
+  test "Validation: Forbidden source_amount for debit transactions", %{
+    credit_card: cc,
+    food: food,
+    life_area: life_area
+  } do
+    changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: cc.id,
+        budget_category_id: food.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(20, :BRL),
+        source_amount: Money.new(20, :BRL),
+        description: "Invalid Debit"
+      })
+
+    assert {:error, %Ash.Error.Invalid{errors: [error]}} = Ash.create(changeset)
+    assert error.message == "Source Amount can only be set for Transfer transactions"
+  end
+
   @spec assert_balance(Ash.Resource.record(), Money.t()) :: boolean()
   defp assert_balance(account, expected_money) do
     balance = get_balance(account)

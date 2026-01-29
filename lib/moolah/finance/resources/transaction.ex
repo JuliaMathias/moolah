@@ -77,6 +77,12 @@ defmodule Moolah.Finance.Transaction do
       message "Target Account can only be set for Transfer transactions"
     end
 
+    # Source amount validation: only for transfers
+    validate absent(:source_amount) do
+      where [attribute_does_not_equal(:transaction_type, :transfer)]
+      message "Source Amount can only be set for Transfer transactions"
+    end
+
     validate {Moolah.Finance.Validations.CurrencyMatch, []}
   end
 
