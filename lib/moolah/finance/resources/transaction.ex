@@ -75,6 +75,8 @@ defmodule Moolah.Finance.Transaction do
       where [attribute_does_not_equal(:transaction_type, :transfer)]
       message "Target Account can only be set for Transfer transactions"
     end
+
+    validate {Moolah.Finance.Validations.CurrencyMatch, []}
   end
 
   attributes do
