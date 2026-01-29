@@ -130,44 +130,59 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
          to_id,
          amount,
          currency,
-         _source_amount,
+         source_amount,
          source_currency
        ) do
-    # Transfer: Money moves FROM User Account A TO User Account B
-
-    # Check if this is a multi-currency transfer that requires exchange handling
     if currency != source_currency do
-      # For MVP: We will simply create the transfer with the destination amount
-      # Limitations: This technically violates double-entry if we care about source balance in source currency.
-      # However, AshDoubleEntry.Transfer requires a single amount.
-      # To do this properly in AshDoubleEntry without an exchange account would require two transfers.
-      # 1. From A to Exchange (in source currency)
-      # 2. From Exchange to B (in target currency)
-      #
-      # Given the constraint of returning a SINGLE transfer_id to the Transaction resource,
-      # we imply a limitation here: "Transaction tracks the destination value".
-      #
-      # Use case R$530 -> $100.
-      # We will record the $100 transfer into the destination.
-      # BUT we need to debit the source R$530.
-      # A single AshDoubleEntry.Transfer CANNOT do this.
-      #
-      # WORKAROUND for MVP:
-      # We will create the transfer in the DESTINATION currency.
-      # This means the source account (BRL) will be debited $100 USD (which might be converted
-      # or just stored as separate balance).
-      # A proper multi-currency ledger usually has separate balances per currency.
-      # If Account A is BRL, it can hold keys for USD too.
+      # Multi-currency: Trading Account Pattern
+      # Leg 1: User -> Trading (Source Currency)
+      # Leg 2: Trading -> User (Target Currency)
 
-      # FOR NOW: Create the transfer in the DESTINATION currency.
-      Moolah.Ledger.Transfer
-      |> Ash.Changeset.for_create(:transfer, %{
-        amount: Money.new(amount, currency),
-        from_account_id: from_id,
-        to_account_id: to_id
-      })
-      |> Ash.create()
+      trading_source =
+        VirtualAccountService.get_or_create_trading_account!(to_string(source_currency))
+
+      trading_target = VirtualAccountService.get_or_create_trading_account!(to_string(currency))
+
+      # Calculate exchange rate: source / target
+      # e.g. 530 / 100 = 5.3
+      exchange_rate = Decimal.div(source_amount, amount)
+
+      Moolah.Repo.transaction(fn ->
+        with {:ok, s_transfer, s_notifications} <-
+               Moolah.Ledger.Transfer
+               |> Ash.Changeset.for_create(:transfer, %{
+                 amount: Money.new(source_amount, source_currency),
+                 from_account_id: from_id,
+                 to_account_id: trading_source.id
+               })
+               |> Ash.create(return_notifications?: true),
+             {:ok, t_transfer, t_notifications} <-
+               Moolah.Ledger.Transfer
+               |> Ash.Changeset.for_create(:transfer, %{
+                 amount: Money.new(amount, currency),
+                 from_account_id: trading_target.id,
+                 to_account_id: to_id
+               })
+               |> Ash.create(return_notifications?: true) do
+          {
+            %{
+              source_transfer: s_transfer,
+              target_transfer: t_transfer,
+              exchange_rate: exchange_rate
+            },
+            s_notifications ++ t_notifications
+          }
+        else
+          {:error, error} -> Moolah.Repo.rollback(error)
+        end
+      end)
+      |> case do
+        {:ok, {result, notifications}} -> {:ok, result, notifications}
+        {:ok, result} -> {:ok, result, []}
+        {:error, error} -> {:error, error}
+      end
     else
+      # Simple Transfer
       Moolah.Ledger.Transfer
       |> Ash.Changeset.for_create(:transfer, %{
         amount: Money.new(amount, currency),
