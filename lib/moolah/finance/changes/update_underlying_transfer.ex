@@ -41,24 +41,41 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
   @spec update_transfer(changeset()) :: changeset()
   defp update_transfer(changeset) do
     # Implementation strategy:
-    # 1. Create a NEW underlying transfer with the new values (using sibling module)
-    # 2. Update the transaction changeset to point to the new transfer_id
-    # 3. Queue destruction of the OLD transfer in an `after_action` hook
-    #    (This runs after the DB update has safely swapped the ID, preventing FK violations)
+    # 1. Create NEW underlying transfer(s) (could be map or single transfer)
+    # 2. Update the transaction changeset to point to the new IDs
+    # 3. Queue destruction of the OLD transfer(s)
 
-    # 1. Create new transfer
     case CreateUnderlyingTransfer.create_transfer_for_transaction(changeset) do
-      {:ok, new_transfer} ->
-        # Capture old ID before we overwrite it in the changeset
+      {:ok, result, notifications} ->
+        # Capture old IDs before we overwrite them in the changeset
         old_transfer_id = changeset.data.transfer_id
+        old_source_transfer_id = changeset.data.source_transfer_id
 
+        changeset =
+          case result do
+            %{source_transfer: s, target_transfer: t, exchange_rate: rate} ->
+              changeset
+              |> Changeset.force_change_attribute(:source_transfer_id, s.id)
+              |> Changeset.force_change_attribute(:transfer_id, t.id)
+              |> Changeset.force_change_attribute(:exchange_rate, rate)
+
+            transfer ->
+              changeset
+              |> Changeset.force_change_attribute(:transfer_id, transfer.id)
+              |> Changeset.force_change_attribute(:source_transfer_id, nil)
+              |> Changeset.force_change_attribute(:exchange_rate, nil)
+          end
+
+        # Queue destroy of old transfers and send all notifications
         changeset
-        # 2. Update pointer
-        |> Changeset.force_change_attribute(:transfer_id, new_transfer.id)
-        # 3. Queue destroy
-        |> Changeset.after_action(fn _changeset, result ->
-          case destroy_old_transfer(old_transfer_id) do
-            :ok -> {:ok, result}
+        |> Changeset.after_action(fn _changeset, final_result ->
+          # Destroy both old legs if they exist
+          with {:ok, n1} <- destroy_and_get_notifications(old_transfer_id),
+               {:ok, n2} <- destroy_and_get_notifications(old_source_transfer_id) do
+            # notifications from CreateUnderlyingTransfer + notifications from destruction
+            Ash.Notifier.notify(notifications ++ n1 ++ n2)
+            {:ok, final_result}
+          else
             {:error, error} -> {:error, error}
           end
         end)
@@ -68,19 +85,24 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
     end
   end
 
-  @spec destroy_old_transfer(Ecto.UUID.t() | nil) :: :ok | {:error, any()}
-  defp destroy_old_transfer(nil), do: :ok
+  @spec destroy_and_get_notifications(Ecto.UUID.t() | nil) ::
+          {:ok, [Ash.Notifier.Notification.t()]} | {:error, any()}
+  defp destroy_and_get_notifications(nil), do: {:ok, []}
 
-  defp destroy_old_transfer(transfer_id) do
+  defp destroy_and_get_notifications(transfer_id) do
     Moolah.Ledger.Transfer
     |> Ash.Query.filter(id == ^transfer_id)
     |> Ash.read_one()
     |> case do
       {:ok, transfer} when not is_nil(transfer) ->
-        Ash.destroy(transfer)
+        case Ash.destroy(transfer, return_notifications?: true) do
+          :ok -> {:ok, []}
+          {:ok, notifications} -> {:ok, notifications}
+          {:error, error} -> {:error, error}
+        end
 
       {:ok, nil} ->
-        :ok
+        {:ok, []}
 
       {:error, error} ->
         {:error, error}
