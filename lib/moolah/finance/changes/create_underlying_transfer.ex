@@ -26,8 +26,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   def change(changeset, _opts, _context) do
     Changeset.before_transaction(changeset, fn changeset ->
       case create_transfer_for_transaction(changeset) do
-        {:ok, transfer} ->
-          Changeset.force_change_attribute(changeset, :transfer_id, transfer.id)
+        {:ok, result, notifications} ->
+          handle_transfer_result(changeset, result, notifications)
 
         {:error, error} ->
           Changeset.add_error(changeset, error)
@@ -35,28 +35,48 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     end)
   end
 
+  @spec handle_transfer_result(changeset(), Ash.Resource.record() | map(), [
+          Ash.Notifier.Notification.t()
+        ]) :: changeset()
+  defp handle_transfer_result(changeset, result, notifications) do
+    # Send notifications after action/transaction
+    changeset =
+      Changeset.after_action(changeset, fn _changeset, record ->
+        Ash.Notifier.notify(notifications)
+        {:ok, record}
+      end)
+
+    # Result can be a single transfer (simple) or a map with both (multi-currency)
+    case result do
+      %{source_transfer: s, target_transfer: t, exchange_rate: rate} ->
+        changeset
+        |> Changeset.force_change_attribute(:source_transfer_id, s.id)
+        |> Changeset.force_change_attribute(:transfer_id, t.id)
+        |> Changeset.force_change_attribute(:exchange_rate, rate)
+
+      transfer ->
+        Changeset.force_change_attribute(changeset, :transfer_id, transfer.id)
+    end
+  end
+
   @doc """
   Creates the underlying ledger transfer for a transaction changeset.
-  This is used by both the creation action and the update action (when replacing a transaction).
+  This is used by both the creation action and the update action.
   """
   @spec create_transfer_for_transaction(changeset()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+          {:ok, Ash.Resource.record() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   def create_transfer_for_transaction(changeset) do
     type = Changeset.get_attribute(changeset, :transaction_type)
     amount_money = Changeset.get_attribute(changeset, :amount)
     source_amount_money = Changeset.get_attribute(changeset, :source_amount)
 
-    # Extract amount and currency from AshMoney
+    # Extract amount and currency
     amount = amount_money.amount
     currency = amount_money.currency
 
     # For source amount (optional, defaults to amount)
-    {source_amount, source_currency} =
-      if source_amount_money do
-        {source_amount_money.amount, source_amount_money.currency}
-      else
-        {amount, currency}
-      end
+    source_amount = if source_amount_money, do: source_amount_money.amount, else: amount
+    source_currency = if source_amount_money, do: source_amount_money.currency, else: currency
 
     account_id = Changeset.get_attribute(changeset, :account_id)
     target_account_id = Changeset.get_attribute(changeset, :target_account_id)
@@ -86,9 +106,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   end
 
   @spec create_debit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+          {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_debit_transfer(account_id, category_id, amount, currency) do
-    # Debit: Money moves FROM User Account TO Expense Category
     with {:ok, expense_account} <-
            VirtualAccountService.get_or_create(category_id, :expense, to_string(currency)) do
       Moolah.Ledger.Transfer
@@ -97,14 +116,13 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
         from_account_id: account_id,
         to_account_id: expense_account.id
       })
-      |> Ash.create()
+      |> Ash.create(return_notifications?: true)
     end
   end
 
   @spec create_credit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+          {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_credit_transfer(account_id, category_id, amount, currency) do
-    # Credit: Money moves FROM Income Category TO User Account
     with {:ok, income_account} <-
            VirtualAccountService.get_or_create(category_id, :income, to_string(currency)) do
       Moolah.Ledger.Transfer
@@ -113,7 +131,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
         from_account_id: income_account.id,
         to_account_id: account_id
       })
-      |> Ash.create()
+      |> Ash.create(return_notifications?: true)
     end
   end
 
@@ -124,7 +142,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
           atom(),
           Decimal.t(),
           atom()
-        ) :: {:ok, Ash.Resource.record()} | {:error, any()}
+        ) ::
+          {:ok, Ash.Resource.record() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_account_transfer(
          from_id,
          to_id,
@@ -189,7 +208,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
         from_account_id: from_id,
         to_account_id: to_id
       })
-      |> Ash.create()
+      |> Ash.create(return_notifications?: true)
     end
   end
 end
