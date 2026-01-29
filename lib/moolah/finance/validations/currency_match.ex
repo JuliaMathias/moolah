@@ -45,7 +45,8 @@ defmodule Moolah.Finance.Validations.CurrencyMatch do
     end
   end
 
-  @spec fetch_target_account(Ecto.UUID.t() | nil) :: {:ok, Ash.Resource.record() | nil} | {:error, any()}
+  @spec fetch_target_account(Ecto.UUID.t() | nil) ::
+          {:ok, Ash.Resource.record() | nil} | {:error, any()}
   defp fetch_target_account(nil), do: {:ok, nil}
   defp fetch_target_account(id), do: Ash.get(Moolah.Ledger.Account, id)
 
