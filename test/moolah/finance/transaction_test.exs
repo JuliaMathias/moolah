@@ -138,35 +138,44 @@ defmodule Moolah.Finance.TransactionTest do
     |> Map.get(:balance_as_of)
   end
 
-  @tag :skip
-  test "Scenario 1: Moving R$530 from normal account to dollar account ($100)", %{
+  test "Scenario 1: Moving R$519.72 from normal account to dollar account ($100)", %{
     bank: bank,
     dollar_account: dollar
   } do
-    # R$530 -> $100
-    Transaction
-    |> Ash.Changeset.for_create(:create, %{
-      transaction_type: :transfer,
-      account_id: bank.id,
-      target_account_id: dollar.id,
-      amount: Money.new(100, :USD),
-      source_amount: Money.new(530, :BRL),
-      description: "Trip money"
-    })
-    |> Ash.create!()
+    # R$519.72 -> $100 (Rate: 5.1972)
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        account_id: bank.id,
+        target_account_id: dollar.id,
+        amount: Money.new("100", :USD),
+        source_amount: Money.new("519.72", :BRL),
+        description: "Trip money"
+      })
+      |> Ash.create!()
 
-    # Verify Bank balance decreased by R$530 (WAIT: Current MVP limitation means it tracks destination amount!)
-    # In my implementation plan workaround I said: "Transaction tracks destination value...
-    # source account will be debited $100 USD (technically incorrect currency)".
-    # Let's see what actually happens. The code does:
-    # create_account_transfer(..., amount=100 USD, ...)
-    # So it creates a transfer of 100 USD from Bank(BRL) to Dollar(USD).
-    # This will debit 100 USD from Bank.
+    # Bank account should decrease by exactly 519.72 BRL. 20,000 - 519.72 = 19,480.28
+    assert_balance(bank, Money.new("19480.28", :BRL))
 
-    # Ideally we want to verify the transaction was created successfully.
-    # The balance check on the BRL account for USD amount might be weird if not configured.
+    # Dollar account should increase by exactly 100 USD
+    assert_balance(dollar, Money.new("100", :USD))
 
-    assert_balance(dollar, Money.new(100, :USD))
+    # Verify Transaction Metadata
+    assert transaction.source_transfer_id != nil
+    assert transaction.transfer_id != nil
+    # 519.72 / 100 = 5.1972
+    assert Decimal.equal?(transaction.exchange_rate, Decimal.new("5.1972"))
+
+    # Verify Trading Accounts (Bridge check)
+    trading_brl =
+      VirtualAccountService.get_or_create_trading_account!("BRL")
+
+    trading_usd =
+      VirtualAccountService.get_or_create_trading_account!("USD")
+
+    assert_balance(trading_brl, Money.new("519.72", :BRL))
+    assert_balance(trading_usd, Money.new("-100", :USD))
   end
 
   test "Scenario 2: Charged R$20 for lunch on credit card", %{
@@ -273,7 +282,6 @@ defmodule Moolah.Finance.TransactionTest do
     food: food,
     life_area: life_area
   } do
-
     assert_balance(cc, Money.new(0, :BRL))
 
     # Initial: Debit R$50 for Food
