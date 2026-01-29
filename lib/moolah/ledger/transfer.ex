@@ -22,7 +22,7 @@ defmodule Moolah.Ledger.Transfer do
   end
 
   actions do
-    defaults [:read]
+    defaults [:read, :destroy]
 
     create :transfer do
       accept [:amount, :timestamp, :from_account_id, :to_account_id]
