@@ -13,7 +13,7 @@ defmodule Moolah.Finance.Transaction do
   end
 
   actions do
-    defaults [:read, :destroy]
+    defaults [:read]
 
     create :create do
       accept [
