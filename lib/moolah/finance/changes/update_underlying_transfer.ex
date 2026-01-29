@@ -23,9 +23,14 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
   @impl true
   def change(changeset, _opts, _context) do
     Changeset.before_transaction(changeset, fn changeset ->
-      # Only process if amount or date changed
+      # Only process if amount, date, or category/account changed
       if Changeset.changing_attribute?(changeset, :amount) or
-           Changeset.changing_attribute?(changeset, :date) do
+           Changeset.changing_attribute?(changeset, :source_amount) or
+           Changeset.changing_attribute?(changeset, :date) or
+           Changeset.changing_attribute?(changeset, :budget_category_id) or
+           Changeset.changing_attribute?(changeset, :life_area_category_id) or
+           Changeset.changing_attribute?(changeset, :account_id) or
+           Changeset.changing_attribute?(changeset, :target_account_id) do
         update_transfer(changeset)
       else
         changeset
@@ -36,29 +41,30 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
   @spec update_transfer(changeset()) :: changeset()
   defp update_transfer(changeset) do
     # Implementation strategy:
-    # 1. Fetch the existing transaction record (to get the old transfer_id)
-    # 2. Destroy the old underlying transfer (reversing its effects on ledger)
-    # 3. Create a NEW underlying transfer with the new values
-    # 4. Update the transaction to point to the new transfer_id
-    #
-    # ATOMICITY NOTE:
-    # This runs within `Changeset.before_transaction/2`. Ash wraps this entire hook
-    # in the database transaction. If step 2 (destroy) succeeds but step 3 (create) fails,
-    # the entire transaction rolls back, preventing data loss or unbalanced ledgers.
+    # 1. Create a NEW underlying transfer with the new values (using sibling module)
+    # 2. Update the transaction changeset to point to the new transfer_id
+    # 3. Queue destruction of the OLD transfer in an `after_action` hook
+    #    (This runs after the DB update has safely swapped the ID, preventing FK violations)
 
-    old_transfer_id = changeset.data.transfer_id
+    # 1. Create new transfer
+    case CreateUnderlyingTransfer.create_transfer_for_transaction(changeset) do
+      {:ok, new_transfer} ->
+        # Capture old ID before we overwrite it in the changeset
+        old_transfer_id = changeset.data.transfer_id
 
-    # 1. Destroy old transfer
-    case destroy_old_transfer(old_transfer_id) do
-      :ok ->
-        # 2. Reuse creation logic to make a new one
-        # We can call the helper from CreateUnderlyingTransfer if we make it public,
-        # or duplicate the logic. For now, let's call the brother module.
-        # Actually, better to just implement the creation call here using the *new* changeset values.
-        create_new_replacement_transfer(changeset)
+        changeset
+        # 2. Update pointer
+        |> Changeset.force_change_attribute(:transfer_id, new_transfer.id)
+        # 3. Queue destroy
+        |> Changeset.after_action(fn _changeset, result ->
+          case destroy_old_transfer(old_transfer_id) do
+            :ok -> {:ok, result}
+            {:error, error} -> {:error, error}
+          end
+        end)
 
-      {:error, reason} ->
-        Changeset.add_error(changeset, "Failed to update ledger: #{inspect(reason)}")
+      {:error, error} ->
+        Changeset.add_error(changeset, error)
     end
   end
 
@@ -78,26 +84,6 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
 
       {:error, error} ->
         {:error, error}
-    end
-  end
-
-  @spec create_new_replacement_transfer(changeset()) :: changeset()
-  defp create_new_replacement_transfer(changeset) do
-    # We delegate to the logic in CreateUnderlyingTransfer.make_transfer/1
-    # Requires refactoring CreateUnderlyingTransfer to separate the logic function.
-    # For now, I'll inline the logic or use a shared helper.
-    # Let's trust that I will refactor CreateUnderlyingTransfer to expose `create_transfer_record/1`.
-
-    # Checking Moolah.Finance.Changes.CreateUnderlyingTransfer...
-    # It has `create_transfer_for_transaction/1` which is private.
-    # I will make it public doc hidden to reuse it.
-
-    case CreateUnderlyingTransfer.create_transfer_for_transaction(changeset) do
-      {:ok, transfer} ->
-        Changeset.force_change_attribute(changeset, :transfer_id, transfer.id)
-
-      {:error, error} ->
-        Changeset.add_error(changeset, error)
     end
   end
 end
