@@ -43,6 +43,7 @@ defmodule Moolah.Finance.Transaction do
 
       change Moolah.Finance.Changes.UpdateUnderlyingTransfer
       require_atomic? false
+      transaction? true
     end
   end
 

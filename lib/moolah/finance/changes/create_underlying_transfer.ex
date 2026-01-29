@@ -15,6 +15,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   alias Ash.Changeset
   alias Moolah.Finance.Services.VirtualAccountService
 
+  require Decimal
+
   @type changeset :: Ash.Changeset.t()
 
   @doc """
