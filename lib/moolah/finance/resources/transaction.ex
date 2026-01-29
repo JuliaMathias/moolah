@@ -103,6 +103,14 @@ defmodule Moolah.Finance.Transaction do
       default &Date.utc_today/0
     end
 
+    attribute :source_transfer_id, AshDoubleEntry.ULID do
+      public? true
+    end
+
+    attribute :exchange_rate, :decimal do
+      public? true
+    end
+
     timestamps()
   end
 
