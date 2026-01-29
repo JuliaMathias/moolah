@@ -60,68 +60,78 @@ defmodule MoolahWeb.Components.Toast do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :fixed, :boolean, default: true, doc: "Determines whether the element is fixed"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "medium", doc: "Determines the border radius"
-  attr :width, :string, default: "medium", doc: "Determines the element width"
-  attr :space, :string, default: "extra_small", doc: "Space between items"
-  attr :vertical, :string, values: ["top", "bottom"], default: "top", doc: "Type of vertical"
-  attr :vertical_space, :string, default: "extra_small", doc: "Space between vertical items"
-  attr :z_index, :string, default: "z-50", doc: "custom z-index"
+  attr(:fixed, :boolean, default: true, doc: "Determines whether the element is fixed")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "medium", doc: "Determines the border radius")
+  attr(:width, :string, default: "medium", doc: "Determines the element width")
+  attr(:space, :string, default: "extra_small", doc: "Space between items")
+  attr(:vertical, :string, values: ["top", "bottom"], default: "top", doc: "Type of vertical")
+  attr(:vertical_space, :string, default: "extra_small", doc: "Space between vertical items")
+  attr(:z_index, :string, default: "z-50", doc: "custom z-index")
 
-  attr :horizontal, :string,
+  attr(:horizontal, :string,
     values: ["left", "right", "center"],
     default: "right",
     doc: "Type of horizontal"
+  )
 
-  attr :horizontal_space, :string, default: "extra_small", doc: "Space between horizontal items"
+  attr(:horizontal_space, :string, default: "extra_small", doc: "Space between horizontal items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :class, :string, default: "", doc: "Additional CSS classes to be added to the toast."
+  attr(:class, :string, default: "", doc: "Additional CSS classes to be added to the toast.")
 
-  attr :wrapper_class, :string,
+  attr(:wrapper_class, :string,
     default: "",
     doc: "Additional CSS classes to be added to the toast contents."
+  )
 
-  attr :content_wrapper_class, :string,
+  attr(:content_wrapper_class, :string,
     default: "",
     doc: "Additional CSS classes to be added to the toast contents."
+  )
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: "",
     doc: "Additional CSS classes to be added to the toast contents."
+  )
 
-  attr :dismiss_class, :string,
+  attr(:dismiss_class, :string,
     default: "",
     doc: "Additional CSS classes to be added to the toast contents."
+  )
 
-  attr :dismiss_icon_class, :string,
+  attr(:dismiss_icon_class, :string,
     default: "",
     doc: "Additional CSS classes to be added to the toast contents."
+  )
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "toast"},
     doc: "A map of additional parameters used for element configuration"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(right_dismiss left_dismiss),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :content_border, :string, default: "none", doc: "Determines the content border style"
-  attr :border_position, :string, default: "start", doc: "Determines the border position style"
-  attr :row_direction, :string, default: "none", doc: "Determines row direction"
-  attr :padding, :string, default: "extra_small", doc: "Determines padding for items"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:content_border, :string, default: "none", doc: "Determines the content border style")
+  attr(:border_position, :string, default: "start", doc: "Determines the border position style")
+  attr(:row_direction, :string, default: "none", doc: "Determines row direction")
+  attr(:padding, :string, default: "extra_small", doc: "Determines padding for items")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def toast(assigns) do
     ~H"""
@@ -221,28 +231,31 @@ defmodule MoolahWeb.Components.Toast do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :space, :string, default: "small", doc: "Space between items"
-  attr :vertical, :string, values: ["top", "bottom"], default: "bottom", doc: "Type of vertical"
-  attr :vertical_space, :string, default: "extra_small", doc: "Space between vertical items"
-  attr :z_index, :string, default: "z-50", doc: "custom z-index"
+  attr(:space, :string, default: "small", doc: "Space between items")
+  attr(:vertical, :string, values: ["top", "bottom"], default: "bottom", doc: "Type of vertical")
+  attr(:vertical_space, :string, default: "extra_small", doc: "Space between vertical items")
+  attr(:z_index, :string, default: "z-50", doc: "custom z-index")
 
-  attr :horizontal, :string,
+  attr(:horizontal, :string,
     values: ["left", "right", "center"],
     default: "right",
     doc: "Type of horizontal"
+  )
 
-  attr :horizontal_space, :string, default: "extra_small", doc: "Space between horizontal items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:horizontal_space, :string, default: "extra_small", doc: "Space between horizontal items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def toast_group(assigns) do
     ~H"""
@@ -265,25 +278,29 @@ defmodule MoolahWeb.Components.Toast do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :dismiss, :boolean,
+  attr(:dismiss, :boolean,
     default: false,
     doc: "Determines if the toast should include a dismiss button"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :icon_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:icon_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "toast"},
     doc: "A map of additional parameters used for element configuration"
+  )
 
   defp toast_dismiss(assigns) do
     ~H"""

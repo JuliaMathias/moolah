@@ -48,42 +48,46 @@ defmodule MoolahWeb.Components.Tooltip do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :position, :string, default: "top", doc: "Determines the element position"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :show_arrow, :boolean, default: true, doc: "Show or hide arrow of popover"
+  attr(:position, :string, default: "top", doc: "Determines the element position")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:show_arrow, :boolean, default: true, doc: "Show or hide arrow of popover")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "", doc: "Space between items"
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :width, :string, default: "fit", doc: "Determines the element width"
-  attr :wrapper_width, :string, default: "w-fit", doc: "Determines the parent element width"
-  attr :wrapper_class, :string, default: "w-fit", doc: "Determines the parent element class"
-  attr :arrow_class, :string, default: nil, doc: "Determines arrow class"
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :text_position, :string, default: "center", doc: "Determines the element' text position"
-  attr :text, :string, default: "", doc: "Determines element's text"
+  attr(:width, :string, default: "fit", doc: "Determines the element width")
+  attr(:wrapper_width, :string, default: "w-fit", doc: "Determines the parent element width")
+  attr(:wrapper_class, :string, default: "w-fit", doc: "Determines the parent element class")
+  attr(:arrow_class, :string, default: nil, doc: "Determines arrow class")
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:text_position, :string, default: "center", doc: "Determines the element' text position")
+  attr(:text, :string, default: "", doc: "Determines element's text")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def tooltip(assigns) do
     ~H"""

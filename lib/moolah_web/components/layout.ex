@@ -43,60 +43,74 @@ defmodule MoolahWeb.Components.Layout do
   """
   @doc type: :component
 
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier for the root element of the component"
+  )
 
-  attr :direction, :string,
+  attr(:direction, :string,
     default: "row",
     doc: "Sets the flex direction of the container"
+  )
 
-  attr :justify, :string,
+  attr(:justify, :string,
     default: "start",
     doc: "Controls alignment of items along the main axis"
+  )
 
-  attr :align, :string,
+  attr(:align, :string,
     default: "stretch",
     doc: "Controls alignment of items along the cross axis"
+  )
 
-  attr :align_self, :string,
+  attr(:align_self, :string,
     default: "",
     doc: "Controls alignment for a single item, overriding the container's align setting"
+  )
 
-  attr :gap, :string,
+  attr(:gap, :string,
     default: "",
     doc: "Sets the space between child elements"
+  )
 
-  attr :wrap, :string,
+  attr(:wrap, :string,
     default: "wrap",
     doc: "Controls wrapping behavior of flex items"
+  )
 
-  attr :grow, :string,
+  attr(:grow, :string,
     default: "",
     doc: "Determines whether flex items grow to fill available space"
+  )
 
-  attr :shrink, :string,
+  attr(:shrink, :string,
     default: "",
     doc: "Determines whether flex items shrink if needed"
+  )
 
-  attr :basis, :string,
+  attr(:basis, :string,
     default: "",
     doc: "Sets the initial main size of a flex item"
+  )
 
-  attr :order, :string,
+  attr(:order, :string,
     default: "",
     doc: "Controls the visual order of an item within a flex or grid container"
+  )
 
-  attr :class, :string,
+  attr(:class, :string,
     default: "",
     doc: "Additional CSS classes to apply to the container"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc: "Any valid global HTML attributes passed to the component (e.g. aria, data-*)"
+  )
 
-  slot :inner_block,
+  slot(:inner_block,
     required: false,
     doc: "The inner content to render inside the component"
+  )
 
   def flex(assigns) do
     ~H"""
@@ -148,72 +162,89 @@ defmodule MoolahWeb.Components.Layout do
   """
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier for the root element of the component"
+  )
 
-  attr :cols, :string,
+  attr(:cols, :string,
     default: "twelve",
     doc: "Defines the number of columns in the grid"
+  )
 
-  attr :rows, :string,
+  attr(:rows, :string,
     default: "",
     doc: "Defines the number of rows in the grid"
+  )
 
-  attr :auto_cols, :string,
+  attr(:auto_cols, :string,
     default: "",
     doc: "Sets the size for implicitly created columns"
+  )
 
-  attr :auto_rows, :string,
+  attr(:auto_rows, :string,
     default: "",
     doc: "Sets the size for implicitly created rows"
+  )
 
-  attr :auto_flow, :string,
+  attr(:auto_flow, :string,
     default: "",
     doc: "Controls how auto-placed items are inserted into the grid"
+  )
 
-  attr :justify_items, :string,
+  attr(:justify_items, :string,
     default: "",
     doc: "Controls how grid items are aligned along the row axis"
+  )
 
-  attr :justify_self, :string,
+  attr(:justify_self, :string,
     default: "",
     doc: "Overrides alignment for a single grid item along the row axis"
+  )
 
-  attr :gap, :string,
+  attr(:gap, :string,
     default: "",
     doc: "Sets the space between child elements"
+  )
 
-  attr :align_content, :string,
+  attr(:align_content, :string,
     default: "",
     doc: "Controls how multiple rows are aligned within the grid container"
+  )
 
-  attr :place_content, :string,
+  attr(:place_content, :string,
     default: "",
     doc: "Shorthand for setting both align-content and justify-content"
+  )
 
-  attr :order, :string,
+  attr(:order, :string,
     default: "",
     doc: "Controls the visual order of an item within a flex or grid container"
+  )
 
-  attr :place_items, :string,
+  attr(:place_items, :string,
     default: "",
     doc: "Shorthand to align items along both axes in the grid container"
+  )
 
-  attr :place_self, :string,
+  attr(:place_self, :string,
     default: "",
     doc: "Shorthand to align a single item along both axes"
+  )
 
-  attr :class, :string,
+  attr(:class, :string,
     default: "",
     doc: "Additional CSS classes to apply to the container"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc: "Any valid global HTML attributes passed to the component (e.g. aria, data-*)"
+  )
 
-  slot :inner_block,
+  slot(:inner_block,
     required: false,
     doc: "The inner content to render inside the component"
+  )
 
   def grid(assigns) do
     ~H"""

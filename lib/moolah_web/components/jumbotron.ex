@@ -78,28 +78,31 @@ defmodule MoolahWeb.Components.Jumbotron do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border_size, :string, default: "extra_small", doc: ""
-  attr :border_position, :string, default: "bottom", doc: ""
-  attr :space, :string, default: "", doc: "Space between items"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border_size, :string, default: "extra_small", doc: "")
+  attr(:border_position, :string, default: "bottom", doc: "")
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def jumbotron(assigns) do
     ~H"""

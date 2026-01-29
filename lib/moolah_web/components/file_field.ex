@@ -38,46 +38,54 @@ defmodule MoolahWeb.Components.FileField do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :live, :boolean, default: false, doc: "Specifies whether this upload is live or input file"
-  attr :space, :string, default: "medium", doc: "Space between items"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:live, :boolean,
+    default: false,
+    doc: "Specifies whether this upload is live or input file"
+  )
+
+  attr(:space, :string, default: "medium", doc: "Space between items")
+
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
-  attr :dashed, :boolean, default: true, doc: "Determines dashed border"
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :uploads, :any, doc: "LiveView upload map"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
+  attr(:dashed, :boolean, default: true, doc: "Determines dashed border")
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:uploads, :any, doc: "LiveView upload map")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :dropzone, :boolean, default: false, doc: ""
-  attr :dropzone_type, :string, default: "file", doc: "file, image"
-  attr :target, :atom, doc: "Name of upload input when is used as Live Upload"
-  attr :dropzone_icon, :string, default: "hero-cloud-arrow-up", doc: ""
-  attr :dropzone_title, :string, default: "Click to upload, or drag and drop a file", doc: ""
-  attr :dropzone_description, :string, default: nil, doc: "Specifies description for dropzone"
+  attr(:dropzone, :boolean, default: false, doc: "")
+  attr(:dropzone_type, :string, default: "file", doc: "file, image")
+  attr(:target, :atom, doc: "Name of upload input when is used as Live Upload")
+  attr(:dropzone_icon, :string, default: "hero-cloud-arrow-up", doc: "")
+  attr(:dropzone_title, :string, default: "Click to upload, or drag and drop a file", doc: "")
+  attr(:dropzone_description, :string, default: nil, doc: "Specifies description for dropzone")
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ~w(autocomplete disabled form checked multiple readonly min max step required title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   @spec file_field(map()) :: Phoenix.LiveView.Rendered.t()
   def file_field(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -313,9 +321,9 @@ defmodule MoolahWeb.Components.FileField do
   end
 
   @doc type: :component
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -326,8 +334,8 @@ defmodule MoolahWeb.Components.FileField do
   end
 
   @doc type: :component
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

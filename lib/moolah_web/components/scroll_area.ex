@@ -21,29 +21,36 @@ defmodule MoolahWeb.Components.ScrollArea do
   use Phoenix.Component
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string, default: "auto", doc: "hover, auto, never"
-  attr :horizontal, :boolean, default: false, doc: "Determines height of wrapper"
-  attr :vertical, :boolean, default: true, doc: "Determines height of wrapper"
-  attr :height, :string, default: "h-96", doc: "Determines height of wrapper"
-  attr :width, :string, default: "w-full", doc: "Determines width of wrapper"
-  attr :padding, :string, default: "extra_small", doc: "Add paddings to content"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :content_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :scrollbar_width, :string, default: "w-2", doc: "Custom CSS class for width of scrollbar y"
+  attr(:type, :string, default: "auto", doc: "hover, auto, never")
+  attr(:horizontal, :boolean, default: false, doc: "Determines height of wrapper")
+  attr(:vertical, :boolean, default: true, doc: "Determines height of wrapper")
+  attr(:height, :string, default: "h-96", doc: "Determines height of wrapper")
+  attr(:width, :string, default: "w-full", doc: "Determines width of wrapper")
+  attr(:padding, :string, default: "extra_small", doc: "Add paddings to content")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:content_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :scrollbar_height, :string,
+  attr(:scrollbar_width, :string,
+    default: "w-2",
+    doc: "Custom CSS class for width of scrollbar y"
+  )
+
+  attr(:scrollbar_height, :string,
     default: "h-2",
     doc: "Custom CSS class for height of scrollbar x"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def scroll_area(assigns) do
     ~H"""

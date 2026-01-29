@@ -81,84 +81,102 @@ defmodule MoolahWeb.Components.Clipboard do
   """
 
   @doc type: :component
-  attr :id, :string, doc: "The unique identifier for the clipboard component element."
+  attr(:id, :string, doc: "The unique identifier for the clipboard component element.")
 
-  attr :class, :string,
+  attr(:class, :string,
     default: nil,
     doc: "CSS classes to apply to the clipboard component container."
+  )
 
-  attr :text, :string,
+  attr(:text, :string,
     default: nil,
     doc:
       "The text to copy to the clipboard. If not provided, it will look for the text content or target selector."
+  )
 
-  attr :target_selector, :string,
+  attr(:target_selector, :string,
     default: nil,
     doc: "The CSS selector for the target element to copy from, if no text is provided."
+  )
 
-  attr :timeout, :integer,
+  attr(:timeout, :integer,
     default: 2000,
     doc:
       "The timeout duration (in milliseconds) before the clipboard operation is considered failed."
+  )
 
-  attr :success_class, :string,
+  attr(:success_class, :string,
     default: "clipboard-success",
     doc: "CSS class applied to the component when the clipboard copy is successful."
+  )
 
-  attr :error_class, :string,
+  attr(:error_class, :string,
     default: "clipboard-error",
     doc: "CSS class applied to the component when the clipboard copy fails."
+  )
 
-  attr :copy_success_text, :string,
+  attr(:copy_success_text, :string,
     doc: "The success message to display after a successful copy operation."
+  )
 
-  attr :copy_error_text, :string,
+  attr(:copy_error_text, :string,
     doc: "The error message to display after a failed copy operation."
+  )
 
-  attr :copy_button_label, :string,
+  attr(:copy_button_label, :string,
     default: nil,
     doc: "Label for the button used to trigger the copy operation."
+  )
 
-  attr :text_description, :string,
+  attr(:text_description, :string,
     default: nil,
     doc:
       "Optional description text for screen readers, providing more context about the clipboard functionality."
+  )
 
-  attr :status_class, :string,
+  attr(:status_class, :string,
     default: "block mt-2",
     doc: "CSS class for styling the status message shown after a copy operation."
+  )
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: "block mb-2",
     doc: "CSS class for styling the status message shown after a copy operation."
+  )
 
-  attr :trigger_class, :string,
+  attr(:trigger_class, :string,
     default: nil,
     doc: "CSS class for styling the trigger wrapper."
+  )
 
-  attr :show_status_text, :boolean,
+  attr(:show_status_text, :boolean,
     default: true,
     doc: "If true, displays the visual clipboard status text (e.g., 'Copied!'). Default: true."
+  )
 
-  attr :dynamic_label, :boolean,
+  attr(:dynamic_label, :boolean,
     default: false,
     doc:
       "If true, replaces text inside `.clipboard-label` on copy success/failure. Default: false."
+  )
 
-  slot :content, doc: "Slot for custom content to display inside the clipboard container."
+  slot(:content, doc: "Slot for custom content to display inside the clipboard container.")
 
-  slot :trigger,
+  slot(:trigger,
     required: true,
     doc:
       "The slot for the button or trigger element that initiates the copy operation. This is a required slot."
+  )
 
-  slot :inner_block,
+  slot(:inner_block,
     doc:
       "Slot for additional content or inner components that should be rendered inside the clipboard container."
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def clipboard(assigns) do
     assigns =

@@ -34,35 +34,38 @@ defmodule MoolahWeb.Components.FormWrapper do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "", doc: "Determines color theme"
-  attr :variant, :string, default: "", doc: "Determines the style"
-  attr :border, :string, default: "", doc: "Determines border style"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :form_wrapper_class, :string, default: "", doc: "Custom classes form wrapper"
-  attr :action_wrapper_class, :string, default: "", doc: "Custom classes action wrapper"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "", doc: "Determines color theme")
+  attr(:variant, :string, default: "", doc: "Determines the style")
+  attr(:border, :string, default: "", doc: "Determines border style")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:form_wrapper_class, :string, default: "", doc: "Custom classes form wrapper")
+  attr(:action_wrapper_class, :string, default: "", doc: "Custom classes action wrapper")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :for, :any, required: false, doc: "the data structure for the form"
-  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  attr(:for, :any, required: false, doc: "the data structure for the form")
+  attr(:as, :any, default: nil, doc: "the server side parameter to collect all input under")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
-  slot :actions, required: false, doc: "the slot for form actions, such as a submit button"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
+  slot(:actions, required: false, doc: "the slot for form actions, such as a submit button")
 
   def form_wrapper(assigns) do
     ~H"""
@@ -93,14 +96,15 @@ defmodule MoolahWeb.Components.FormWrapper do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :for, :any, required: true, doc: "the data structure for the form"
-  attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
+  attr(:for, :any, required: true, doc: "the data structure for the form")
+  attr(:as, :any, default: nil, doc: "the server side parameter to collect all input under")
 
-  attr :extra_classes, :list,
+  attr(:extra_classes, :list,
     default: [
       "[&_.wrapper-form]:mt-10 [&_.wrapper-form]:space-y-8",
       "[&_.wrapper-form]:bg-white [&_.wrapper-form-actions]:mt-2",
@@ -108,13 +112,15 @@ defmodule MoolahWeb.Components.FormWrapper do
       "[&_.wrapper-form-actions]:justify-between [&_.wrapper-form-actions]:gap-6"
     ],
     doc: "additional classes to apply to the form wrapper"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
+  )
 
-  slot :inner_block, required: true
-  slot :actions, doc: "the slot for form actions, such as a submit button"
+  slot(:inner_block, required: true)
+  slot(:actions, doc: "the slot for form actions, such as a submit button")
 
   def simple_form(assigns) do
     ~H"""

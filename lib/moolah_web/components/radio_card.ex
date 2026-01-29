@@ -34,69 +34,74 @@ defmodule MoolahWeb.Components.RadioCard do
   import MoolahWeb.Components.Icon, only: [icon: 1]
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines variant theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "medium", doc: "Radius size"
-  attr :padding, :string, default: "small", doc: "Padding size"
-  attr :space, :string, default: "small", doc: "Determines space between elements"
-  attr :cols, :string, default: "one", doc: "Determines cols of elements"
-  attr :cols_gap, :string, default: "small", doc: "Determines gap between elements"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :reverse, :boolean, default: false, doc: "Switches the order of the element and label"
-  attr :show_radio, :boolean, default: false, doc: "Boolean to show and hide radio"
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines variant theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "medium", doc: "Radius size")
+  attr(:padding, :string, default: "small", doc: "Padding size")
+  attr(:space, :string, default: "small", doc: "Determines space between elements")
+  attr(:cols, :string, default: "one", doc: "Determines cols of elements")
+  attr(:cols_gap, :string, default: "small", doc: "Determines gap between elements")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:reverse, :boolean, default: false, doc: "Switches the order of the element and label")
+  attr(:show_radio, :boolean, default: false, doc: "Boolean to show and hide radio")
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper")
 
-  attr :field_label_wrapper, :string,
+  attr(:field_label_wrapper, :string,
     default: nil,
     doc: "Custom CSS class for the field label wrapper"
+  )
 
-  attr :description_class, :string,
+  attr(:description_class, :string,
     default: "text-[12px]",
     doc: "Custom CSS class for the description"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ~w(autocomplete disabled form indeterminate multiple readonly required title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
   slot :radio, required: true do
-    attr :value, :string, required: true
-    attr :checked, :boolean, required: false
-    attr :icon, :string, doc: "Icon displayed alongside of a radio"
-    attr :title, :string, required: false
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :radio_wrapper_class, :string, doc: "Custom CSS class for the wrapper of radio"
-    attr :description_class, :string, doc: "Determines custom class for the description"
-    attr :title_class, :string, doc: "Determines custom class for the title"
-    attr :description, :string, required: false
-    attr :card_label_class, :string, doc: "Custom CSS class for the wrapper of card label"
-    attr :content_class, :string, doc: "Determines custom class for the content"
-    attr :content_wrapper_class, :string, doc: "Determines custom class for the content wrapper"
-    attr :radio_input_class, :string, doc: "Custom CSS class for styling the radio input"
+    attr(:value, :string, required: true)
+    attr(:checked, :boolean, required: false)
+    attr(:icon, :string, doc: "Icon displayed alongside of a radio")
+    attr(:title, :string, required: false)
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:radio_wrapper_class, :string, doc: "Custom CSS class for the wrapper of radio")
+    attr(:description_class, :string, doc: "Determines custom class for the description")
+    attr(:title_class, :string, doc: "Determines custom class for the title")
+    attr(:description, :string, required: false)
+    attr(:card_label_class, :string, doc: "Custom CSS class for the wrapper of card label")
+    attr(:content_class, :string, doc: "Determines custom class for the content")
+    attr(:content_wrapper_class, :string, doc: "Determines custom class for the content wrapper")
+    attr(:radio_input_class, :string, doc: "Custom CSS class for styling the radio input")
   end
 
-  slot :inner_block
+  slot(:inner_block)
 
   @spec radio_card(map()) :: Phoenix.LiveView.Rendered.t()
   def radio_card(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -221,10 +226,10 @@ defmodule MoolahWeb.Components.RadioCard do
     end
   end
 
-  attr :id, :string, default: nil, doc: "Unique identifire"
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:id, :string, default: nil, doc: "Unique identifire")
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -234,8 +239,8 @@ defmodule MoolahWeb.Components.RadioCard do
     """
   end
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

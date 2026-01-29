@@ -72,24 +72,27 @@ defmodule MoolahWeb.Components.Button do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variation, :string,
+  attr(:variation, :string,
     values: ["horizontal", "vertical"],
     default: "horizontal",
     doc: "Defines the layout orientation of the component"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def button_group(assigns) do
     ~H"""
@@ -125,70 +128,80 @@ defmodule MoolahWeb.Components.Button do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
 
-  attr :type, :any,
+  attr(:type, :any,
     values: ["button", "submit", "reset", nil],
     default: nil,
     doc: "Specifies the type of the element"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :rounded, :string, default: "large", doc: "Determines the border radius"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:rounded, :string, default: "large", doc: "Determines the border radius")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :content_position, :string,
+  attr(:content_position, :string,
     default: "center",
     doc: "Determines the alignment of the element's content"
+  )
 
-  attr :display, :string,
+  attr(:display, :string,
     default: "inline-flex",
     doc: "Specifies the CSS display property for the element"
+  )
 
-  attr :line_height, :string, default: "leading-5", doc: "Line height"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :icon_class, :string, default: nil, doc: "Determines custom class for the icon"
+  attr(:line_height, :string, default: "leading-5", doc: "Line height")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:icon_class, :string, default: nil, doc: "Determines custom class for the icon")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :full_width, :boolean, default: false, doc: "Make button full width"
+  attr(:full_width, :boolean, default: false, doc: "Make button full width")
 
-  attr :indicator_class, :string,
+  attr(:indicator_class, :string,
     default: nil,
     doc: "Custom CSS class for styling the indicator element"
+  )
 
-  attr :indicator_size, :string,
+  attr(:indicator_size, :string,
     default: "extra_small",
     doc: "Defines the size of the indicator element"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :content_class, :string, default: "block", doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:content_class, :string, default: "block", doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ~w(disabled form name value right_icon left_icon pinging circle download) ++
         @indicator_positions,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :loading, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
 
-    attr :position, :string,
+    attr(:position, :string,
       values: ["start", "end"],
       doc: "Determines the element position"
+    )
   end
 
   def button(assigns) do
@@ -252,43 +265,49 @@ defmodule MoolahWeb.Components.Button do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :rounded, :string, default: "large", doc: "Determines the border radius"
-  attr :value, :string, default: "", doc: "Value of input"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:rounded, :string, default: "large", doc: "Determines the border radius")
+  attr(:value, :string, default: "", doc: "Value of input")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :type, :string, default: "button", doc: "Determines type of input"
-  attr :line_height, :string, default: "leading-5", doc: "Line height"
+  attr(:type, :string, default: "button", doc: "Determines type of input")
+  attr(:line_height, :string, default: "leading-5", doc: "Line height")
 
-  attr :content_position, :string,
+  attr(:content_position, :string,
     default: "center",
     doc: "Determines the alignment of the element's content"
+  )
 
-  attr :display, :string,
+  attr(:display, :string,
     default: "inline-block",
     doc: "Specifies the CSS display property for the element"
+  )
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :full_width, :boolean, default: false, doc: "Make button full width"
+  attr(:full_width, :boolean, default: false, doc: "Make button full width")
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def input_button(assigns) do
     ~H"""
@@ -332,67 +351,76 @@ defmodule MoolahWeb.Components.Button do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
 
-  attr :navigate, :string,
+  attr(:navigate, :string,
     doc: "Defines the path for navigation within the application using a `navigate` attribute."
+  )
 
-  attr :patch, :string, doc: "Specifies the path for navigation using a LiveView patch"
-  attr :href, :string, doc: "Sets the URL for an external link"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :rounded, :string, default: "large", doc: ""
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:patch, :string, doc: "Specifies the path for navigation using a LiveView patch")
+  attr(:href, :string, doc: "Sets the URL for an external link")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:rounded, :string, default: "large", doc: "")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :content_class, :string, default: "block", doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:content_class, :string, default: "block", doc: "Custom CSS class for additional styling")
 
-  attr :display, :string,
+  attr(:display, :string,
     default: "inline-flex",
     doc: "Specifies the CSS display property for the element"
+  )
 
-  attr :line_height, :string, default: "leading-5", doc: "Line height"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :icon_class, :string, default: nil, doc: "Determines custom class for the icon"
+  attr(:line_height, :string, default: "leading-5", doc: "Line height")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:icon_class, :string, default: nil, doc: "Determines custom class for the icon")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :full_width, :boolean, default: false, doc: "Make button full width"
+  attr(:full_width, :boolean, default: false, doc: "Make button full width")
 
-  attr :indicator_class, :string,
+  attr(:indicator_class, :string,
     default: nil,
     doc: "Custom CSS class for styling the indicator element"
+  )
 
-  attr :indicator_size, :string,
+  attr(:indicator_size, :string,
     default: "extra_small",
     doc: "Defines the size of the indicator element"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ~w(right_icon left_icon pinging circle download hreflang referrerpolicy rel target type csrf_token method replace download) ++
         @indicator_positions,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :loading, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
 
-    attr :position, :string,
+    attr(:position, :string,
       values: ["start", "end"],
       doc: "Determines the element position"
+    )
   end
 
   def button_link(%{navigate: _navigate} = assigns) do
@@ -533,8 +561,8 @@ defmodule MoolahWeb.Components.Button do
       <.back navigate={~p"/posts"}>Back to posts</.back>
   """
   @doc type: :component
-  attr :navigate, :any, required: true
-  slot :inner_block, required: true
+  attr(:navigate, :any, required: true)
+  slot(:inner_block, required: true)
 
   def back(assigns) do
     ~H"""
@@ -551,16 +579,18 @@ defmodule MoolahWeb.Components.Button do
   end
 
   @doc type: :component
-  attr :position, :string, default: "none", doc: "Determines the element position"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:position, :string, default: "none", doc: "Determines the element position")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :size, :string,
+  attr(:size, :string,
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   defp button_indicator(%{position: "left", rest: %{left_indicator: true}} = assigns) do
     ~H"""

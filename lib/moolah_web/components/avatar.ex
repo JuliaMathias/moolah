@@ -46,46 +46,51 @@ defmodule MoolahWeb.Components.Avatar do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :src, :string, default: nil, doc: "Media link"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:src, :string, default: nil, doc: "Media link")
 
-  attr :color, :string, default: "transparent", doc: "Determines color theme"
+  attr(:color, :string, default: "transparent", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :shadow, :string, default: "none", doc: "Determines shadow style"
+  attr(:shadow, :string, default: "none", doc: "Determines shadow style")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rounded, :string, default: "medium", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "medium", doc: "Determines the border radius")
 
-  attr :border, :string, default: "none", doc: "Determines border style"
+  attr(:border, :string, default: "none", doc: "Determines border style")
 
   slot :icon, required: false do
-    attr :name, :string, required: true, doc: "Specifies the name of the element"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :color, :string, doc: "Determines color theme"
+    attr(:name, :string, required: true, doc: "Specifies the name of the element")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:color, :string, doc: "Determines color theme")
 
-    attr :size, :string,
+    attr(:size, :string,
       doc:
         "Determines the overall size of the elements, including padding, font size, and other items"
+    )
   end
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def avatar(%{src: src, rounded: "full"} = assigns) when not is_nil(src) do
     ~H"""
@@ -197,18 +202,20 @@ defmodule MoolahWeb.Components.Avatar do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :space, :string, default: "medium", doc: "Space between items"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:space, :string, default: "medium", doc: "Space between items")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def avatar_group(assigns) do
     ~H"""

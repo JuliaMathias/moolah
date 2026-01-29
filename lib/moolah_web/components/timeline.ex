@@ -89,22 +89,24 @@ defmodule MoolahWeb.Components.Timeline do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :hide_last_line, :boolean, default: false, doc: ""
-  attr :gapped_sections, :boolean, default: false, doc: ""
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:hide_last_line, :boolean, default: false, doc: "")
+  attr(:gapped_sections, :boolean, default: false, doc: "")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :horizontal, :boolean, default: false, doc: "Determines whether element is horizontal"
+  attr(:horizontal, :boolean, default: false, doc: "Determines whether element is horizontal")
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def timeline(%{horizontal: true} = assigns) do
     ~H"""
@@ -173,63 +175,73 @@ defmodule MoolahWeb.Components.Timeline do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :line_size, :string, default: "extra_small", doc: "Determines line width of timeline"
+  attr(:line_size, :string, default: "extra_small", doc: "Determines line width of timeline")
 
-  attr :line_style, :string,
+  attr(:line_style, :string,
     values: ["dashed", "solid", "dotted"],
     default: "solid",
     doc: "Determines line border styles"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :bullet_icon, :string, default: nil, doc: "Determines bullet icon"
-  attr :image, :string, default: nil, doc: "Image displayed alongside of an item"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :time, :string, default: nil, doc: "Specifies the time"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :horizontal, :boolean, default: false, doc: "Determines whether element is horizontal"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :icon_class, :string, default: nil, doc: "Custom CSS class for additional styling icon"
-  attr :line_class, :string, default: nil, doc: "Custom CSS class for additional styling lines"
+  attr(:bullet_icon, :string, default: nil, doc: "Determines bullet icon")
+  attr(:image, :string, default: nil, doc: "Image displayed alongside of an item")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:time, :string, default: nil, doc: "Specifies the time")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:horizontal, :boolean, default: false, doc: "Determines whether element is horizontal")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:icon_class, :string, default: nil, doc: "Custom CSS class for additional styling icon")
+  attr(:line_class, :string, default: nil, doc: "Custom CSS class for additional styling lines")
 
-  attr :bullte_wrapper_class,
-       :string,
-       default: nil,
-       doc: "Custom CSS class for additional styling icon"
+  attr(
+    :bullte_wrapper_class,
+    :string,
+    default: nil,
+    doc: "Custom CSS class for additional styling icon"
+  )
 
-  attr :bullet_class, :string,
+  attr(:bullet_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling bullets"
+  )
 
-  attr :bullet_wrapper_Class, :string,
+  attr(:bullet_wrapper_Class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling bullet wrapper"
+  )
 
-  attr :image_class, :string, default: nil, doc: "Custom CSS class for additional styling icon"
+  attr(:image_class, :string, default: nil, doc: "Custom CSS class for additional styling icon")
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling content"
+  )
 
-  attr :title_class, :string, default: nil, doc: "Custom CSS class for additional styling title"
-  attr :time_class, :string, default: nil, doc: "Custom CSS class for additional styling time"
+  attr(:title_class, :string, default: nil, doc: "Custom CSS class for additional styling title")
+  attr(:time_class, :string, default: nil, doc: "Custom CSS class for additional styling time")
 
-  attr :description_class, :string,
+  attr(:description_class, :string,
     default: "text-sm",
     doc: "Custom CSS class for additional styling description"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def timeline_section(%{horizontal: true} = assigns) do
     ~H"""

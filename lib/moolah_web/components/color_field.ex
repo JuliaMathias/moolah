@@ -48,58 +48,63 @@ defmodule MoolahWeb.Components.ColorField do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :description_class, :string, default: "text-[12px]", doc: "Custom classes for description"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper"
-  attr :input_class, :string, default: nil, doc: "Custom CSS class for the input"
-  attr :space, :string, default: "medium", doc: "Space between items"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:description_class, :string, default: "text-[12px]", doc: "Custom classes for description")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper")
+  attr(:input_class, :string, default: nil, doc: "Custom CSS class for the input")
+  attr(:space, :string, default: "medium", doc: "Space between items")
 
-  attr :description_wrapper_class, :string,
+  attr(:description_wrapper_class, :string,
     default: nil,
     doc: "Custom classes for description wrapper"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :circle, :boolean,
+  attr(:circle, :boolean,
     default: false,
     doc: "Determines if the color input should be displayed as a circle"
+  )
 
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
 
   slot :start_section, required: false, doc: "Renders heex content in start of an element" do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
   end
 
   slot :end_section, required: false, doc: "Renders heex content in end of an element" do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
   end
 
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, default: "#000000", doc: "Value of input"
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, default: "#000000", doc: "Value of input")
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete disabled form list min max pattern placeholder
         readonly required size inputmode inputmode step title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   @spec color_field(map()) :: Phoenix.LiveView.Rendered.t()
   def color_field(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -149,9 +154,9 @@ defmodule MoolahWeb.Components.ColorField do
     """
   end
 
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -161,8 +166,8 @@ defmodule MoolahWeb.Components.ColorField do
     """
   end
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

@@ -51,43 +51,47 @@ defmodule MoolahWeb.Components.RadioField do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :color, :string, default: "primary", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :space, :string, default: "medium", doc: "Space between items"
-  attr :wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper"
-  attr :radio_class, :string, default: nil, doc: "Custom CSS class for the radio input"
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:color, :string, default: "primary", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:space, :string, default: "medium", doc: "Space between items")
+  attr(:wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper")
+  attr(:radio_class, :string, default: nil, doc: "Custom CSS class for the radio input")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :ring, :boolean,
+  attr(:ring, :boolean,
     default: true,
     doc:
       "Determines a ring border on focused input, utilities for creating outline rings with box-shadows."
+  )
 
-  attr :reverse, :boolean, default: false, doc: "Switches the order of the element and label"
-  attr :checked, :boolean, default: false, doc: "Specifies if the element is checked by default"
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
+  attr(:reverse, :boolean, default: false, doc: "Switches the order of the element and label")
+  attr(:checked, :boolean, default: false, doc: "Specifies if the element is checked by default")
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
 
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete disabled form checked readonly required title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   @spec radio_field(map()) :: Phoenix.LiveView.Rendered.t()
   def radio_field(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -149,55 +153,60 @@ defmodule MoolahWeb.Components.RadioField do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "primary", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :space, :string, default: "medium", doc: "Space between items"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "primary", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:space, :string, default: "medium", doc: "Space between items")
 
-  attr :variation, :string,
+  attr(:variation, :string,
     default: "vertical",
     doc: "Defines the layout orientation of the component"
+  )
 
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper"
-  attr :radio_class, :string, default: nil, doc: "Custom CSS class for the wrapper"
-  attr :radio_wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper"
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper")
+  attr(:radio_class, :string, default: nil, doc: "Custom CSS class for the wrapper")
+  attr(:radio_wrapper_class, :string, default: nil, doc: "Custom CSS class for the wrapper")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :ring, :boolean,
+  attr(:ring, :boolean,
     default: true,
     doc:
       "Determines a ring border on focused input, utilities for creating outline rings with box-shadows."
+  )
 
-  attr :reverse, :boolean, default: false, doc: "Switches the order of the element and label"
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:reverse, :boolean, default: false, doc: "Switches the order of the element and label")
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ~w(autocomplete disabled form indeterminate multiple readonly required title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
   slot :radio, required: true do
-    attr :value, :string, required: true
-    attr :checked, :boolean, required: false
-    attr :space, :any, required: false, doc: "Space between items"
+    attr(:value, :string, required: true)
+    attr(:checked, :boolean, required: false)
+    attr(:space, :any, required: false, doc: "Space between items")
   end
 
-  slot :inner_block
+  slot(:inner_block)
 
   @spec group_radio(map()) :: Phoenix.LiveView.Rendered.t()
   def group_radio(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -272,9 +281,9 @@ defmodule MoolahWeb.Components.RadioField do
   end
 
   @doc type: :component
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -285,8 +294,8 @@ defmodule MoolahWeb.Components.RadioField do
   end
 
   @doc type: :component
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

@@ -113,48 +113,53 @@ defmodule MoolahWeb.Components.MegaMenu do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :clickable, :boolean,
+  attr(:clickable, :boolean,
     default: false,
     doc: "Determines if the element can be activated on click"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :width, :string, default: "full", doc: "Determines the element width"
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :icon_class, :string, default: nil, doc: "Determines custom class for the icon"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :title_class, :string, default: nil, doc: "Determines custom class for the title"
-  attr :content_class, :string, default: nil, doc: "Determines custom class for the content"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :top_gap, :string, default: "extra_small", doc: "Determines top gap of the element"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:icon_class, :string, default: nil, doc: "Determines custom class for the icon")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:title_class, :string, default: nil, doc: "Determines custom class for the title")
+  attr(:content_class, :string, default: nil, doc: "Determines custom class for the content")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:top_gap, :string, default: "extra_small", doc: "Determines top gap of the element")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :trigger, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   def mega_menu(assigns) do

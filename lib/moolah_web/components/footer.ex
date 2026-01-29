@@ -52,34 +52,38 @@ defmodule MoolahWeb.Components.Footer do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :text_position, :string, default: "", doc: "Determines the element' text position"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :max_width, :string, default: "", doc: "Determines the style of element max width"
-  attr :space, :string, default: "", doc: "Space between items"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:text_position, :string, default: "", doc: "Determines the element' text position")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:max_width, :string, default: "", doc: "Determines the style of element max width")
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :wrapper_class, :string,
+  attr(:wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to footer content wrapper"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def footer(assigns) do
     ~H"""
@@ -115,16 +119,17 @@ defmodule MoolahWeb.Components.Footer do
   ```
   """
   @doc type: :component
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :text_position, :string, default: "", doc: "Determines the element' text position"
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:text_position, :string, default: "", doc: "Determines the element' text position")
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def footer_section(assigns) do
     ~H"""

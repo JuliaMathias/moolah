@@ -86,28 +86,31 @@ defmodule MoolahWeb.Components.Card do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :space, :string, default: "", doc: "Space between items"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def card(assigns) do
     ~H"""
@@ -147,35 +150,40 @@ defmodule MoolahWeb.Components.Card do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
 
-  attr :position, :string,
+  attr(:position, :string,
     values: @positions,
     default: "start",
     doc: "Determines the element position"
+  )
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-semibold",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :padding, :string, default: "", doc: "Determines padding for items"
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def card_title(assigns) do
     ~H"""
@@ -217,21 +225,23 @@ defmodule MoolahWeb.Components.Card do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :alt, :string, default: nil, doc: "Media link description"
-  attr :src, :string, required: true, doc: "Media link"
-  attr :width, :string, default: "w-full", doc: "Media width"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:alt, :string, default: nil, doc: "Media link description")
+  attr(:src, :string, required: true, doc: "Media link")
+  attr(:width, :string, default: "w-full", doc: "Media width")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def card_media(assigns) do
     ~H"""
@@ -266,19 +276,21 @@ defmodule MoolahWeb.Components.Card do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def card_content(assigns) do
     ~H"""
@@ -312,18 +324,20 @@ defmodule MoolahWeb.Components.Card do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :padding, :string, default: "", doc: "Determines padding for items"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def card_footer(assigns) do
     ~H"""

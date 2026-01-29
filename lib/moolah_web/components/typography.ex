@@ -26,28 +26,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "quadruple_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   @spec h1(map()) :: Phoenix.LiveView.Rendered.t()
   def h1(assigns) do
@@ -80,28 +84,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "triple_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   @spec h2(map()) :: Phoenix.LiveView.Rendered.t()
   def h2(assigns) do
@@ -134,28 +142,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "double_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   @doc type: :component
   def h3(assigns) do
@@ -187,28 +199,32 @@ defmodule MoolahWeb.Components.Typography do
   <.h4 class="custom-class" font_weight="font-bold">Bold Heading 4</.h4>
   ```
   """
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   @doc type: :component
   def h4(assigns) do
@@ -241,28 +257,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def h5(assigns) do
     ~H"""
@@ -294,28 +314,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def h6(assigns) do
     ~H"""
@@ -349,28 +373,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def p(assigns) do
     ~H"""
@@ -405,28 +433,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-bold",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def strong(assigns) do
     ~H"""
@@ -465,28 +497,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def em(assigns) do
     ~H"""
@@ -521,28 +557,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def dl(assigns) do
     ~H"""
@@ -575,28 +615,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-bold",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def dt(assigns) do
     ~H"""
@@ -633,28 +677,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def dd(assigns) do
     ~H"""
@@ -700,28 +748,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def figure(assigns) do
     ~H"""
@@ -762,28 +814,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def figcaption(assigns) do
     ~H"""
@@ -818,28 +874,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def abbr(assigns) do
     ~H"""
@@ -871,30 +931,35 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string,
+  attr(:class, :string,
     default: "p-0.5 bg-rose-200",
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def mark(assigns) do
     ~H"""
@@ -926,28 +991,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def small(assigns) do
     ~H"""
@@ -977,28 +1046,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def s(assigns) do
     ~H"""
@@ -1029,28 +1102,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def u(assigns) do
     ~H"""
@@ -1084,28 +1161,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def cite(assigns) do
     ~H"""
@@ -1136,28 +1217,32 @@ defmodule MoolahWeb.Components.Typography do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :color, :string, default: "inherit", doc: "Determines color theme"
+  attr(:color, :string, default: "inherit", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def del(assigns) do
     ~H"""

@@ -45,105 +45,105 @@ defmodule Moolah.Finance.LifeAreaCategory do
     authorizers: [Ash.Policy.Authorizer]
 
   postgres do
-    table "life_area_categories"
-    repo Moolah.Repo
+    table("life_area_categories")
+    repo(Moolah.Repo)
   end
 
   actions do
-    defaults [:read]
+    defaults([:read])
 
     create :create do
-      accept [:name, :description, :icon, :color, :transaction_type, :parent_id, :depth]
+      accept([:name, :description, :icon, :color, :transaction_type, :parent_id, :depth])
     end
 
     update :update do
-      accept [:name, :description, :icon, :color, :transaction_type, :parent_id, :depth]
-      require_atomic? false
+      accept([:name, :description, :icon, :color, :transaction_type, :parent_id, :depth])
+      require_atomic?(false)
     end
 
     destroy :destroy do
-      require_atomic? false
+      require_atomic?(false)
     end
 
     # Helper action to get only root categories (no parent)
     read :roots do
-      filter expr(is_nil(parent_id))
+      filter(expr(is_nil(parent_id)))
     end
 
     # Helper action to preload children
     read :with_children do
-      prepare fn query, _ ->
+      prepare(fn query, _ ->
         Ash.Query.load(query, :children)
-      end
+      end)
     end
   end
 
   policies do
     # Allow anyone to read categories
     policy action_type(:read) do
-      authorize_if always()
+      authorize_if(always())
     end
 
     # Allow create and update operations
     policy action_type([:create, :update]) do
-      authorize_if always()
+      authorize_if(always())
     end
 
     # Allow destroy (validation will prevent if has children)
     policy action_type(:destroy) do
-      authorize_if always()
+      authorize_if(always())
     end
   end
 
   validations do
     # Prevent circular references in the hierarchy
     validate {Moolah.Finance.Validations.NoCycleReference, []} do
-      on [:create, :update]
+      on([:create, :update])
     end
 
     # Enforce maximum depth of 2 levels
     validate {Moolah.Finance.Validations.MaxDepth, max_depth: 2} do
-      on [:create, :update]
+      on([:create, :update])
     end
 
     # Prevent deletion of categories with children
     validate {Moolah.Finance.Validations.NoChildrenOnDelete, []} do
-      on [:destroy]
+      on([:destroy])
     end
   end
 
   attributes do
-    uuid_v7_primary_key :id
+    uuid_v7_primary_key(:id)
 
     attribute :name, :string do
-      allow_nil? false
-      public? true
+      allow_nil?(false)
+      public?(true)
     end
 
     attribute :description, :string do
-      public? true
+      public?(true)
     end
 
     attribute :icon, :string do
-      allow_nil? false
-      public? true
+      allow_nil?(false)
+      public?(true)
     end
 
     attribute :color, :string do
-      allow_nil? false
-      public? true
+      allow_nil?(false)
+      public?(true)
     end
 
     attribute :transaction_type, :atom do
-      constraints one_of: [:debit, :credit, :both]
-      allow_nil? false
-      public? true
+      constraints(one_of: [:debit, :credit, :both])
+      allow_nil?(false)
+      public?(true)
     end
 
     attribute :depth, :integer do
-      allow_nil? false
-      default 0
-      public? true
+      allow_nil?(false)
+      default(0)
+      public?(true)
     end
 
     timestamps()
@@ -152,14 +152,14 @@ defmodule Moolah.Finance.LifeAreaCategory do
   relationships do
     # Self-referencing relationship for parent
     belongs_to :parent, __MODULE__ do
-      allow_nil? true
-      public? true
+      allow_nil?(true)
+      public?(true)
     end
 
     # Has many children pointing back to this category
     has_many :children, __MODULE__ do
-      destination_attribute :parent_id
-      public? true
+      destination_attribute(:parent_id)
+      public?(true)
     end
   end
 
@@ -167,7 +167,7 @@ defmodule Moolah.Finance.LifeAreaCategory do
     # Allow same name under different parents
     # PostgreSQL treats NULL as distinct, so multiple roots can have same name
     identity :unique_name_per_parent, [:name, :parent_id] do
-      eager_check_with Moolah.Repo
+      eager_check_with(Moolah.Repo)
     end
   end
 end

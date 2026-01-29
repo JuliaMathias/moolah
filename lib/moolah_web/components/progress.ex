@@ -56,34 +56,38 @@ defmodule MoolahWeb.Components.Progress do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :value, :integer, default: nil, doc: "Value of inout"
+  attr(:value, :integer, default: nil, doc: "Value of inout")
 
-  attr :variation, :string,
+  attr(:variation, :string,
     values: ["horizontal", "vertical"],
     default: "horizontal",
     doc: "Defines the layout orientation of the component"
+  )
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "full", doc: "Determines the border radius"
-  attr :variant, :string, default: "base", doc: "Determines the style"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "full", doc: "Determines the border radius")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :csp_nonce, :string, default: nil, doc: "csp nonce"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:csp_nonce, :string, default: nil, doc: "csp nonce")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, doc: "Inner block that renders HEEx label"
+  slot(:inner_block, doc: "Inner block that renders HEEx label")
 
   def progress(assigns) do
     ~H"""
@@ -121,22 +125,23 @@ defmodule MoolahWeb.Components.Progress do
     - thickness: The stroke width of the circle, default is 10
     - color: Determines the color theme; default is "natural"
   """
-  attr :id, :string, default: nil, doc: "HTML ID for the container"
-  attr :value, :integer, required: true, doc: "Progress value (0 to 100)"
-  attr :size, :integer, default: 200, doc: "Diameter of the circle in px"
-  attr :thickness, :integer, default: 12, doc: "Stroke width"
-  attr :orientation, :string, default: "up", doc: "'up' or 'down'"
-  attr :fill_direction, :string, default: "left-to-right", doc: "Direction of fill"
-  attr :transition_duration, :integer, default: 300, doc: "Transition duration in ms"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :linecap, :string, default: nil, doc: "add radius to progress"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
+  attr(:id, :string, default: nil, doc: "HTML ID for the container")
+  attr(:value, :integer, required: true, doc: "Progress value (0 to 100)")
+  attr(:size, :integer, default: 200, doc: "Diameter of the circle in px")
+  attr(:thickness, :integer, default: 12, doc: "Stroke width")
+  attr(:orientation, :string, default: "up", doc: "'up' or 'down'")
+  attr(:fill_direction, :string, default: "left-to-right", doc: "Direction of fill")
+  attr(:transition_duration, :integer, default: 300, doc: "Transition duration in ms")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:linecap, :string, default: nil, doc: "add radius to progress")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
 
-  attr :label, :string, default: nil, doc: "Optional label"
+  attr(:label, :string, default: nil, doc: "Optional label")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def semi_circle_progress(assigns) do
     coordinate = assigns.size / 2
@@ -226,43 +231,52 @@ defmodule MoolahWeb.Components.Progress do
     - progress_color: stroke color for the progress circle (default is "#00aaff")
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier used to manage state and interaction."
+  )
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
 
-  attr :value, :integer,
+  attr(:value, :integer,
     required: true,
     doc: "The current value representing the progress completion (e.g., between 0 and max)."
+  )
 
-  attr :max, :integer,
+  attr(:max, :integer,
     default: 100,
     doc: "The maximum value the progress can reach. Default is 100."
+  )
 
-  attr :size, :integer,
+  attr(:size, :integer,
     default: 120,
     doc: "The overall size of the progress element, typically in pixels. Default is 120."
+  )
 
-  attr :thickness, :integer,
+  attr(:thickness, :integer,
     default: 10,
     doc: "The thickness of the progress stroke in pixels. Default is 10."
+  )
 
-  attr :label, :string,
+  attr(:label, :string,
     default: nil,
     doc: "Optional label to be displayed along with the progress element."
+  )
 
-  attr :class, :string,
+  attr(:class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling."
+  )
 
-  attr :linecap, :string,
+  attr(:linecap, :string,
     default: nil,
     doc: "Controls the shape of the stroke ends. Use 'round' for rounded corners."
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def ring_progress(assigns) do
     radius = (assigns.size - assigns.thickness) / 2
@@ -340,31 +354,33 @@ defmodule MoolahWeb.Components.Progress do
   ```
   """
   @doc type: :component
-  attr :value, :integer, default: 0, doc: ""
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:value, :integer, default: 0, doc: "")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :variation, :string,
+  attr(:variation, :string,
     values: ["horizontal", "vertical"],
     default: "horizontal",
     doc: "Defines the layout orientation of the component"
+  )
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :csp_nonce, :string, default: nil, doc: "csp nonce"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:csp_nonce, :string, default: nil, doc: "csp nonce")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :label, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   slot :tooltip, required: false do
-    attr :label, :string, doc: "Determines element's text"
-    attr :position, :string, doc: "Determines element's position"
-    attr :clickable, :boolean, doc: "Determines element's click"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:label, :string, doc: "Determines element's text")
+    attr(:position, :string, doc: "Determines element's position")
+    attr(:clickable, :boolean, doc: "Determines element's click")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   def progress_section(assigns) do

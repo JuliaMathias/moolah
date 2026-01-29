@@ -70,74 +70,89 @@ defmodule MoolahWeb.Components.Banner do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :border_position, :string,
+  attr(:border_position, :string,
     values: ["top", "bottom", "full", "none"],
     default: "top",
     doc: ""
+  )
 
-  attr :rounded, :string, default: "none", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "none", doc: "Determines the border radius")
 
-  attr :rounded_position, :string,
+  attr(:rounded_position, :string,
     values: ["top", "bottom", "all", "none"],
     default: "none",
     doc: ""
+  )
 
-  attr :space, :string, default: "extra_small", doc: "Space between items"
+  attr(:space, :string, default: "extra_small", doc: "Space between items")
 
-  attr :vertical_position, :string, values: ["top", "bottom"], default: "top", doc: ""
-  attr :vertical_size, :string, default: "none", doc: "Specifies the vertical size of the element"
+  attr(:vertical_position, :string, values: ["top", "bottom"], default: "top", doc: "")
 
-  attr :hide_dismiss, :boolean, default: false, doc: "Show or hide dismiss classes"
+  attr(:vertical_size, :string,
+    default: "none",
+    doc: "Specifies the vertical size of the element"
+  )
 
-  attr :dismiss_size, :string,
+  attr(:hide_dismiss, :boolean, default: false, doc: "Show or hide dismiss classes")
+
+  attr(:dismiss_size, :string,
     default: "small",
     doc: "Add custom classes to control dismiss sizes"
+  )
 
-  attr :position, :string,
+  attr(:position, :string,
     values: @positions,
     default: "full",
     doc: "Determines the element position"
+  )
 
-  attr :position_size, :string,
+  attr(:position_size, :string,
     default: "none",
     doc: "Determines the size for positioning the element"
+  )
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "extra_small", doc: "Determines padding for items"
+  attr(:padding, :string, default: "extra_small", doc: "Determines padding for items")
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :dismiss_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:dismiss_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :content_wrapper_class, :string,
+  attr(:content_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "banner"},
     doc: "A map of additional parameters used for element configuration, such as type or kind"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(right_dismiss left_dismiss),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def banner(assigns) do
     ~H"""
@@ -175,19 +190,22 @@ defmodule MoolahWeb.Components.Banner do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :dismiss_size, :string,
+  attr(:dismiss_size, :string,
     default: "small",
     doc: "Add custom classes to control dismiss sizes"
+  )
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "badge"},
     doc: "A map of additional parameters used for element configuration, such as type or kind"
+  )
 
   defp banner_dismiss(assigns) do
     ~H"""

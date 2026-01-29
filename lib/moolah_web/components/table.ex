@@ -73,62 +73,70 @@ defmodule MoolahWeb.Components.Table do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :main_wrapper_class, :string, default: nil, doc: "Custom CSS class"
-  attr :inner_wrapper_class, :string, default: nil, doc: "Custom CSS class"
-  attr :table_wrapper_class, :string, default: nil, doc: "Custom CSS class"
-  attr :table_body_class, :string, default: nil, doc: "Custom CSS class"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
-  attr :text_size, :string, default: "small", doc: "Determines text size"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :header_border, :string, default: "", doc: "Sets the border style for the table header"
-  attr :rows_border, :string, default: "", doc: "Sets the border style for rows in the table"
-  attr :cols_border, :string, default: "", doc: "Sets the border style for columns in the table"
-  attr :thead_class, :string, default: nil, doc: "Adds custom CSS classes to the table header"
-  attr :footer_class, :string, default: nil, doc: "Adds custom CSS classes to the table footer"
-  attr :table_fixed, :boolean, default: false, doc: "Enables or disables the table's fixed layout"
-  attr :text_position, :string, default: "left", doc: "Determines the element's text position"
-  attr :space, :string, default: "medium", doc: "Determines the table row spaces"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:main_wrapper_class, :string, default: nil, doc: "Custom CSS class")
+  attr(:inner_wrapper_class, :string, default: nil, doc: "Custom CSS class")
+  attr(:table_wrapper_class, :string, default: nil, doc: "Custom CSS class")
+  attr(:table_body_class, :string, default: nil, doc: "Custom CSS class")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
+  attr(:text_size, :string, default: "small", doc: "Determines text size")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:header_border, :string, default: "", doc: "Sets the border style for the table header")
+  attr(:rows_border, :string, default: "", doc: "Sets the border style for rows in the table")
+  attr(:cols_border, :string, default: "", doc: "Sets the border style for columns in the table")
+  attr(:thead_class, :string, default: nil, doc: "Adds custom CSS classes to the table header")
+  attr(:footer_class, :string, default: nil, doc: "Adds custom CSS classes to the table footer")
 
-  attr :rest, :global,
+  attr(:table_fixed, :boolean,
+    default: false,
+    doc: "Enables or disables the table's fixed layout"
+  )
+
+  attr(:text_position, :string, default: "left", doc: "Determines the element's text position")
+  attr(:space, :string, default: "medium", doc: "Determines the table row spaces")
+
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :header do
-    attr :class, :any, doc: "Custom CSS class for additional styling"
-    attr :icon, :any, doc: "Icon displayed alongside of an item"
-    attr :icon_class, :any, doc: "Determines custom class for the icon"
+    attr(:class, :any, doc: "Custom CSS class for additional styling")
+    attr(:icon, :any, doc: "Icon displayed alongside of an item")
+    attr(:icon_class, :any, doc: "Determines custom class for the icon")
   end
 
   slot :footer do
-    attr :class, :any, doc: "Custom CSS class for additional styling"
-    attr :icon, :any, doc: "Icon displayed alongside of an item"
-    attr :icon_class, :any, doc: "Determines custom class for the icon"
+    attr(:class, :any, doc: "Custom CSS class for additional styling")
+    attr(:icon, :any, doc: "Icon displayed alongside of an item")
+    attr(:icon_class, :any, doc: "Determines custom class for the icon")
   end
 
-  attr :rows, :list, default: []
-  attr :row_id, :any, default: nil, doc: "the function for generating the row id"
-  attr :row_click, :any, default: nil, doc: "the function for handling phx-click on each row"
+  attr(:rows, :list, default: [])
+  attr(:row_id, :any, default: nil, doc: "the function for generating the row id")
+  attr(:row_click, :any, default: nil, doc: "the function for handling phx-click on each row")
 
-  attr :row_item, :any,
+  attr(:row_item, :any,
     default: &Function.identity/1,
     doc: "the function for mapping each row before calling the :col and :action slots"
+  )
 
   slot :col, required: false do
-    attr :label, :string
-    attr :label_class, :string
+    attr(:label, :string)
+    attr(:label_class, :string)
   end
 
-  slot :action, doc: "the slot for showing user actions in the last table column"
+  slot(:action, doc: "the slot for showing user actions in the last table column")
 
   def table(assigns) do
     assigns =
@@ -257,18 +265,20 @@ defmodule MoolahWeb.Components.Table do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-  attr :scope, :string, default: nil, doc: "Specifies the scope of the table header cell"
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:scope, :string, default: nil, doc: "Specifies the scope of the table header cell")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def th(assigns) do
     ~H"""
@@ -292,17 +302,19 @@ defmodule MoolahWeb.Components.Table do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def tr(assigns) do
     ~H"""
@@ -322,17 +334,19 @@ defmodule MoolahWeb.Components.Table do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def td(assigns) do
     ~H"""

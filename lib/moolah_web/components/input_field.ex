@@ -56,29 +56,35 @@ defmodule MoolahWeb.Components.InputField do
   """
 
   @doc type: :component
-  attr :id, :any, default: nil, doc: "A unique identifier is used to manage state and interaction"
-  attr :name, :any, doc: "Name of input"
-  attr :label, :string, default: nil
-  attr :value, :any, doc: "Value of input"
+  attr(:id, :any,
+    default: nil,
+    doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string,
+  attr(:name, :any, doc: "Name of input")
+  attr(:label, :string, default: nil)
+  attr(:value, :any, doc: "Value of input")
+
+  attr(:type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
                range search select tel text textarea time url week)
+  )
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
-  attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
-  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
-  attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:checked, :boolean, doc: "the checked flag for checkbox inputs")
+  attr(:prompt, :string, default: nil, doc: "the prompt for select inputs")
+  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
+  attr(:multiple, :boolean, default: false, doc: "the multiple flag for select inputs")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -184,8 +190,8 @@ defmodule MoolahWeb.Components.InputField do
   Renders a label.
   """
   @doc type: :component
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def label(assigns) do
     ~H"""
@@ -199,7 +205,7 @@ defmodule MoolahWeb.Components.InputField do
   Generates a generic error message.
   """
   @doc type: :component
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def error(assigns) do
     ~H"""

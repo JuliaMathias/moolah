@@ -58,56 +58,63 @@ defmodule MoolahWeb.Components.Badge do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :icon_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :content_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:icon_class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:content_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :dismiss_class, :string,
+  attr(:dismiss_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling of dismiss button"
+  )
 
-  attr :badge_position, :string, default: "", doc: "poistion of badge"
+  attr(:badge_position, :string, default: "", doc: "poistion of badge")
 
-  attr :indicator_class, :string,
+  attr(:indicator_class, :string,
     default: nil,
     doc: "CSS class for additional styling of the badge indicator"
+  )
 
-  attr :indicator_size, :string, default: "", doc: "Specifies the size of the badge indicator"
+  attr(:indicator_size, :string, default: "", doc: "Specifies the size of the badge indicator")
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "badge"},
     doc: "A map of additional parameters used for element configuration, such as type or kind"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include:
       ["pinging", "circle"] ++ @dismiss_positions ++ @indicator_positions ++ @icon_positions,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
-  attr :type, :string, default: "button", doc: "Determines the type of the badge"
+  attr(:type, :string, default: "button", doc: "Determines the type of the badge")
 
   def badge(assigns) do
     ~H"""
@@ -163,22 +170,25 @@ defmodule MoolahWeb.Components.Badge do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :dismiss, :boolean,
+  attr(:dismiss, :boolean,
     default: false,
     doc: "Determines if the badge should include a dismiss button"
+  )
 
-  attr :icon_class, :string, default: "size-4", doc: "Determines custom class for the icon"
-  attr :class, :string, default: "size-4", doc: "Determines custom class"
+  attr(:icon_class, :string, default: "size-4", doc: "Determines custom class for the icon")
+  attr(:class, :string, default: "size-4", doc: "Determines custom class")
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{kind: "badge"},
     doc: "A map of additional parameters used for badge configuration, such as type or kind"
+  )
 
-  attr :type, :string, default: "button", doc: "Determines the type of the badge"
+  attr(:type, :string, default: "button", doc: "Determines the type of the badge")
 
   defp badge_dismiss(assigns) do
     ~H"""
@@ -194,16 +204,18 @@ defmodule MoolahWeb.Components.Badge do
   end
 
   @doc type: :component
-  attr :position, :string, default: "none", doc: "Determines the element position"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:position, :string, default: "none", doc: "Determines the element position")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :size, :string,
+  attr(:size, :string,
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   defp badge_indicator(%{position: "left", rest: %{left_indicator: true}} = assigns) do
     ~H"""

@@ -56,63 +56,70 @@ defmodule MoolahWeb.Components.Carousel do
   ```
   """
   @doc type: :component
-  attr :id, :string, doc: "A unique identifier is used to manage state and interaction"
+  attr(:id, :string, doc: "A unique identifier is used to manage state and interaction")
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :overlay, :string, default: "base", doc: "Determines an overlay"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:overlay, :string, default: "base", doc: "Determines an overlay")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :padding, :string, default: "medium", doc: "Determines padding for items"
-  attr :text_position, :string, default: "center", doc: "Determines the element' text position"
+  attr(:padding, :string, default: "medium", doc: "Determines padding for items")
+  attr(:text_position, :string, default: "center", doc: "Determines the element' text position")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :indicator, :boolean, default: false, doc: "Specifies whether to show element indicators"
-  attr :control, :boolean, default: true, doc: "Determines whether to show navigation controls"
-  attr :active_index, :integer, default: 0, doc: "Index of the active slide (starts at 0)"
-  attr :autoplay, :boolean, default: false, doc: "Enable or disable autoplay functionality"
+  attr(:indicator, :boolean, default: false, doc: "Specifies whether to show element indicators")
+  attr(:control, :boolean, default: true, doc: "Determines whether to show navigation controls")
+  attr(:active_index, :integer, default: 0, doc: "Index of the active slide (starts at 0)")
+  attr(:autoplay, :boolean, default: false, doc: "Enable or disable autoplay functionality")
 
-  attr :autoplay_interval, :integer,
+  attr(:autoplay_interval, :integer,
     default: 5000,
     doc: "Time between slides in ms (if autoplay is enabled)"
+  )
 
-  attr :active_slide_class, :string,
+  attr(:active_slide_class, :string,
     default: "active-slide z-10",
     doc: "CSS class for active slide"
+  )
 
-  attr :hidden_slide_class, :string,
+  attr(:hidden_slide_class, :string,
     default: "opacity-0",
     doc: "CSS class for hidden (inactive) slides"
+  )
 
-  attr :active_indicator_class, :string,
+  attr(:active_indicator_class, :string,
     default: "active-indicator",
     doc: "CSS class for active indicator"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :slide, required: true do
-    attr :image, :string, doc: "Image displayed alongside of an item"
-    attr :image_class, :string, doc: "Determines custom class for the image"
+    attr(:image, :string, doc: "Image displayed alongside of an item")
+    attr(:image_class, :string, doc: "Determines custom class for the image")
 
-    attr :navigate, :string,
+    attr(:navigate, :string,
       doc: "Defines the path for navigation within the application using a `navigate` attribute."
+    )
 
-    attr :patch, :string, doc: "Specifies the path for navigation using a LiveView patch."
-    attr :href, :string, doc: "Sets the URL for an external link."
-    attr :title, :string, doc: "Specifies the title of the element"
-    attr :description, :string, doc: "Determines a short description"
-    attr :title_class, :string, doc: "Determines custom class for the title"
-    attr :description_class, :string, doc: "Determines custom class for the description"
-    attr :wrapper_class, :string, doc: "Determines custom class for the wrapper"
-    attr :content_position, :string, doc: "Determines the alignment of the element's content"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :active, :boolean, doc: "Indicates whether the element is currently active and visible"
+    attr(:patch, :string, doc: "Specifies the path for navigation using a LiveView patch.")
+    attr(:href, :string, doc: "Sets the URL for an external link.")
+    attr(:title, :string, doc: "Specifies the title of the element")
+    attr(:description, :string, doc: "Determines a short description")
+    attr(:title_class, :string, doc: "Determines custom class for the title")
+    attr(:description_class, :string, doc: "Determines custom class for the description")
+    attr(:wrapper_class, :string, doc: "Determines custom class for the wrapper")
+    attr(:content_position, :string, doc: "Determines the alignment of the element's content")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:active, :boolean, doc: "Indicates whether the element is currently active and visible")
   end
 
   def carousel(assigns) do
@@ -181,23 +188,26 @@ defmodule MoolahWeb.Components.Carousel do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :navigate, :string,
+  attr(:navigate, :string,
     default: nil,
     doc: "Defines the path for navigation within the application using a `navigate` attribute."
+  )
 
-  attr :patch, :string,
+  attr(:patch, :string,
     default: nil,
     doc: "Specifies the path for navigation using a LiveView patch."
+  )
 
-  attr :href, :string, default: nil, doc: "Sets the URL for an external link."
-  attr :image, :string, required: true, doc: "Image displayed alongside of an item"
-  attr :image_class, :string, default: nil, doc: "Sets classes for images"
-  attr :index, :integer, required: true, doc: "Determines item index"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:href, :string, default: nil, doc: "Sets the URL for an external link.")
+  attr(:image, :string, required: true, doc: "Image displayed alongside of an item")
+  attr(:image_class, :string, default: nil, doc: "Sets classes for images")
+  attr(:index, :integer, required: true, doc: "Determines item index")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   defp slide_image(%{navigate: nav, patch: pat, href: hrf} = assigns)
        when is_binary(nav) or is_binary(pat) or is_binary(hrf) do
@@ -229,25 +239,28 @@ defmodule MoolahWeb.Components.Carousel do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :title_class, :string, default: "text-white", doc: "Determines custom class for the title"
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:title_class, :string, default: "text-white", doc: "Determines custom class for the title")
 
-  attr :description_class, :string,
+  attr(:description_class, :string,
     default: nil,
     doc: "Determines custom class for the description"
+  )
 
-  attr :wrapper_class, :string, default: nil, doc: "Determines custom class for the wrapper"
+  attr(:wrapper_class, :string, default: nil, doc: "Determines custom class for the wrapper")
 
-  attr :content_position, :string,
+  attr(:content_position, :string,
     default: "",
     doc: "Determines the alignment of the element's content"
+  )
 
-  attr :index, :integer, required: true, doc: "Determines item index"
+  attr(:index, :integer, required: true, doc: "Determines item index")
 
   defp slide_content(assigns) do
     ~H"""
@@ -284,11 +297,12 @@ defmodule MoolahWeb.Components.Carousel do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :count, :integer, required: true, doc: "Count of items"
+  attr(:count, :integer, required: true, doc: "Count of items")
 
   defp slide_indicators(assigns) do
     ~H"""

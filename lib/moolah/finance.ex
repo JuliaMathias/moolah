@@ -9,8 +9,8 @@ defmodule Moolah.Finance do
   use Ash.Domain, otp_app: :moolah
 
   resources do
-    resource Moolah.Finance.BudgetCategory
-    resource Moolah.Finance.LifeAreaCategory
-    resource Moolah.Finance.Transaction
+    resource(Moolah.Finance.BudgetCategory)
+    resource(Moolah.Finance.LifeAreaCategory)
+    resource(Moolah.Finance.Transaction)
   end
 end

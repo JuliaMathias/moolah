@@ -43,22 +43,25 @@ defmodule MoolahWeb.Components.Indicator do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "base", doc: "Determines color theme"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ["pinging"] ++ @indicator_positions,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def indicator(%{rest: %{top_left: true}} = assigns) do
     ~H"""

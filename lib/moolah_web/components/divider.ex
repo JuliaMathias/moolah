@@ -37,57 +37,64 @@ defmodule MoolahWeb.Components.Divider do
   up text, sections, or other elements in your design.
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ["dashed", "dotted", "solid"],
     default: "solid",
     doc: "Determines type of element"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :height, :string, default: "auto", doc: "Determines the element width"
-  attr :margin, :string, default: "none", doc: "Determines the element margin"
-  attr :position, :string, default: "middle", doc: "Determines the text and icons position"
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:height, :string, default: "auto", doc: "Determines the element width")
+  attr(:margin, :string, default: "none", doc: "Determines the element margin")
+  attr(:position, :string, default: "middle", doc: "Determines the text and icons position")
 
-  attr :variation, :string,
+  attr(:variation, :string,
     values: ["horizontal", "vertical"],
     default: "horizontal",
     doc: "Defines the layout orientation of the component"
+  )
 
   slot :text, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :color, :string, doc: "Determines color theme"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:color, :string, doc: "Determines color theme")
 
-    attr :size, :string,
+    attr(:size, :string,
       doc:
         "Determines the overall size of the elements, including padding, font size, and other items"
+    )
   end
 
   slot :icon, required: false do
-    attr :name, :string, required: true, doc: "Specifies the name of the element"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :color, :string, doc: "Determines color theme"
+    attr(:name, :string, required: true, doc: "Specifies the name of the element")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:color, :string, doc: "Determines color theme")
 
-    attr :size, :string,
+    attr(:size, :string,
       doc:
         "Determines the overall size of the elements, including padding, font size, and other items"
+    )
   end
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def divider(%{variation: "vertical"} = assigns) do
     ~H"""
@@ -187,51 +194,57 @@ defmodule MoolahWeb.Components.Divider do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string,
+  attr(:type, :string,
     values: ["dashed", "dotted", "solid"],
     default: "solid",
     doc: "Specifies the type of the element"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :margin, :string, default: "none", doc: "Determines the element margin"
-  attr :position, :string, default: "middle", doc: "Determines the text and icons position"
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:margin, :string, default: "none", doc: "Determines the element margin")
+  attr(:position, :string, default: "middle", doc: "Determines the text and icons position")
 
   slot :text, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :color, :string, doc: "Determines color theme"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:color, :string, doc: "Determines color theme")
 
-    attr :size, :string,
+    attr(:size, :string,
       doc:
         "Determines the overall size of the elements, including padding, font size, and other items"
+    )
   end
 
   slot :icon, required: false do
-    attr :name, :string, required: true, doc: "Specifies the name of the element"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :color, :string, doc: "Determines color theme"
+    attr(:name, :string, required: true, doc: "Specifies the name of the element")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:color, :string, doc: "Determines color theme")
 
-    attr :size, :string,
+    attr(:size, :string,
       doc:
         "Determines the overall size of the elements, including padding, font size, and other items"
+    )
   end
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def hr(assigns) do
     ~H"""

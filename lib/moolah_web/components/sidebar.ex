@@ -37,69 +37,86 @@ defmodule MoolahWeb.Components.Sidebar do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :minimize, :boolean,
+  attr(:minimize, :boolean,
     default: false,
     doc: "Determines Minimize button show or hide"
+  )
 
-  attr :position, :string, default: "start", doc: "Determines the element position"
+  attr(:position, :string, default: "start", doc: "Determines the element position")
 
-  attr :hide_position, :string,
+  attr(:hide_position, :string,
     values: ["left", "right"],
     doc: "Determines what position should be hidden"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :hide_button_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:hide_button_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :minimize_wrapper_class, :string,
+  attr(:minimize_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :close_wrapper_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :content_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :minimize_icon_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :close_icon_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:close_wrapper_class, :string,
+    default: nil,
+    doc: "Custom CSS class for additional styling"
+  )
 
-  attr :close_button_class, :string,
+  attr(:content_class, :string, default: nil, doc: "Custom CSS class for additional styling")
+
+  attr(:minimize_icon_class, :string,
+    default: nil,
+    doc: "Custom CSS class for additional styling"
+  )
+
+  attr(:close_icon_class, :string, default: nil, doc: "Custom CSS class for additional styling")
+
+  attr(:close_button_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling for button"
+  )
 
-  attr :list_wrapper_class, :string,
+  attr(:list_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional to list wrapper"
+  )
 
-  attr :on_hide, JS, default: %JS{}, doc: "Custom JS module for on_hide action"
-  attr :on_show, JS, default: %JS{}, doc: "Custom JS module for on_show action"
-  attr :on_hide_away, JS, default: %JS{}, doc: "Custom JS module for on_hide_away action"
+  attr(:on_hide, JS, default: %JS{}, doc: "Custom JS module for on_hide action")
+  attr(:on_show, JS, default: %JS{}, doc: "Custom JS module for on_show action")
+  attr(:on_hide_away, JS, default: %JS{}, doc: "Custom JS module for on_hide_away action")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :item, doc: "Menu item slot for sidebar navigation items" do
-    attr :icon, :string, doc: "Icon name to display"
-    attr :icon_class, :string, doc: "CSS class for the icon"
-    attr :label, :string, doc: "Text label for the menu item"
-    attr :label_class, :string, doc: "CSS class for the label text"
-    attr :link, :string, doc: "URL for the item link"
-    attr :class, :string, doc: "CSS class for the entire item"
-    attr :link_class, :string, doc: "CSS class for the link"
+    attr(:icon, :string, doc: "Icon name to display")
+    attr(:icon_class, :string, doc: "CSS class for the icon")
+    attr(:label, :string, doc: "Text label for the menu item")
+    attr(:label_class, :string, doc: "CSS class for the label text")
+    attr(:link, :string, doc: "URL for the item link")
+    attr(:class, :string, doc: "CSS class for the entire item")
+    attr(:link_class, :string, doc: "CSS class for the link")
   end
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   @spec sidebar(map()) :: Phoenix.LiveView.Rendered.t()
   def sidebar(assigns) do

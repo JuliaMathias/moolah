@@ -39,22 +39,25 @@ defmodule MoolahWeb.Components.Spinner do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string, values: @spinner_types, default: "default", doc: ""
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "base", doc: "Determines color theme"
+  attr(:type, :string, values: @spinner_types, default: "default", doc: "")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def spinner(assigns) do
     ~H"""
@@ -75,7 +78,7 @@ defmodule MoolahWeb.Components.Spinner do
   end
 
   @doc type: :component
-  attr :type, :string, values: @spinner_types
+  attr(:type, :string, values: @spinner_types)
 
   defp spinner_content(%{type: "pinging"} = assigns) do
     ~H"""

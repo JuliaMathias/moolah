@@ -45,22 +45,24 @@ defmodule MoolahWeb.Components.Skeleton do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :height, :string, default: "extra_small", doc: "Determines the element width"
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:height, :string, default: "extra_small", doc: "Determines the element width")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
 
-  attr :visible, :boolean, default: true, doc: ""
+  attr(:visible, :boolean, default: true, doc: "")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(animated),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def skeleton(assigns) do
     ~H"""

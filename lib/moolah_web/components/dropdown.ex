@@ -53,57 +53,64 @@ defmodule MoolahWeb.Components.Dropdown do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :width, :string, default: "w-fit", doc: "Determines the element width"
-  attr :position, :string, default: "bottom", doc: "Determines the element position"
-  attr :relative, :string, default: nil, doc: "Custom relative position for the dropdown"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:width, :string, default: "w-fit", doc: "Determines the element width")
+  attr(:position, :string, default: "bottom", doc: "Determines the element position")
+  attr(:relative, :string, default: nil, doc: "Custom relative position for the dropdown")
 
-  attr :clickable, :boolean,
+  attr(:clickable, :boolean,
     default: true,
     doc: "Determines if the element can be activated on click"
+  )
 
-  attr :smart_position, :boolean,
+  attr(:smart_position, :boolean,
     default: false,
     doc: "Enables and disables smart position"
+  )
 
-  attr :nomobile, :boolean,
+  attr(:nomobile, :boolean,
     default: false,
     doc: "Controls whether the dropdown is disabled on mobile devices"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "", doc: "Space between items"
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "none", doc: "Determines padding for items"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:padding, :string, default: "none", doc: "Determines padding for items")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :trigger, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   slot :content, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   def dropdown(assigns) do
@@ -183,17 +190,19 @@ defmodule MoolahWeb.Components.Dropdown do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :trigger_id, :string, default: nil, doc: "Identifies what is the triggered element id"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:trigger_id, :string, default: nil, doc: "Identifies what is the triggered element id")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def dropdown_trigger(assigns) do
     ~H"""
@@ -230,35 +239,39 @@ defmodule MoolahWeb.Components.Dropdown do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :width, :string, default: "extra_large", doc: "Determines the element width"
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:width, :string, default: "extra_large", doc: "Determines the element width")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "none", doc: "Determines padding for items"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "none", doc: "Determines padding for items")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def dropdown_content(assigns) do
     ~H"""

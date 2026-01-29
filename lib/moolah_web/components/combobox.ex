@@ -83,63 +83,71 @@ defmodule MoolahWeb.Components.Combobox do
   """
 
   @doc type: :component
-  attr :id, :any, default: nil, doc: "A unique identifier is used to manage state and interaction"
-  attr :name, :any, doc: "Name of input"
-  attr :label, :string, default: nil
-  attr :value, :any, doc: "Value of input"
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:id, :any,
+    default: nil,
+    doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
+  attr(:name, :any, doc: "Name of input")
+  attr(:label, :string, default: nil)
+  attr(:value, :any, doc: "Value of input")
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :placeholder, :string, default: nil, doc: "Placeholder of field"
-  attr :description_class, :string, default: "text-[12px]", doc: "Custom classes for description"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper"
-  attr :option_group_class, :string, default: nil, doc: "Custom CSS class option group"
+  attr(:options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2")
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
 
-  attr :description_wrapper_class, :string,
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:placeholder, :string, default: nil, doc: "Placeholder of field")
+  attr(:description_class, :string, default: "text-[12px]", doc: "Custom classes for description")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper")
+  attr(:option_group_class, :string, default: nil, doc: "Custom CSS class option group")
+
+  attr(:description_wrapper_class, :string,
     default: nil,
     doc: "Custom classes for description wrapper"
+  )
 
-  attr :search_placeholder, :string,
+  attr(:search_placeholder, :string,
     default: "Search..",
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines variant theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "medium", doc: "Radius size"
-  attr :space, :string, default: "extra_small", doc: "Radius size"
-  attr :padding, :string, default: "small", doc: "Padding size"
-  attr :height, :string, default: "h-fit max-h-40", doc: "Dropdown height"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :searchable, :boolean, default: false, doc: "Determines a short description"
-  attr :multiple, :boolean, default: false, doc: "Multiple selections in the combobox"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines variant theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "medium", doc: "Radius size")
+  attr(:space, :string, default: "extra_small", doc: "Radius size")
+  attr(:padding, :string, default: "small", doc: "Padding size")
+  attr(:height, :string, default: "h-fit max-h-40", doc: "Dropdown height")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:searchable, :boolean, default: false, doc: "Determines a short description")
+  attr(:multiple, :boolean, default: false, doc: "Multiple selections in the combobox")
 
   slot :start_section, required: false, doc: "Renders heex content in start of an element" do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
   end
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
   slot :option, required: false do
-    attr :value, :string, required: true, doc: "Value of the select option"
-    attr :class, :string, doc: "Value of the select option"
-    attr :group, :string, required: false, doc: "Group name for the option"
-    attr :disabled, :boolean, required: false, doc: "Specifies if this option is disabled"
+    attr(:value, :string, required: true, doc: "Value of the select option")
+    attr(:class, :string, doc: "Value of the select option")
+    attr(:group, :string, required: false, doc: "Group name for the option")
+    attr(:disabled, :boolean, required: false, doc: "Specifies if this option is disabled")
   end
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def combobox(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -543,10 +551,10 @@ defmodule MoolahWeb.Components.Combobox do
   end
 
   @doc type: :component
-  attr :value, :string, required: true, doc: "Specifies the form which is associated with"
-  attr :disabled, :boolean, default: false, doc: "Inner block that renders HEEx content"
-  attr :class, :string, default: nil, doc: "Custom class"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:value, :string, required: true, doc: "Specifies the form which is associated with")
+  attr(:disabled, :boolean, default: false, doc: "Inner block that renders HEEx content")
+  attr(:class, :string, default: nil, doc: "Custom class")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   defp option(assigns) do
     ~H"""
@@ -578,10 +586,10 @@ defmodule MoolahWeb.Components.Combobox do
     """
   end
 
-  attr :id, :string, default: nil, doc: "Unique identifire"
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:id, :string, default: nil, doc: "Unique identifire")
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -591,8 +599,8 @@ defmodule MoolahWeb.Components.Combobox do
     """
   end
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

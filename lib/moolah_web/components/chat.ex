@@ -58,35 +58,39 @@ defmodule MoolahWeb.Components.Chat do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "extra_large", doc: "Determines the border radius"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "extra_large", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "extra_small", doc: "Space between items"
+  attr(:space, :string, default: "extra_small", doc: "Space between items")
 
-  attr :position, :string,
+  attr(:position, :string,
     values: ["normal", "flipped"],
     default: "normal",
     doc: "Determines the element position"
+  )
 
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def chat(assigns) do
     ~H"""
@@ -136,32 +140,36 @@ defmodule MoolahWeb.Components.Chat do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :status, required: false, doc: "Defines a slot for displaying status information" do
-    attr :time, :string, doc: "Displays the time"
-    attr :deliver, :string, doc: "Indicates the delivery status"
-    attr :time_class, :string, doc: "Custom classes for time"
-    attr :deliver_class, :string, doc: "Custom classes for delivery status"
+    attr(:time, :string, doc: "Displays the time")
+    attr(:deliver, :string, doc: "Indicates the delivery status")
+    attr(:time_class, :string, doc: "Custom classes for time")
+    attr(:deliver_class, :string, doc: "Custom classes for delivery status")
   end
 
-  slot :meta,
+  slot(:meta,
     required: false,
     doc: "Defines a slot for adding custom metadata or additional information"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def chat_section(assigns) do
     ~H"""

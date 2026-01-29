@@ -54,52 +54,62 @@ defmodule MoolahWeb.Components.TableContent do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to title"
+  )
 
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :animated, :boolean, default: false, doc: "Determines whether element's icon has animation"
-  attr :padding, :string, default: "", doc: "Determines padding for items"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:space, :string, default: "", doc: "Space between items")
 
-  attr :size, :string,
+  attr(:animated, :boolean,
+    default: false,
+    doc: "Determines whether element's icon has animation"
+  )
+
+  attr(:padding, :string, default: "", doc: "Determines padding for items")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :item, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :title, :string, doc: "Specifies the title of the element"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :font_weight, :string, doc: "Determines custom class for the font weight"
-    attr :link_title, :string, doc: "Determines link"
-    attr :link, :string, doc: "Determines link path"
-    attr :active, :boolean, doc: "Indicates whether the element is currently active and visible"
-    attr :title_class, :string, doc: "Custom CSS class for additional styling to title"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:title, :string, doc: "Specifies the title of the element")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:font_weight, :string, doc: "Determines custom class for the font weight")
+    attr(:link_title, :string, doc: "Determines link")
+    attr(:link, :string, doc: "Determines link path")
+    attr(:active, :boolean, doc: "Indicates whether the element is currently active and visible")
+    attr(:title_class, :string, doc: "Custom CSS class for additional styling to title")
 
-    attr :wrapper_class, :string,
+    attr(:wrapper_class, :string,
       doc: "Custom CSS class for additional styling to content wrapper"
+    )
 
-    attr :link_class, :string, doc: "Custom CSS class for additional styling to link"
-    attr :contetn_class, :string, doc: "Custom CSS class for additional styling to content"
+    attr(:link_class, :string, doc: "Custom CSS class for additional styling to link")
+    attr(:contetn_class, :string, doc: "Custom CSS class for additional styling to content")
   end
 
   def table_content(assigns) do
@@ -183,23 +193,26 @@ defmodule MoolahWeb.Components.TableContent do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def content_wrapper(assigns) do
     ~H"""
@@ -233,44 +246,51 @@ defmodule MoolahWeb.Components.TableContent do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to title"
+  )
 
-  attr :wrapper_content_class, :string,
+  attr(:wrapper_content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling content wrapper"
+  )
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to content"
+  )
 
-  attr :link_class, :string, default: nil, doc: "Custom CSS class for additional styling to link"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :icon_class, :string, default: nil, doc: "Determines custom class for the icon"
-  attr :link_title, :string, default: nil, doc: "Determines link name"
-  attr :link, :string, default: nil, doc: "Determines path of link"
+  attr(:link_class, :string, default: nil, doc: "Custom CSS class for additional styling to link")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:icon_class, :string, default: nil, doc: "Determines custom class for the icon")
+  attr(:link_title, :string, default: nil, doc: "Determines link name")
+  attr(:link, :string, default: nil, doc: "Determines path of link")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-noraml",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :active, :boolean,
+  attr(:active, :boolean,
     default: false,
     doc: "Indicates whether the element is currently active and visible"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def content_item(assigns) do
     ~H"""

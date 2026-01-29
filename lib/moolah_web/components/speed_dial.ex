@@ -50,72 +50,80 @@ defmodule MoolahWeb.Components.SpeedDial do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :wrapper_content_class, :string,
+  attr(:wrapper_content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to content"
+  )
 
-  attr :trigger_class, :string,
+  attr(:trigger_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to button"
+  )
 
-  attr :action_position, :string, default: "bottom-end", doc: ""
-  attr :position_size, :string, default: "large", doc: ""
-  attr :wrapper_position, :string, default: "top", doc: ""
-  attr :rounded, :string, default: "full", doc: "Determines the border radius"
+  attr(:action_position, :string, default: "bottom-end", doc: "")
+  attr(:position_size, :string, default: "large", doc: "")
+  attr(:wrapper_position, :string, default: "top", doc: "")
+  attr(:rounded, :string, default: "full", doc: "Determines the border radius")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :space, :string, default: "extra_small", doc: "Space between items"
-  attr :width, :string, default: "fit", doc: "Determines the element width"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :padding, :string, default: "extra_small", doc: "Determines padding for items"
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:space, :string, default: "extra_small", doc: "Space between items")
+  attr(:width, :string, default: "fit", doc: "Determines the element width")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:padding, :string, default: "extra_small", doc: "Determines padding for items")
 
-  attr :clickable, :boolean,
+  attr(:clickable, :boolean,
     default: false,
     doc: "Determines if the element can be activated on click"
+  )
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
 
-  attr :icon_animated, :boolean,
+  attr(:icon_animated, :boolean,
     default: false,
     doc: "Determines whether element's icon has animation"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :item, required: false, doc: "Specifies item slot of a speed dial" do
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
 
-    attr :navigate, :string,
+    attr(:navigate, :string,
       doc: "Defines the path for navigation within the application using a `navigate` attribute."
+    )
 
-    attr :patch, :string, doc: "Specifies the path for navigation using a LiveView patch."
-    attr :href, :string, doc: "Sets the URL for an external link."
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :content_class, :string, doc: "Determines custom class for the content"
-    attr :color, :string, doc: "Determines color theme"
-    attr :variant, :string, doc: "Determines the style"
-    attr :icon_position, :string, doc: "Determines icon position"
+    attr(:patch, :string, doc: "Specifies the path for navigation using a LiveView patch.")
+    attr(:href, :string, doc: "Sets the URL for an external link.")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:content_class, :string, doc: "Determines custom class for the content")
+    attr(:color, :string, doc: "Determines color theme")
+    attr(:variant, :string, doc: "Determines the style")
+    attr(:icon_position, :string, doc: "Determines icon position")
   end
 
   slot :trigger_content, required: false, doc: "Determines triggered content" do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def speed_dial(assigns) do
     ~H"""
@@ -201,27 +209,30 @@ defmodule MoolahWeb.Components.SpeedDial do
   end
 
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :navigate, :string,
+  attr(:navigate, :string,
     default: nil,
     doc: "Defines the path for navigation within the application using a `navigate` attribute."
+  )
 
-  attr :patch, :string,
+  attr(:patch, :string,
     default: nil,
     doc: "Specifies the path for navigation using a LiveView patch."
+  )
 
-  attr :href, :string, default: nil, doc: "Sets the URL for an external link."
-  attr :color, :string, default: "primary", doc: "Determines color theme"
-  attr :variant, :string, default: "default", doc: "Determines the style"
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :icon_class, :string, default: nil, doc: "Determines custom class for the icon"
-  attr :content_class, :string, default: nil, doc: "Determines custom class for the content"
-  attr :index, :integer, required: true, doc: "Determines item index"
-  attr :icon_position, :string, doc: "Determines icon position"
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  attr(:href, :string, default: nil, doc: "Sets the URL for an external link.")
+  attr(:color, :string, default: "primary", doc: "Determines color theme")
+  attr(:variant, :string, default: "default", doc: "Determines the style")
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:icon_class, :string, default: nil, doc: "Determines custom class for the icon")
+  attr(:content_class, :string, default: nil, doc: "Determines custom class for the content")
+  attr(:index, :integer, required: true, doc: "Determines item index")
+  attr(:icon_position, :string, doc: "Determines icon position")
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   defp speed_dial_content(%{navigate: nav, patch: pat, href: hrf} = assigns)
        when is_binary(nav) or is_binary(pat) or is_binary(hrf) do

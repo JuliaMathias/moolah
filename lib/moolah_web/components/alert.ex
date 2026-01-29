@@ -50,52 +50,59 @@ defmodule MoolahWeb.Components.Alert do
   <.flash kind={:info} phx-mounted={show("#flash")}>Welcome Back!</.flash>
   ```
   """
-  attr :id, :string, doc: "A unique identifier is used to manage state and interaction"
-  attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :kind, :atom, default: :natural, doc: "used for styling and flash lookup"
+  attr(:id, :string, doc: "A unique identifier is used to manage state and interaction")
+  attr(:flash, :map, default: %{}, doc: "the map of flash messages to display")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:kind, :atom, default: :natural, doc: "used for styling and flash lookup")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :position, :string, default: "", doc: "Determines the element position"
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :border, :string, default: "extra_small", doc: "Determines the element border width"
-  attr :z_index, :string, default: "z-50", doc: "custom z-index"
-  attr :padding, :string, default: "small", doc: "Determines the element padding size"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:position, :string, default: "", doc: "Determines the element position")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:border, :string, default: "extra_small", doc: "Determines the element border width")
+  attr(:z_index, :string, default: "z-50", doc: "custom z-index")
+  attr(:padding, :string, default: "small", doc: "Determines the element padding size")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :icon, :any,
+  attr(:icon, :any,
     default: "hero-chat-bubble-bottom-center-text",
     doc: "Icon displayed alongside of an item"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling for contnet"
+  )
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: "flex items-center gap-1.5 leading-6 font-semibold mb-1",
     doc: "Custom CSS class for additional styling to tile"
+  )
 
-  attr :button_class, :string,
+  attr(:button_class, :string,
     default: "p-2",
     doc: "Custom CSS class for additional styling to tile"
+  )
 
-  slot :inner_block, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, doc: "Inner block that renders HEEx content")
 
   def flash(assigns) do
     assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.variant}-#{assigns.kind}" end)
@@ -149,19 +156,21 @@ defmodule MoolahWeb.Components.Alert do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: "flash-group",
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "bordered", doc: "Determines the style"
-  attr :position, :string, default: "top_right", doc: "Position of flashes"
-  attr :class, :string, default: nil, doc: "Custom classes"
-  attr :z_index, :string, default: "z-50", doc: "custom z-index"
-  attr :flash, :map, required: true, doc: "the map of flash messages"
+  attr(:variant, :string, default: "bordered", doc: "Determines the style")
+  attr(:position, :string, default: "top_right", doc: "Position of flashes")
+  attr(:class, :string, default: nil, doc: "Custom classes")
+  attr(:z_index, :string, default: "z-50", doc: "custom z-index")
+  attr(:flash, :map, required: true, doc: "the map of flash messages")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def flash_group(assigns) do
     ~H"""
@@ -240,49 +249,56 @@ defmodule MoolahWeb.Components.Alert do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :kind, :atom, default: :natural, doc: "used for styling and flash lookup"
-  attr :variant, :string, default: "default", doc: "Determines the style"
-  attr :position, :string, default: "", doc: "Determines the element position"
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :border, :string, default: "extra_small", doc: "Determines the element border width"
-  attr :padding, :string, default: "small", doc: "Determines the element padding size"
-  attr :z_index, :string, default: "z-50", doc: "custom z-index"
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:kind, :atom, default: :natural, doc: "used for styling and flash lookup")
+  attr(:variant, :string, default: "default", doc: "Determines the style")
+  attr(:position, :string, default: "", doc: "Determines the element position")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:border, :string, default: "extra_small", doc: "Determines the element border width")
+  attr(:padding, :string, default: "small", doc: "Determines the element padding size")
+  attr(:z_index, :string, default: "z-50", doc: "custom z-index")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :icon, :any,
+  attr(:icon, :any,
     default: "hero-chat-bubble-bottom-center-text",
     doc: "Icon displayed alongside of an item"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: "flex items-center gap-1.5 leading-6 font-semibold mb-1",
     doc: "Custom CSS class for additional styling to tile"
+  )
 
-  attr :icon_class, :string,
+  attr(:icon_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to icon"
+  )
 
-  slot :inner_block, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, doc: "Inner block that renders HEEx content")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def alert(assigns) do
     assigns = assigns |> assign_new(:id, fn -> "alert-#{random_id()}" end)

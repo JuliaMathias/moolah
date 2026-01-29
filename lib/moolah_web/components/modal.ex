@@ -48,59 +48,69 @@ defmodule MoolahWeb.Components.Modal do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :padding, :string, default: "medium", doc: "Determines padding for items"
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:padding, :string, default: "medium", doc: "Determines padding for items")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: "text-base md:text-lg xl:text-2xl",
     doc: "Custom CSS class for additional styling to title"
+  )
 
-  attr :icon_class, :string,
+  attr(:icon_class, :string,
     default: "size-5",
     doc: "Custom CSS class for additional styling to icons close button"
+  )
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to content"
+  )
 
-  attr :close_class, :string,
+  attr(:close_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to content"
+  )
 
-  attr :focus_wrap_class, :string,
+  attr(:focus_wrap_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to focus wrapper"
+  )
 
-  attr :inner_wrapper_class, :string,
+  attr(:inner_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to inner wrap"
+  )
 
-  attr :wrapper_class, :string,
+  attr(:wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to wrapper"
+  )
 
-  attr :overlay_class, :string,
+  attr(:overlay_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to overlay"
+  )
 
-  attr :show, :boolean, default: false, doc: "Show element"
-  attr :on_cancel, JS, default: %JS{}, doc: "Custom JS module for on_cancel action"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:show, :boolean, default: false, doc: "Show element")
+  attr(:on_cancel, JS, default: %JS{}, doc: "Custom JS module for on_cancel action")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   def modal(assigns) do
     ~H"""

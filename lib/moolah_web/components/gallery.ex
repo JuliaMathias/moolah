@@ -45,22 +45,24 @@ defmodule MoolahWeb.Components.Gallery do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :type, :string, values: ["default", "masonry", "featured"], default: "default", doc: ""
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :cols, :string, default: "", doc: "Determines cols of elements"
-  attr :gap, :string, default: "", doc: "Determines gap between elements"
-  attr :animation, :string, default: "", doc: "Determines gap between elements"
-  attr :animation_size, :string, default: "extra_small", doc: "Determines gap between elements"
+  attr(:type, :string, values: ["default", "masonry", "featured"], default: "default", doc: "")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:cols, :string, default: "", doc: "Determines cols of elements")
+  attr(:gap, :string, default: "", doc: "Determines gap between elements")
+  attr(:animation, :string, default: "", doc: "Determines gap between elements")
+  attr(:animation_size, :string, default: "extra_small", doc: "Determines gap between elements")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def gallery(assigns) do
     ~H"""
@@ -94,22 +96,24 @@ defmodule MoolahWeb.Components.Gallery do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :wrapper_class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :src, :string, default: nil, doc: "Media link"
-  attr :alt, :string, default: nil, doc: "Media link description"
-  attr :rounded, :string, default: "none", doc: "Determines the border radius"
-  attr :shadow, :string, default: "shadow-none", doc: "Determines shadow style"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:wrapper_class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:src, :string, default: nil, doc: "Media link")
+  attr(:alt, :string, default: nil, doc: "Media link description")
+  attr(:rounded, :string, default: "none", doc: "Determines the border radius")
+  attr(:shadow, :string, default: "shadow-none", doc: "Determines shadow style")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def gallery_media(assigns) do
     ~H"""
@@ -147,29 +151,32 @@ defmodule MoolahWeb.Components.Gallery do
   - `:filter` - Optional slot for rendering custom filter buttons. You will receive the current filter value with `let={filter}`.
   """
   @doc type: :component
-  attr :id, :string, doc: "Unique DOM ID"
-  attr :filters, :list, default: [], doc: "List of filter categories"
-  attr :media, :list, default: [], doc: "List of media items with :src, :alt, and :category"
-  attr :cols, :string, default: "three", doc: "Determines cols of elements"
-  attr :gap, :string, default: "small", doc: "Determines gap between elements"
-  attr :class, :string, default: nil, doc: "Add custom classe"
-  attr :default_filter, :string, default: "All", doc: "Default Button to show all images"
-  slot :filter, required: false, doc: "Slot for rendering each filter button with let={filter}"
-  attr :animation, :string, default: "", doc: "Determines gap between elements"
-  attr :animation_size, :string, default: "extra_small", doc: "Determines gap between elements"
-  attr :content_class, :string, default: nil, doc: "Add custom classe to content wrapper"
+  attr(:id, :string, doc: "Unique DOM ID")
+  attr(:filters, :list, default: [], doc: "List of filter categories")
+  attr(:media, :list, default: [], doc: "List of media items with :src, :alt, and :category")
+  attr(:cols, :string, default: "three", doc: "Determines cols of elements")
+  attr(:gap, :string, default: "small", doc: "Determines gap between elements")
+  attr(:class, :string, default: nil, doc: "Add custom classe")
+  attr(:default_filter, :string, default: "All", doc: "Default Button to show all images")
+  slot(:filter, required: false, doc: "Slot for rendering each filter button with let={filter}")
+  attr(:animation, :string, default: "", doc: "Determines gap between elements")
+  attr(:animation_size, :string, default: "extra_small", doc: "Determines gap between elements")
+  attr(:content_class, :string, default: nil, doc: "Add custom classe to content wrapper")
 
-  attr :filters_wrapper_class, :string,
+  attr(:filters_wrapper_class, :string,
     default: nil,
     doc: "Add custom classe to filter button wrapper"
+  )
 
-  slot :media_block,
+  slot(:media_block,
     required: false,
     doc: "Optional slot for rendering each media item with let={media}"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def filterable_gallery(assigns) do
     assigns = assign_new(assigns, :id, fn -> random_id() end)

@@ -329,29 +329,38 @@ defmodule MoolahWeb.Components.Menu do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :link_class, :string, default: nil, doc: "Custom CSS class for additional styling for link"
-  attr :item_class, :string, default: nil, doc: "Custom CSS class for additional styling for li"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :accordion_class, :string,
+  attr(:link_class, :string,
+    default: nil,
+    doc: "Custom CSS class for additional styling for link"
+  )
+
+  attr(:item_class, :string, default: nil, doc: "Custom CSS class for additional styling for li")
+
+  attr(:accordion_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling for accordion"
+  )
 
-  attr :menu_items, :list, default: [], doc: "Determines menu items as a list of maps"
-  attr :space, :string, default: "small", doc: "Space between items"
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
+  attr(:menu_items, :list, default: [], doc: "Determines menu items as a list of maps")
+  attr(:space, :string, default: "small", doc: "Space between items")
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
 
-  slot :inner_block,
+  slot(:inner_block,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def menu(assigns) do
     ~H"""

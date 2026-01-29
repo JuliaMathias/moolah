@@ -49,50 +49,61 @@ defmodule MoolahWeb.Components.Breadcrumb do
   ```
   """
   @doc type: :component
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :items_wrapper_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :id, :string,
+  attr(:items_wrapper_class, :string,
+    default: nil,
+    doc: "Custom CSS class for additional styling"
+  )
+
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :separator_icon, :string,
+  attr(:separator_icon, :string,
     default: "hero-chevron-right",
     doc: "Determines a separator for items of an element"
+  )
 
-  attr :separator_icon_class, :string,
+  attr(:separator_icon_class, :string,
     default: "rtl:rotate-180",
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :separator_text, :string,
+  attr(:separator_text, :string,
     default: nil,
     doc: "Determines a separator for items of an element"
+  )
 
-  attr :separator_text_class, :string,
+  attr(:separator_text_class, :string,
     default: nil,
     doc: "Determines a separator for items of an element"
+  )
 
-  attr :color, :string, default: "base", doc: "Determines color theme"
+  attr(:color, :string, default: "base", doc: "Determines color theme")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
   slot :item, required: false, doc: "Specifies item slot of a breadcrumb" do
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :link, :string, doc: "Renders a navigation, patch link or normal link"
-    attr :title, :string, doc: "Renders a navigation, patch link or normal link"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :icon_class, :string, doc: "Custom CSS class for additional styling"
-    attr :link_class, :string, doc: "Custom CSS class for additional styling"
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:link, :string, doc: "Renders a navigation, patch link or normal link")
+    attr(:title, :string, doc: "Renders a navigation, patch link or normal link")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:icon_class, :string, doc: "Custom CSS class for additional styling")
+    attr(:link_class, :string, doc: "Custom CSS class for additional styling")
   end
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def breadcrumb(assigns) do
     ~H"""

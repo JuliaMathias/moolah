@@ -50,39 +50,42 @@ defmodule MoolahWeb.Components.Fieldset do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :space, :string, default: "medium", doc: "Space between items"
-  attr :fieldset_class, :string, default: nil, doc: "Custom class for fieldset"
-  attr :legend_class, :string, default: nil, doc: "Custom class for legend"
-  attr :fieldset_wrapper_class, :string, default: nil, doc: "Custom class for wrapper"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:space, :string, default: "medium", doc: "Space between items")
+  attr(:fieldset_class, :string, default: nil, doc: "Custom class for fieldset")
+  attr(:legend_class, :string, default: nil, doc: "Custom class for legend")
+  attr(:fieldset_wrapper_class, :string, default: nil, doc: "Custom class for wrapper")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :legend, :string, default: nil, doc: "Determines a caption for the content of its parent"
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:legend, :string, default: nil, doc: "Determines a caption for the content of its parent")
 
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(disabled form title),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :control, required: false, doc: "Defines a collection of elements inside the fieldset"
+  slot(:control, required: false, doc: "Defines a collection of elements inside the fieldset")
 
   def fieldset(assigns) do
     ~H"""
@@ -119,9 +122,9 @@ defmodule MoolahWeb.Components.Fieldset do
   end
 
   @doc type: :component
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -132,8 +135,8 @@ defmodule MoolahWeb.Components.Fieldset do
   end
 
   @doc type: :component
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

@@ -6,5 +6,5 @@ defmodule MoolahWeb.PageHTML do
   """
   use MoolahWeb, :html
 
-  embed_templates "page_html/*"
+  embed_templates("page_html/*")
 end

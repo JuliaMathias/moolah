@@ -58,56 +58,61 @@ defmodule MoolahWeb.Components.Accordion do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :space, :string, default: "small", doc: "Space between items"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
-  attr :rounded, :string, default: "none", doc: "Determines the border radius"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:space, :string, default: "small", doc: "Space between items")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
+  attr(:rounded, :string, default: "none", doc: "Determines the border radius")
 
-  attr :chevron_icon, :string,
+  attr(:chevron_icon, :string,
     default: "hero-chevron-right",
     doc: "Determines the icon for the chevron"
+  )
 
-  attr :chevron_class, :string, default: nil, doc: "Determines the icon for the chevron"
+  attr(:chevron_class, :string, default: nil, doc: "Determines the icon for the chevron")
 
-  attr :media_size, :string, default: "small", doc: "Determines size of the media elements"
+  attr(:media_size, :string, default: "small", doc: "Determines size of the media elements")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
   slot :item, required: true, doc: "Specifies item slot of a accordion" do
-    attr :title, :string,
+    attr(:title, :string,
       required: true,
       doc: "Specifies the title of the element",
       doc: "Specifies the title of the element"
+    )
 
-    attr :description, :string, doc: "Determines a short description"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :image, :string, doc: "Image displayed alongside of an item"
-    attr :icon_wrapper_class, :string, doc: "Image displayed alongside of an item"
-    attr :hover, :string, doc: "Determines custom class for the hover"
-    attr :image_class, :string, doc: "Determines custom class for the image"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :content_class, :string, doc: "Determines custom class for the content"
-    attr :title_class, :string, doc: "Determines custom class for the title"
-    attr :summary_class, :string, doc: "Determines custom class for the summary"
-    attr :font_weight, :string, doc: "Determines custom class for the font weight"
-    attr :open, :boolean, doc: "Whether the accordion item is initially open or closed"
+    attr(:description, :string, doc: "Determines a short description")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:image, :string, doc: "Image displayed alongside of an item")
+    attr(:icon_wrapper_class, :string, doc: "Image displayed alongside of an item")
+    attr(:hover, :string, doc: "Determines custom class for the hover")
+    attr(:image_class, :string, doc: "Determines custom class for the image")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:content_class, :string, doc: "Determines custom class for the content")
+    attr(:title_class, :string, doc: "Determines custom class for the title")
+    attr(:summary_class, :string, doc: "Determines custom class for the summary")
+    attr(:font_weight, :string, doc: "Determines custom class for the font weight")
+    attr(:open, :boolean, doc: "Whether the accordion item is initially open or closed")
   end
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(left_chevron right_chevron chevron hide_chevron),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def accordion(assigns) do
     ~H"""
@@ -227,47 +232,50 @@ defmodule MoolahWeb.Components.Accordion do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :name, :string, default: nil, doc: "Specifies the name of the element"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :space, :string, default: "small", doc: "Space between items"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:name, :string, default: nil, doc: "Specifies the name of the element")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:space, :string, default: "small", doc: "Space between items")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :padding, :string, default: "small", doc: "Determines padding for items"
+  attr(:padding, :string, default: "small", doc: "Determines padding for items")
 
-  attr :rounded, :string, default: "none", doc: "Determines the border radius"
+  attr(:rounded, :string, default: "none", doc: "Determines the border radius")
 
-  attr :media_size, :string, default: "small", doc: "Determines size of the media elements"
+  attr(:media_size, :string, default: "small", doc: "Determines size of the media elements")
 
-  attr :chevron_icon, :string,
+  attr(:chevron_icon, :string,
     default: "hero-chevron-right",
     doc: "Determines the icon for the chevron"
+  )
 
-  attr :chevron_class, :string, default: nil, doc: "Determines the icon for the chevron"
+  attr(:chevron_class, :string, default: nil, doc: "Determines the icon for the chevron")
 
   slot :item, required: true, doc: "Specifies item slot of a accordion" do
-    attr :title, :string, required: true, doc: "Specifies the title of the element"
-    attr :description, :string, doc: "Determines a short description"
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :image, :string, doc: "Image displayed alongside of an item"
-    attr :image_class, :string, doc: "Determines custom class for the image"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :content_class, :string, doc: "Determines custom class for the content"
-    attr :title_class, :string, doc: "Determines custom class for the title"
-    attr :summary_class, :string, doc: "Determines custom class for the summary"
-    attr :open, :boolean, doc: "Whether the accordion item is initially open or closed"
+    attr(:title, :string, required: true, doc: "Specifies the title of the element")
+    attr(:description, :string, doc: "Determines a short description")
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:image, :string, doc: "Image displayed alongside of an item")
+    attr(:image_class, :string, doc: "Determines custom class for the image")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:content_class, :string, doc: "Determines custom class for the content")
+    attr(:title_class, :string, doc: "Determines custom class for the title")
+    attr(:summary_class, :string, doc: "Determines custom class for the summary")
+    attr(:open, :boolean, doc: "Whether the accordion item is initially open or closed")
   end
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(left_chevron right_chevron chevron hide_chevron),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def native_accordion(assigns) do
     ~H"""
@@ -319,20 +327,22 @@ defmodule MoolahWeb.Components.Accordion do
     """
   end
 
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :item, :map, doc: "Determines each item"
-  attr :position, :string, values: ["left", "right"], doc: "Determines the element position"
-  attr :chevron_icon, :string, doc: "Determines the icon for the chevron"
-  attr :chevron_class, :string, default: nil, doc: "Determines the icon for the chevron"
-  attr :hide_chevron, :boolean, default: false, doc: "Hide chevron icon"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:item, :map, doc: "Determines each item")
+  attr(:position, :string, values: ["left", "right"], doc: "Determines the element position")
+  attr(:chevron_icon, :string, doc: "Determines the icon for the chevron")
+  attr(:chevron_class, :string, default: nil, doc: "Determines the icon for the chevron")
+  attr(:hide_chevron, :boolean, default: false, doc: "Hide chevron icon")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   defp native_chevron_position(%{position: "left"} = assigns) do
     ~H"""

@@ -34,40 +34,45 @@ defmodule MoolahWeb.Components.Stepper do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :margin, :string, default: "medium", doc: "Determines the element margin"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :space, :string, default: "", doc: "Space between items"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:margin, :string, default: "medium", doc: "Determines the element margin")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:space, :string, default: "", doc: "Space between items")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :max_width, :string, default: "", doc: "Determines the style of element max width"
-  attr :separator_size, :string, default: "extra_small", doc: "Determines the separator size"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :vertical, :boolean, default: false, doc: "Determines whether element is vertical"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :col_step, :boolean, default: false, doc: "Custom CSS class for additional styling"
+  attr(:max_width, :string, default: "", doc: "Determines the style of element max width")
+  attr(:separator_size, :string, default: "extra_small", doc: "Determines the separator size")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:vertical, :boolean, default: false, doc: "Determines whether element is vertical")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:col_step, :boolean, default: false, doc: "Custom CSS class for additional styling")
 
-  attr :col_step_position, :string,
+  attr(:col_step_position, :string,
     default: "start",
     doc: "Custom CSS class for additional styling"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   @spec stepper(map()) :: Phoenix.LiveView.Rendered.t()
   def stepper(%{vertical: true} = assigns) do
@@ -138,64 +143,75 @@ defmodule MoolahWeb.Components.Stepper do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :separator_class, :string,
+  attr(:separator_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to separator"
+  )
 
-  attr :icon_wrapper_class, :string,
+  attr(:icon_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to separator"
+  )
 
-  attr :number_wrapper_class, :string,
+  attr(:number_wrapper_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to separator"
+  )
 
-  attr :content_class, :string,
+  attr(:content_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to content"
+  )
 
-  attr :description_class, :string,
+  attr(:description_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to description"
+  )
 
-  attr :title_class, :string,
+  attr(:title_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to title"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :step, :string,
+  attr(:step, :string,
     values: ["none", "current", "loading", "completed", "canceled"],
     default: "none"
+  )
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  attr :title, :string, default: nil, doc: "Specifies the title of the element"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :step_number, :integer, default: 1
-  attr :vertical, :boolean, default: false, doc: "Determines whether element is vertical"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  attr(:title, :string, default: nil, doc: "Specifies the title of the element")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:step_number, :integer, default: 1)
+  attr(:vertical, :boolean, default: false, doc: "Determines whether element is vertical")
 
-  attr :clickable, :boolean,
+  attr(:clickable, :boolean,
     default: true,
     doc: "Determines if the element can be activated on click"
+  )
 
-  attr :reverse, :boolean, default: false, doc: "Switches the order of the element and label"
-  attr :space, :string, default: "small", doc: "Switches the order of the element and label"
-  attr :border, :string, default: "", doc: "Determines border style"
+  attr(:reverse, :boolean, default: false, doc: "Switches the order of the element and label")
+  attr(:space, :string, default: "small", doc: "Switches the order of the element and label")
+  attr(:border, :string, default: "", doc: "Determines border style")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   def stepper_section(%{vertical: true} = assigns) do
     ~H"""

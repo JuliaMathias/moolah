@@ -49,97 +49,114 @@ defmodule MoolahWeb.Components.Pagination do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :total, :integer, required: true, doc: ""
-  attr :active, :integer, default: 1, doc: ""
-  attr :siblings, :integer, default: 1, doc: ""
-  attr :boundaries, :integer, default: 1, doc: ""
-  attr :on_select, JS, default: %JS{}, doc: "Custom JS module for on_select action"
-  attr :on_first, JS, default: %JS{}, doc: "Custom JS module for on_first action"
-  attr :on_last, JS, default: %JS{}, doc: "Custom JS module for on_last action"
-  attr :on_next, JS, default: %JS{}, doc: "Custom JS module for on_next action"
-  attr :on_previous, JS, default: %JS{}, doc: "Custom JS module for on_previous action"
+  attr(:total, :integer, required: true, doc: "")
+  attr(:active, :integer, default: 1, doc: "")
+  attr(:siblings, :integer, default: 1, doc: "")
+  attr(:boundaries, :integer, default: 1, doc: "")
+  attr(:on_select, JS, default: %JS{}, doc: "Custom JS module for on_select action")
+  attr(:on_first, JS, default: %JS{}, doc: "Custom JS module for on_first action")
+  attr(:on_last, JS, default: %JS{}, doc: "Custom JS module for on_last action")
+  attr(:on_next, JS, default: %JS{}, doc: "Custom JS module for on_next action")
+  attr(:on_previous, JS, default: %JS{}, doc: "Custom JS module for on_previous action")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "medium",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :space, :string, default: "small", doc: "Space between items"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :border, :string, default: "extra_small", doc: "Determines the border radius"
+  attr(:space, :string, default: "small", doc: "Space between items")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:border, :string, default: "extra_small", doc: "Determines the border radius")
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
 
-  attr :separator, :map,
+  attr(:separator, :map,
     default: %{type: :icon, value: "hero-ellipsis-horizontal"},
     doc: "Separator between page groups"
+  )
 
-  attr :first_label, :map,
+  attr(:first_label, :map,
     default: %{type: :icon, value: "hero-chevron-double-left"},
     doc: "Label for the 'first' button"
+  )
 
-  attr :last_label, :map,
+  attr(:last_label, :map,
     default: %{type: :icon, value: "hero-chevron-double-right"},
     doc: "Label for the 'last' button"
+  )
 
-  attr :next_label, :map,
+  attr(:next_label, :map,
     default: %{type: :icon, value: "hero-chevron-right"},
     doc: "Label for the 'next' button"
+  )
 
-  attr :previous_label, :map,
+  attr(:previous_label, :map,
     default: %{type: :icon, value: "hero-chevron-left"},
     doc: "Label for the 'previous' button"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :first_label_class, :string,
+  attr(:first_label_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to first button"
+  )
 
-  attr :next_label_class, :string,
+  attr(:next_label_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to next button"
+  )
 
-  attr :last_label_class, :string,
+  attr(:last_label_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to last button"
+  )
 
-  attr :prev_label_class, :string,
+  attr(:prev_label_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to prveious button"
+  )
 
-  attr :pages_label_class, :string,
+  attr(:pages_label_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to pages buttons"
+  )
 
-  attr :seperator_class, :string,
+  attr(:seperator_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to pages buttons"
+  )
 
-  attr :separator_icon_class, :string,
+  attr(:separator_icon_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to icon of seperator"
+  )
 
-  attr :separator_text_class, :string,
+  attr(:separator_text_class, :string,
     default: nil,
     doc: "Custom CSS class for additional styling to text of seperator"
+  )
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{},
     doc: "A map of additional parameters used for element configuration"
+  )
 
-  slot :start_items, required: false, doc: "Determines the start items which accept heex"
-  slot :end_items, required: false, doc: "Determines the end items which accept heex"
+  slot(:start_items, required: false, doc: "Determines the start items which accept heex")
+  slot(:end_items, required: false, doc: "Determines the end items which accept heex")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(disabled hide_one_page show_edges hide_controls grouped),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def pagination(
         %{siblings: siblings, boundaries: boundaries, total: total, active: active} = assigns
@@ -242,16 +259,17 @@ defmodule MoolahWeb.Components.Pagination do
   end
 
   @doc type: :component
-  attr :params, :map,
+  attr(:params, :map,
     default: %{},
     doc: "A map of additional parameters used for element configuration"
+  )
 
-  attr :page, :list, required: true, doc: "Specifies pagination pages"
-  attr :on_action, JS, default: %JS{}, doc: "Custom JS module for on_action action"
-  attr :label, :string, required: false, doc: "Icon displayed alongside of an item"
-  attr :disabled, :boolean, required: false, doc: "Specifies whether the element is disabled"
-  attr :aria_label, :string, default: nil, doc: "Accessible label for screen readers"
-  attr :class, :string, default: nil, doc: "Custom class for addition styling"
+  attr(:page, :list, required: true, doc: "Specifies pagination pages")
+  attr(:on_action, JS, default: %JS{}, doc: "Custom JS module for on_action action")
+  attr(:label, :string, required: false, doc: "Icon displayed alongside of an item")
+  attr(:disabled, :boolean, required: false, doc: "Specifies whether the element is disabled")
+  attr(:aria_label, :string, default: nil, doc: "Accessible label for screen readers")
+  attr(:class, :string, default: nil, doc: "Custom class for addition styling")
 
   defp item_button(%{on_action: {"select", _on_action}} = assigns) do
     ~H"""

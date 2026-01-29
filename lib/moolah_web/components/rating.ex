@@ -32,35 +32,40 @@ defmodule MoolahWeb.Components.Rating do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :gap, :string, default: "small", doc: "Custom gap style"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:gap, :string, default: "small", doc: "Custom gap style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :color, :string, default: "warning", doc: "Determines color theme"
-  attr :count, :integer, default: 5, doc: "Number of stars to display"
-  attr :select, :any, default: 0, doc: "Integer or float value for selected stars"
+  attr(:color, :string, default: "warning", doc: "Determines color theme")
+  attr(:count, :integer, default: 5, doc: "Number of stars to display")
+  attr(:select, :any, default: 0, doc: "Integer or float value for selected stars")
 
-  attr :params, :map,
+  attr(:params, :map,
     default: %{},
     doc: "A map of additional parameters used for element configuration"
+  )
 
-  attr :on_action, JS, default: %JS{}, doc: "Custom JS module for on_action action"
+  attr(:on_action, JS, default: %JS{}, doc: "Custom JS module for on_action action")
 
-  attr :interactive, :boolean,
+  attr(:interactive, :boolean,
     default: false,
     doc: "If true, stars are wrapped in a button for selecting a rating"
+  )
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def rating(assigns) do
     ~H"""

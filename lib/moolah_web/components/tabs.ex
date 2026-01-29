@@ -62,60 +62,64 @@ defmodule MoolahWeb.Components.Tabs do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     required: true,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :color, :string, default: "base", doc: "Determines color theme"
-  attr :border, :string, default: "none", doc: "Determines border style"
-  attr :tab_border_size, :string, default: "small", doc: "Determines border style for tab"
-  attr :full_width_tab, :boolean, default: false, doc: "Determines border style for tab"
-  attr :hide_list_border, :boolean, default: false, doc: "Determines border style for tab"
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:color, :string, default: "base", doc: "Determines color theme")
+  attr(:border, :string, default: "none", doc: "Determines border style")
+  attr(:tab_border_size, :string, default: "small", doc: "Determines border style for tab")
+  attr(:full_width_tab, :boolean, default: false, doc: "Determines border style for tab")
+  attr(:hide_list_border, :boolean, default: false, doc: "Determines border style for tab")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "small",
     doc: "",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :gap, :string, default: "", doc: "Determines gap for tabs"
-  attr :rounded, :string, default: "none", doc: "Determines the border radius"
+  attr(:gap, :string, default: "", doc: "Determines gap for tabs")
+  attr(:rounded, :string, default: "none", doc: "Determines the border radius")
 
-  attr :font_weight, :string,
+  attr(:font_weight, :string,
     default: "font-normal",
     doc: "Determines custom class for the font weight"
+  )
 
-  attr :padding, :string, default: "extra_small", doc: "Determines padding for items"
-  attr :content_padding, :string, default: "extra_small", doc: "Determines padding for items"
-  attr :triggers_position, :string, default: "extra_small", doc: ""
-  attr :vertical, :boolean, default: false, doc: "Determines whether element is vertical"
-  attr :placement, :string, default: "start", doc: ""
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:padding, :string, default: "extra_small", doc: "Determines padding for items")
+  attr(:content_padding, :string, default: "extra_small", doc: "Determines padding for items")
+  attr(:triggers_position, :string, default: "extra_small", doc: "")
+  attr(:vertical, :boolean, default: false, doc: "Determines whether element is vertical")
+  attr(:placement, :string, default: "start", doc: "")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :tab, required: true do
-    attr :icon, :string, doc: "Icon displayed alongside of an item"
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :padding, :string, doc: "Determines padding for items"
-    attr :icon_class, :string, doc: "Determines custom class for the icon"
-    attr :icon_position, :string, doc: "Determines icon position"
-    attr :active, :boolean, doc: "Indicates whether the element is currently active and visible"
-    attr :badge, :string, doc: "Add badge to tab"
-    attr :badge_color, :string, doc: "badge color"
-    attr :badge_position, :string, doc: "badge position"
-    attr :badge_size, :string, doc: "badge size"
-    attr :badge_variant, :string, doc: "badge color varinat"
-    attr :on_select, :any, doc: "Custom JS module for on_select action"
+    attr(:icon, :string, doc: "Icon displayed alongside of an item")
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:padding, :string, doc: "Determines padding for items")
+    attr(:icon_class, :string, doc: "Determines custom class for the icon")
+    attr(:icon_position, :string, doc: "Determines icon position")
+    attr(:active, :boolean, doc: "Indicates whether the element is currently active and visible")
+    attr(:badge, :string, doc: "Add badge to tab")
+    attr(:badge_color, :string, doc: "badge color")
+    attr(:badge_position, :string, doc: "badge position")
+    attr(:badge_size, :string, doc: "badge size")
+    attr(:badge_variant, :string, doc: "badge color varinat")
+    attr(:on_select, :any, doc: "Custom JS module for on_select action")
   end
 
   slot :panel, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
   end
 
   def tabs(%{vertical: true} = assigns) do

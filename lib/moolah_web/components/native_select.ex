@@ -54,61 +54,67 @@ defmodule MoolahWeb.Components.NativeSelect do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :color, :string, default: "natural", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
-  attr :rounded, :string, default: "small", doc: "Determines the border radius"
-  attr :variant, :string, default: "base", doc: "Determines the style"
-  attr :description, :string, default: nil, doc: "Determines a short description"
-  attr :space, :string, default: "medium", doc: "Space between items"
-  attr :min_height, :string, default: nil, doc: "Determines min height style"
-  attr :description_class, :string, default: "text-[12px]", doc: "Custom classes for description"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper"
-  attr :select_class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:color, :string, default: "natural", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
+  attr(:rounded, :string, default: "small", doc: "Determines the border radius")
+  attr(:variant, :string, default: "base", doc: "Determines the style")
+  attr(:description, :string, default: nil, doc: "Determines a short description")
+  attr(:space, :string, default: "medium", doc: "Space between items")
+  attr(:min_height, :string, default: nil, doc: "Determines min height style")
+  attr(:description_class, :string, default: "text-[12px]", doc: "Custom classes for description")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:field_wrapper_class, :string, default: nil, doc: "Custom CSS class field wrapper")
+  attr(:select_class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :description_wrapper_class, :string,
+  attr(:description_wrapper_class, :string,
     default: nil,
     doc: "Custom classes for description wrapper"
+  )
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_large",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :ring, :boolean,
+  attr(:ring, :boolean,
     default: true,
     doc:
       "Determines a ring border on focused input, utilities for creating outline rings with box-shadows."
+  )
 
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
 
-  attr :multiple, :boolean,
+  attr(:multiple, :boolean,
     default: false,
     doc: "Specifies if the select input allows multiple selections"
+  )
 
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
 
-  slot :inner_block, required: false, doc: "Inner block that renders HEEx content"
+  slot(:inner_block, required: false, doc: "Inner block that renders HEEx content")
 
   slot :option, required: false do
-    attr :value, :string, doc: "Value of each select option"
-    attr :selected, :boolean, required: false, doc: "Specifies this option is seleted"
-    attr :disabled, :string, required: false, doc: "Specifies this option is disabled"
+    attr(:value, :string, doc: "Value of each select option")
+    attr(:selected, :boolean, required: false, doc: "Specifies this option is seleted")
+    attr(:disabled, :string, required: false, doc: "Specifies this option is disabled")
   end
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete disabled form readonly multiple required title autofocus tabindex),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   @spec native_select(map()) :: Phoenix.LiveView.Rendered.t()
   def native_select(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
@@ -189,17 +195,18 @@ defmodule MoolahWeb.Components.NativeSelect do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
   slot :option, required: false, doc: "Option slot for select" do
-    attr :value, :string, doc: "Value of each select option"
-    attr :selected, :boolean, required: false, doc: "Specifies this option is seleted"
-    attr :disabled, :string, required: false, doc: "Specifies this option is disabled"
+    attr(:value, :string, doc: "Value of each select option")
+    attr(:selected, :boolean, required: false, doc: "Specifies this option is seleted")
+    attr(:disabled, :string, required: false, doc: "Specifies this option is disabled")
   end
 
   def select_option_group(assigns) do
@@ -219,9 +226,9 @@ defmodule MoolahWeb.Components.NativeSelect do
     """
   end
 
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -231,8 +238,8 @@ defmodule MoolahWeb.Components.NativeSelect do
     """
   end
 
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

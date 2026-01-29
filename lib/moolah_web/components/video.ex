@@ -71,40 +71,43 @@ defmodule MoolahWeb.Components.Video do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :thumbnail, :string, default: nil, doc: "Determines thumbnail for video"
-  attr :width, :string, default: "full", doc: "Determines the element width"
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :height, :string, default: "auto", doc: "Determines the element width"
-  attr :caption_size, :string, default: "extra_small", doc: "Determines the video caption size"
+  attr(:thumbnail, :string, default: nil, doc: "Determines thumbnail for video")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:height, :string, default: "auto", doc: "Determines the element width")
+  attr(:caption_size, :string, default: "extra_small", doc: "Determines the video caption size")
 
-  attr :caption_background, :string,
+  attr(:caption_background, :string,
     default: "dark",
     doc: "Determines the video caption bakcground"
+  )
 
-  attr :caption_opacity, :string, default: "solid", doc: "Determines the video caption opacity"
-  attr :ratio, :string, default: "auto", doc: "Determines the video ratio"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:caption_opacity, :string, default: "solid", doc: "Determines the video caption opacity")
+  attr(:ratio, :string, default: "auto", doc: "Determines the video ratio")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(controls autoplay loop muted preload),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :source, required: true, doc: "Determines media source" do
-    attr :src, :string, required: true, doc: "Media link"
-    attr :type, :string, required: true, doc: "Media type"
+    attr(:src, :string, required: true, doc: "Media link")
+    attr(:type, :string, required: true, doc: "Media type")
   end
 
   slot :track, required: false, doc: "Determines media subtitle" do
-    attr :src, :string, required: true, doc: "Subtitle link"
-    attr :label, :string, doc: "Subtitle Lable"
-    attr :kind, :string, doc: "Subtitle Kind"
-    attr :srclang, :string, doc: "Subtitle language link or symbol"
-    attr :default, :boolean, doc: "Determines whether this subtitle is default"
+    attr(:src, :string, required: true, doc: "Subtitle link")
+    attr(:label, :string, doc: "Subtitle Lable")
+    attr(:kind, :string, doc: "Subtitle Kind")
+    attr(:srclang, :string, doc: "Subtitle language link or symbol")
+    attr(:default, :boolean, doc: "Determines whether this subtitle is default")
   end
 
   def video(assigns) do

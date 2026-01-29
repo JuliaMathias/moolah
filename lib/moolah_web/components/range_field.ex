@@ -54,46 +54,50 @@ defmodule MoolahWeb.Components.RangeField do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  attr :label_class, :string, default: nil, doc: "Custom CSS class for the label styling"
-  attr :color, :string, default: "primary", doc: "Determines color theme"
-  attr :border, :string, default: "extra_small", doc: "Determines border style"
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  attr(:label_class, :string, default: nil, doc: "Custom CSS class for the label styling")
+  attr(:color, :string, default: "primary", doc: "Determines color theme")
+  attr(:border, :string, default: "extra_small", doc: "Determines border style")
 
-  attr :size, :string,
+  attr(:size, :string,
     default: "extra_small",
     doc:
       "Determines the overall size of the elements, including padding, font size, and other items"
+  )
 
-  attr :appearance, :string, default: "default", doc: "custom, default"
-  attr :width, :string, default: "full", doc: "Determines the element width"
+  attr(:appearance, :string, default: "default", doc: "custom, default")
+  attr(:width, :string, default: "full", doc: "Determines the element width")
 
-  attr :ring, :boolean,
+  attr(:ring, :boolean,
     default: true,
     doc:
       "Determines a ring border on focused input, utilities for creating outline rings with box-shadows."
+  )
 
-  attr :reverse, :boolean, default: false, doc: "Switches the order of the element and label"
-  attr :checked, :boolean, default: false, doc: "Specifies if the element is checked by default"
-  attr :error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages"
-  attr :label, :string, default: nil, doc: "Specifies text for the label"
-  attr :errors, :list, default: [], doc: "List of error messages to be displayed"
-  attr :name, :any, doc: "Name of input"
-  attr :value, :any, doc: "Value of input"
+  attr(:reverse, :boolean, default: false, doc: "Switches the order of the element and label")
+  attr(:checked, :boolean, default: false, doc: "Specifies if the element is checked by default")
+  attr(:error_icon, :string, default: nil, doc: "Icon to be displayed alongside error messages")
+  attr(:label, :string, default: nil, doc: "Specifies text for the label")
+  attr(:errors, :list, default: [], doc: "List of error messages to be displayed")
+  attr(:name, :any, doc: "Name of input")
+  attr(:value, :any, doc: "Value of input")
 
-  attr :field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form"
+  attr(:field, Phoenix.HTML.FormField, doc: "a form field struct retrieved from the form")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     include: ~w(autocomplete disabled form readonly min max step required title autofocus),
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   slot :range_value, required: false do
-    attr :class, :string, doc: "Custom CSS class for additional styling"
-    attr :position, :any, required: false, doc: "Determines the element position"
+    attr(:class, :string, doc: "Custom CSS class for additional styling")
+    attr(:position, :any, required: false, doc: "Determines the element position")
   end
 
   @spec range_field(map()) :: Phoenix.LiveView.Rendered.t()
@@ -190,9 +194,9 @@ defmodule MoolahWeb.Components.RangeField do
   end
 
   @doc type: :component
-  attr :for, :string, default: nil, doc: "Specifies the form which is associated with"
-  attr :class, :string, default: nil, doc: "Custom CSS class for additional styling"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:for, :string, default: nil, doc: "Specifies the form which is associated with")
+  attr(:class, :string, default: nil, doc: "Custom CSS class for additional styling")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp label(assigns) do
     ~H"""
@@ -203,8 +207,8 @@ defmodule MoolahWeb.Components.RangeField do
   end
 
   @doc type: :component
-  attr :icon, :string, default: nil, doc: "Icon displayed alongside of an item"
-  slot :inner_block, required: true, doc: "Inner block that renders HEEx content"
+  attr(:icon, :string, default: nil, doc: "Icon displayed alongside of an item")
+  slot(:inner_block, required: true, doc: "Inner block that renders HEEx content")
 
   defp error(assigns) do
     ~H"""

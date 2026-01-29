@@ -26,51 +26,57 @@ defmodule MoolahWeb.Components.Image do
   ```
   """
   @doc type: :component
-  attr :id, :string,
+  attr(:id, :string,
     default: nil,
     doc: "A unique identifier is used to manage state and interaction"
+  )
 
-  attr :src, :string, required: true, doc: "Media link"
-  attr :alt, :string, default: nil, doc: "Media link description"
-  attr :srcset, :string, default: nil, doc: "Allows you to specify a list of different images"
+  attr(:src, :string, required: true, doc: "Media link")
+  attr(:alt, :string, default: nil, doc: "Media link description")
+  attr(:srcset, :string, default: nil, doc: "Allows you to specify a list of different images")
 
-  attr :loading, :any,
+  attr(:loading, :any,
     values: ["eager", "lazy", nil],
     default: nil,
     doc: "eager: is default, lazy"
+  )
 
-  attr :referrerpolicy, :string, default: nil, doc: ""
+  attr(:referrerpolicy, :string, default: nil, doc: "")
 
-  attr :fetchpriority, :any,
+  attr(:fetchpriority, :any,
     values: ["high", "low", "auto", nil],
     default: nil,
     doc: "high, low, auto is default"
+  )
 
-  attr :width, :integer, default: nil, doc: "Determines width style"
-  attr :height, :integer, default: nil, doc: "Determines width height"
+  attr(:width, :integer, default: nil, doc: "Determines width style")
+  attr(:height, :integer, default: nil, doc: "Determines width height")
 
-  attr :sizes, :string,
+  attr(:sizes, :string,
     default: nil,
     doc:
       "Specifies the intended display size of the image in the layout for different viewport conditions"
+  )
 
-  attr :ismap, :string, default: nil, doc: "Make the image act as a server-side image map"
+  attr(:ismap, :string, default: nil, doc: "Make the image act as a server-side image map")
 
-  attr :filter, :string, default: "", doc: "Utilities for applying filters"
-  attr :filter_size, :string, default: "", doc: "Utilities for applying filters sizes"
+  attr(:filter, :string, default: "", doc: "Utilities for applying filters")
+  attr(:filter_size, :string, default: "", doc: "Utilities for applying filters sizes")
 
-  attr :decoding, :string,
+  attr(:decoding, :string,
     default: nil,
     doc:
       "Refers to the process of converting encoded or encrypted data back into its original format"
+  )
 
-  attr :rounded, :string, default: "", doc: "Determines the border radius"
-  attr :shadow, :string, default: "", doc: "Determines shadow style"
-  attr :class, :any, default: nil, doc: "Custom CSS class for additional styling"
+  attr(:rounded, :string, default: "", doc: "Determines the border radius")
+  attr(:shadow, :string, default: "", doc: "Determines shadow style")
+  attr(:class, :any, default: nil, doc: "Custom CSS class for additional styling")
 
-  attr :rest, :global,
+  attr(:rest, :global,
     doc:
       "Global attributes can define defaults which are merged with attributes provided by the caller"
+  )
 
   def image(assigns) do
     ~H"""
