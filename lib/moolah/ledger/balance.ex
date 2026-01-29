@@ -24,6 +24,11 @@ defmodule Moolah.Ledger.Balance do
   actions do
     defaults [:read]
 
+    destroy :destroy do
+      primary? true
+      require_atomic? false
+    end
+
     create :upsert_balance do
       accept [:balance, :account_id, :transfer_id]
       upsert? true
