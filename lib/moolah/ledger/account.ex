@@ -17,11 +17,6 @@ defmodule Moolah.Ledger.Account do
     balance_resource Moolah.Ledger.Balance
   end
 
-  account do
-    transfer_resource Moolah.Ledger.Transfer
-    balance_resource Moolah.Ledger.Balance
-  end
-
   postgres do
     table "ledger_accounts"
     repo Moolah.Repo
@@ -52,7 +47,14 @@ defmodule Moolah.Ledger.Account do
     end
 
     attribute :account_type, :atom do
-      constraints one_of: [:bank_account, :money_account, :investment_account]
+      constraints one_of: [
+                    :bank_account,
+                    :money_account,
+                    :investment_account,
+                    :expense_category,
+                    :income_category
+                  ]
+
       allow_nil? false
     end
 
