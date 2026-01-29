@@ -164,7 +164,13 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
 
       # Calculate exchange rate: source / target
       # e.g. 530 / 100 = 5.3
-      exchange_rate = Decimal.div(source_amount, amount)
+      # Guard against division by zero
+      exchange_rate =
+        if Decimal.is_decimal(amount) and Decimal.compare(amount, 0) == :gt do
+          Decimal.div(source_amount, amount)
+        else
+          Decimal.new(0)
+        end
 
       Moolah.Repo.transaction(fn ->
         with {:ok, s_transfer, s_notifications} <-
