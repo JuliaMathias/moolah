@@ -85,7 +85,7 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
     end
   end
 
-  @spec destroy_and_get_notifications(Ecto.UUID.t() | nil) ::
+  @spec destroy_and_get_notifications(AshDoubleEntry.ULID.t() | nil) ::
           {:ok, [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp destroy_and_get_notifications(nil), do: {:ok, []}
 
