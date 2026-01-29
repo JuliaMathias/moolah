@@ -40,4 +40,53 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
         error
     end
   end
+
+  @doc """
+  Gets or creates a trading account for a currency.
+
+  Trading accounts are used in double-entry bookkeeping to handle currency
+  conversions and multi-currency transactions. Each currency has its own
+  trading account with a unique identifier.
+
+  ## Parameters
+  - `currency` - The currency code (e.g., "BRL", "USD", "EUR")
+
+  ## Returns
+  Returns the `Moolah.Ledger.Account` struct for the trading account.
+  Raises an error if the database operation fails.
+
+  ## Examples
+
+      iex> get_or_create_trading_account!("BRL")
+      %Moolah.Ledger.Account{identifier: "trading:BRL", account_type: :trading_account, ...}
+
+      iex> get_or_create_trading_account!("USD")
+      %Moolah.Ledger.Account{identifier: "trading:USD", account_type: :trading_account, ...}
+
+  ## Notes
+  - The account identifier follows the format: `"trading:\#{currency}"`
+  - This function uses bang (!) versions and will raise on errors
+  - If the account already exists, it returns the existing account
+  """
+  @spec get_or_create_trading_account!(String.t()) :: Ash.Resource.record()
+  def get_or_create_trading_account!(currency) do
+    identifier = "trading:#{currency}"
+
+    Moolah.Ledger.Account
+    |> Ash.Query.filter(identifier == ^identifier)
+    |> Ash.read_one!()
+    |> case do
+      nil ->
+        Moolah.Ledger.Account
+        |> Ash.Changeset.for_create(:open, %{
+          identifier: identifier,
+          currency: currency,
+          account_type: :trading_account
+        })
+        |> Ash.create!()
+
+      account ->
+        account
+    end
+  end
 end
