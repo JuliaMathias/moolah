@@ -52,7 +52,8 @@ defmodule Moolah.Ledger.Account do
                     :money_account,
                     :investment_account,
                     :expense_category,
-                    :income_category
+                    :income_category,
+                    :trading_account
                   ]
 
       allow_nil? false
