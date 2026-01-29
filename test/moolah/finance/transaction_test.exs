@@ -421,6 +421,39 @@ defmodule Moolah.Finance.TransactionTest do
     assert error.message == "Source Amount can only be set for Transfer transactions"
   end
 
+  test "Validation: Forbidden zero or negative amount", %{
+    bank: bank,
+    income_area: income_area
+  } do
+    # Zero amount
+    changeset_zero =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :credit,
+        account_id: bank.id,
+        life_area_category_id: income_area.id,
+        amount: Money.new(0, :BRL),
+        description: "Zero Salary"
+      })
+
+    assert {:error, %Ash.Error.Invalid{errors: [error_zero]}} = Ash.create(changeset_zero)
+    assert error_zero.message == "Transaction amount must be greater than 0"
+
+    # Negative amount
+    changeset_neg =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :credit,
+        account_id: bank.id,
+        life_area_category_id: income_area.id,
+        amount: Money.new(-10, :BRL),
+        description: "Negative Salary"
+      })
+
+    assert {:error, %Ash.Error.Invalid{errors: [error_neg]}} = Ash.create(changeset_neg)
+    assert error_neg.message == "Transaction amount must be greater than 0"
+  end
+
   @spec assert_balance(Ash.Resource.record(), Money.t()) :: boolean()
   defp assert_balance(account, expected_money) do
     balance = get_balance(account)

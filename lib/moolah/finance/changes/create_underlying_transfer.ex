@@ -89,10 +89,12 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     case type do
       :debit ->
         # Debits use Budget Category for the virtual account
-        create_debit_transfer(account_id, budget_category_id, source_amount, source_currency)
+        # Always use primary amount/currency for debits to maintain integrity
+        create_debit_transfer(account_id, budget_category_id, amount, currency)
 
       :credit ->
         # Credits use Life Area Category for the virtual account (Income)
+        # Always use primary amount/currency for credits
         create_credit_transfer(account_id, life_area_category_id, amount, currency)
 
       :transfer ->

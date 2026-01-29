@@ -84,6 +84,10 @@ defmodule Moolah.Finance.Transaction do
     end
 
     validate {Moolah.Finance.Validations.CurrencyMatch, []}
+
+    validate compare(:amount, greater_than: 0) do
+      message "Transaction amount must be greater than 0"
+    end
   end
 
   attributes do
