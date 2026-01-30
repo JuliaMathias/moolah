@@ -5,7 +5,8 @@ defmodule Moolah.Finance.Transaction do
 
   use Ash.Resource,
     domain: Moolah.Finance,
-    data_layer: AshPostgres.DataLayer
+    data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer]
 
   postgres do
     table "transactions"
@@ -44,6 +45,13 @@ defmodule Moolah.Finance.Transaction do
       change Moolah.Finance.Changes.UpdateUnderlyingTransfer
       require_atomic? false
       transaction? true
+    end
+  end
+
+  policies do
+    # Allow everyone to interact with transactions for now
+    policy action_type([:read, :create, :update]) do
+      authorize_if always()
     end
   end
 
