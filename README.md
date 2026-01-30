@@ -93,8 +93,8 @@ We are actively developing Moolah. Here is what is coming next:
 
 ### Prerequisites
 
-- Elixir 1.16+
-- Erlang/OTP 26+
+- Elixir 1.19+
+- Erlang/OTP 28+
 - PostgreSQL 14+
 - Node.js (for asset management)
 
