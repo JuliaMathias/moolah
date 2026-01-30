@@ -65,22 +65,31 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
           end
 
         # Queue destroy of old transfers and send all notifications
-        changeset
-        |> Changeset.after_action(fn _changeset, final_result ->
-          # Destroy both old legs if they exist
-          with {:ok, n1} <- destroy_and_get_notifications(old_transfer_id),
-               {:ok, n2} <- destroy_and_get_notifications(old_source_transfer_id) do
-            # notifications from CreateUnderlyingTransfer + notifications from destruction
-            Ash.Notifier.notify(notifications ++ n1 ++ n2)
-            {:ok, final_result}
-          else
-            {:error, error} -> {:error, error}
-          end
-        end)
+        queue_transfer_cleanup(changeset, old_transfer_id, old_source_transfer_id, notifications)
 
       {:error, error} ->
         Changeset.add_error(changeset, error)
     end
+  end
+
+  @spec queue_transfer_cleanup(
+          changeset(),
+          AshDoubleEntry.ULID.t() | nil,
+          AshDoubleEntry.ULID.t() | nil,
+          [Ash.Notifier.Notification.t()]
+        ) :: changeset()
+  defp queue_transfer_cleanup(changeset, old_transfer_id, old_source_transfer_id, notifications) do
+    Changeset.after_action(changeset, fn _changeset, final_result ->
+      # Destroy both old legs if they exist
+      with {:ok, n1} <- destroy_and_get_notifications(old_transfer_id),
+           {:ok, n2} <- destroy_and_get_notifications(old_source_transfer_id) do
+        # notifications from CreateUnderlyingTransfer + notifications from destruction
+        Ash.Notifier.notify(notifications ++ n1 ++ n2)
+        {:ok, final_result}
+      else
+        {:error, error} -> {:error, error}
+      end
+    end)
   end
 
   @spec destroy_and_get_notifications(AshDoubleEntry.ULID.t() | nil) ::
