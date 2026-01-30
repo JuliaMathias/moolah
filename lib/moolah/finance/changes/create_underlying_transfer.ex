@@ -182,10 +182,19 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
       # e.g. 530 / 100 = 5.3
       # Guard against division by zero
       exchange_rate =
-        if Decimal.is_decimal(amount) and Decimal.compare(amount, 0) == :gt do
-          Decimal.div(source_amount, amount)
-        else
-          Decimal.new(0)
+        try do
+          amount_dec = Decimal.new(amount)
+          source_dec = Decimal.new(source_amount)
+
+          if Decimal.compare(amount_dec, 0) == :gt do
+            Decimal.div(source_dec, amount_dec)
+          else
+            Decimal.new(0)
+          end
+        rescue
+          ArgumentError ->
+            # Fallback if either amount cannot be coerced to Decimal
+            Decimal.new(0)
         end
 
       Moolah.Repo.transaction(fn ->
