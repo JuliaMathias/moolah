@@ -146,7 +146,7 @@ defmodule Moolah.Finance.Validations.CurrencyMatchTest do
              end)
     end
 
-    test "succeeds when currencies match they respective accounts in multi-currency", %{
+    test "succeeds when currencies match their respective accounts in multi-currency", %{
       bank: bank,
       dollar: dollar
     } do

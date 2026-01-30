@@ -6,7 +6,7 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
   In this specific context, when a high-level `Transaction` is updated (e.g., amount changed),
   this Change ensures that the low-level `Moolah.Ledger.Transfer` is also updated to match.
   This guarantees that our user-facing transaction history and our double-entry ledger always
-  stay strictly closely synchronized.
+   stay closely synchronized.
   """
   use Ash.Resource.Change
 
