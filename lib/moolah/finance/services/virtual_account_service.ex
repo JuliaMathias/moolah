@@ -3,8 +3,6 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
   Manages creation and retrieval of virtual accounts for double-entry bookkeeping.
   """
 
-  require Ash.Query
-
   @doc """
   Gets or creates a virtual account for a category.
 
