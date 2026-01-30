@@ -32,7 +32,7 @@ jobs:
           elixir-version: ${{ env.ELIXIR_VERSION }}
           otp-version: ${{ env.OTP_VERSION }}
 
-      - name: Restore dependencies cache
+      - name: Restore dependencies and build cache
         uses: actions/cache@v4
         with:
           path: |
