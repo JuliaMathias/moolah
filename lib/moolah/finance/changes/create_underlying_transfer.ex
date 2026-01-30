@@ -70,11 +70,13 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   def create_transfer_for_transaction(changeset) do
     type = Changeset.get_attribute(changeset, :transaction_type)
     amount_money = Changeset.get_attribute(changeset, :amount)
+    date = Changeset.get_attribute(changeset, :date)
 
-    if is_nil(amount_money) do
-      {:error, "Transaction amount is required"}
+    if is_nil(amount_money) or is_nil(date) do
+      {:error, "Transaction amount and date are required"}
     else
       source_amount_money = Changeset.get_attribute(changeset, :source_amount)
+      timestamp = date |> DateTime.new!(~T[00:00:00], "Etc/UTC")
 
       # Extract amount and currency
       amount = amount_money.amount
@@ -94,12 +96,12 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
         :debit ->
           # Debits use Budget Category for the virtual account
           # Always use primary amount/currency for debits to maintain integrity
-          create_debit_transfer(account_id, budget_category_id, amount, currency)
+          create_debit_transfer(account_id, budget_category_id, amount, currency, timestamp)
 
         :credit ->
           # Credits use Life Area Category for the virtual account (Income)
           # Always use primary amount/currency for credits
-          create_credit_transfer(account_id, life_area_category_id, amount, currency)
+          create_credit_transfer(account_id, life_area_category_id, amount, currency, timestamp)
 
         :transfer ->
           create_account_transfer(
@@ -108,20 +110,22 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
             amount,
             currency,
             source_amount,
-            source_currency
+            source_currency,
+            timestamp
           )
       end
     end
   end
 
-  @spec create_debit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom()) ::
+  @spec create_debit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom(), DateTime.t()) ::
           {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
-  defp create_debit_transfer(account_id, category_id, amount, currency) do
+  defp create_debit_transfer(account_id, category_id, amount, currency, timestamp) do
     with {:ok, expense_account} <-
            VirtualAccountService.get_or_create(category_id, :expense, to_string(currency)) do
       Moolah.Ledger.Transfer
       |> Ash.Changeset.for_create(:transfer, %{
         amount: Money.new(amount, currency),
+        timestamp: timestamp,
         from_account_id: account_id,
         to_account_id: expense_account.id
       })
@@ -129,14 +133,15 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     end
   end
 
-  @spec create_credit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom()) ::
+  @spec create_credit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom(), DateTime.t()) ::
           {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
-  defp create_credit_transfer(account_id, category_id, amount, currency) do
+  defp create_credit_transfer(account_id, category_id, amount, currency, timestamp) do
     with {:ok, income_account} <-
            VirtualAccountService.get_or_create(category_id, :income, to_string(currency)) do
       Moolah.Ledger.Transfer
       |> Ash.Changeset.for_create(:transfer, %{
         amount: Money.new(amount, currency),
+        timestamp: timestamp,
         from_account_id: income_account.id,
         to_account_id: account_id
       })
@@ -150,7 +155,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
           Decimal.t(),
           atom(),
           Decimal.t(),
-          atom()
+          atom(),
+          DateTime.t()
         ) ::
           {:ok, Ash.Resource.record() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_account_transfer(
@@ -159,7 +165,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
          amount,
          currency,
          source_amount,
-         source_currency
+         source_currency,
+         timestamp
        ) do
     if currency != source_currency do
       # Multi-currency: Trading Account Pattern
@@ -186,6 +193,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
                Moolah.Ledger.Transfer
                |> Ash.Changeset.for_create(:transfer, %{
                  amount: Money.new(source_amount, source_currency),
+                 timestamp: timestamp,
                  from_account_id: from_id,
                  to_account_id: trading_source.id
                })
@@ -194,6 +202,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
                Moolah.Ledger.Transfer
                |> Ash.Changeset.for_create(:transfer, %{
                  amount: Money.new(amount, currency),
+                 timestamp: timestamp,
                  from_account_id: trading_target.id,
                  to_account_id: to_id
                })
@@ -220,6 +229,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
       Moolah.Ledger.Transfer
       |> Ash.Changeset.for_create(:transfer, %{
         amount: Money.new(amount, currency),
+        timestamp: timestamp,
         from_account_id: from_id,
         to_account_id: to_id
       })
