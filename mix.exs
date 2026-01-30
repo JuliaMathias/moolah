@@ -5,7 +5,7 @@ defmodule Moolah.MixProject do
     [
       app: :moolah,
       version: "0.1.0",
-      elixir: "~> 1.19.4",
+      elixir: "~> 1.19.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       consolidate_protocols: Mix.env() != :dev,
