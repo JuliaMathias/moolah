@@ -78,7 +78,7 @@ defmodule Moolah.MixProject do
       {:gettext, "~> 1.0.2"},
       {:jason, "~> 1.2"},
       {:lazy_html, ">= 0.1.0", only: :test},
-      {:live_debugger, "~> 0.4", only: [:dev]},
+      {:live_debugger, "~> 0.5", only: [:dev]},
       {:live_isolated_component, "0.10.0", only: [:test]},
       {:oban, "~> 2.0"},
       {:oban_web, "~> 2.0"},
