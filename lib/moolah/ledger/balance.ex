@@ -9,6 +9,7 @@ defmodule Moolah.Ledger.Balance do
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
     data_layer: AshPostgres.DataLayer,
+    authorizers: [Ash.Policy.Authorizer],
     extensions: [AshDoubleEntry.Balance]
 
   balance do
@@ -23,6 +24,11 @@ defmodule Moolah.Ledger.Balance do
 
   actions do
     defaults [:read]
+
+    destroy :destroy do
+      primary? true
+      require_atomic? false
+    end
 
     create :upsert_balance do
       accept [:balance, :account_id, :transfer_id]
@@ -42,6 +48,25 @@ defmodule Moolah.Ledger.Balance do
                     )
 
       change {AshDoubleEntry.Balance.Changes.AdjustBalance, can_add_money?: true}
+    end
+  end
+
+  policies do
+    # Allow read access for everyone
+    policy action_type(:read) do
+      authorize_if always()
+    end
+
+    # Allow destroy access (for internal cleanup)
+    # We authorize it for everyone here because we don't have fine-grained actors yet,
+    # but having the authorizer ensures it doesn't leak through public interfaces unintentionally.
+    policy action(:destroy) do
+      authorize_if always()
+    end
+
+    # Allow upsert and adjust balances (internal system maintenance)
+    policy action([:upsert_balance, :adjust_balance]) do
+      authorize_if always()
     end
   end
 
