@@ -361,35 +361,35 @@ defmodule Moolah.Finance.TransactionTest do
   end
 
   test "Scenario 8: Update Transaction Source Amount (Trigger Verification)", %{
-    credit_card: cc,
+    dollar_account: usd,
     bank: brl
   } do
-    # Initial: Transfer R$50 from Bank to CC
+    # Initial: Transfer R$260 from Bank (BRL) to Dollar Account (USD) = $50
     transaction =
       Transaction
       |> Ash.Changeset.for_create(:create, %{
         transaction_type: :transfer,
         account_id: brl.id,
-        target_account_id: cc.id,
-        amount: Money.new(50, :BRL),
-        source_amount: Money.new(50, :BRL),
-        description: "Initial Transfer"
+        target_account_id: usd.id,
+        amount: Money.new(50, :USD),
+        source_amount: Money.new(260, :BRL),
+        description: "Initial Multi-Currency Transfer"
       })
       |> Ash.create!()
 
     # Verify initial state
-    # This scenario is a BRL → BRL transfer; the exact double-entry configuration
+    # This scenario is a BRL → USD transfer; the exact double-entry configuration
     # is not under test here.
     # For this test, we only care that updating source_amount replaces the
     # underlying transfer (UPDATE TRIGGER behavior).
 
     original_transfer_id = transaction.transfer_id
 
-    # Update: Correction source amount to R$60
+    # Update: Correction source amount to R$312 (new exchange rate scenario)
     updated_transaction =
       transaction
       |> Ash.Changeset.for_update(:update, %{
-        source_amount: Money.new(60, :BRL)
+        source_amount: Money.new(312, :BRL)
       })
       |> Ash.update!()
 
@@ -397,7 +397,7 @@ defmodule Moolah.Finance.TransactionTest do
     assert updated_transaction.transfer_id != original_transfer_id
 
     # Verify the value persisted on the transaction
-    assert updated_transaction.source_amount == Money.new(60, :BRL)
+    assert updated_transaction.source_amount == Money.new(312, :BRL)
   end
 
   test "Validation: Forbidden source_amount for debit transactions", %{

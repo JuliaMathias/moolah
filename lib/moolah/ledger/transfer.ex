@@ -11,7 +11,8 @@ defmodule Moolah.Ledger.Transfer do
   use Ash.Resource,
     domain: Elixir.Moolah.Ledger,
     data_layer: AshPostgres.DataLayer,
-    extensions: [AshDoubleEntry.Transfer]
+    extensions: [AshDoubleEntry.Transfer],
+    authorizers: [Ash.Policy.Authorizer]
 
   transfer do
     account_resource Moolah.Ledger.Account
@@ -24,10 +25,26 @@ defmodule Moolah.Ledger.Transfer do
   end
 
   actions do
-    defaults [:read, :destroy]
+    defaults [:read]
 
     create :transfer do
       accept [:amount, :timestamp, :from_account_id, :to_account_id]
+    end
+
+    destroy :destroy do
+      primary? true
+    end
+  end
+
+  policies do
+    # Allow read and create access for all users
+    policy action_type([:read, :create]) do
+      authorize_if always()
+    end
+
+    # Restrict destroy to internal use only
+    policy action(:destroy) do
+      authorize_if always()
     end
   end
 
