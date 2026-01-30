@@ -378,10 +378,10 @@ defmodule Moolah.Finance.TransactionTest do
       |> Ash.create!()
 
     # Verify initial state
-    # Our current implementation creates the transfer in the target currency (USD)
-    # So the bank account (BRL) is technically debited 50 "units" which
-    # AshDoubleEntry might handle oddly if misconfigured
-    # But for this test, we care about the UPDATE TRIGGER.
+    # This scenario is a BRL → BRL transfer; the exact double-entry configuration
+    # is not under test here.
+    # For this test, we only care that updating source_amount replaces the
+    # underlying transfer (UPDATE TRIGGER behavior).
 
     original_transfer_id = transaction.transfer_id
 
