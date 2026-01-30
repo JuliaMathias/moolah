@@ -133,6 +133,60 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     end
   end
 
+  @spec create_multi_currency_transfers(map()) ::
+          {:ok, map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
+  defp create_multi_currency_transfers(params) do
+    %{
+      from_id: from_id,
+      to_id: to_id,
+      amount: amount,
+      currency: currency,
+      source_amount: source_amount,
+      source_currency: source_currency,
+      timestamp: timestamp,
+      trading_source_id: trading_source_id,
+      trading_target_id: trading_target_id,
+      exchange_rate: exchange_rate
+    } = params
+
+    Moolah.Repo.transaction(fn ->
+      with {:ok, s_transfer, s_notifications} <-
+             Moolah.Ledger.Transfer
+             |> Ash.Changeset.for_create(:transfer, %{
+               amount: Money.new(source_amount, source_currency),
+               timestamp: timestamp,
+               from_account_id: from_id,
+               to_account_id: trading_source_id
+             })
+             |> Ash.create(return_notifications?: true),
+           {:ok, t_transfer, t_notifications} <-
+             Moolah.Ledger.Transfer
+             |> Ash.Changeset.for_create(:transfer, %{
+               amount: Money.new(amount, currency),
+               timestamp: timestamp,
+               from_account_id: trading_target_id,
+               to_account_id: to_id
+             })
+             |> Ash.create(return_notifications?: true) do
+        {
+          %{
+            source_transfer: s_transfer,
+            target_transfer: t_transfer,
+            exchange_rate: exchange_rate
+          },
+          s_notifications ++ t_notifications
+        }
+      else
+        {:error, error} -> Moolah.Repo.rollback(error)
+      end
+    end)
+    |> case do
+      {:ok, {result, notifications}} -> {:ok, result, notifications}
+      {:ok, result} -> {:ok, result, []}
+      {:error, error} -> {:error, error}
+    end
+  end
+
   @spec create_credit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom(), DateTime.t()) ::
           {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_credit_transfer(account_id, category_id, amount, currency, timestamp) do
@@ -197,42 +251,18 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
             Decimal.new(0)
         end
 
-      Moolah.Repo.transaction(fn ->
-        with {:ok, s_transfer, s_notifications} <-
-               Moolah.Ledger.Transfer
-               |> Ash.Changeset.for_create(:transfer, %{
-                 amount: Money.new(source_amount, source_currency),
-                 timestamp: timestamp,
-                 from_account_id: from_id,
-                 to_account_id: trading_source.id
-               })
-               |> Ash.create(return_notifications?: true),
-             {:ok, t_transfer, t_notifications} <-
-               Moolah.Ledger.Transfer
-               |> Ash.Changeset.for_create(:transfer, %{
-                 amount: Money.new(amount, currency),
-                 timestamp: timestamp,
-                 from_account_id: trading_target.id,
-                 to_account_id: to_id
-               })
-               |> Ash.create(return_notifications?: true) do
-          {
-            %{
-              source_transfer: s_transfer,
-              target_transfer: t_transfer,
-              exchange_rate: exchange_rate
-            },
-            s_notifications ++ t_notifications
-          }
-        else
-          {:error, error} -> Moolah.Repo.rollback(error)
-        end
-      end)
-      |> case do
-        {:ok, {result, notifications}} -> {:ok, result, notifications}
-        {:ok, result} -> {:ok, result, []}
-        {:error, error} -> {:error, error}
-      end
+      create_multi_currency_transfers(%{
+        from_id: from_id,
+        to_id: to_id,
+        amount: amount,
+        currency: currency,
+        source_amount: source_amount,
+        source_currency: source_currency,
+        timestamp: timestamp,
+        trading_source_id: trading_source.id,
+        trading_target_id: trading_target.id,
+        exchange_rate: exchange_rate
+      })
     else
       # Simple Transfer
       Moolah.Ledger.Transfer
