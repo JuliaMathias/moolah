@@ -6,7 +6,7 @@ on:
     branches: [main]
 env:
   MIX_ENV: test
-  ELIXIR_VERSION: "1.19.4"
+  ELIXIR_VERSION: "1.19.5"
   OTP_VERSION: "28.1"
 
 jobs:
