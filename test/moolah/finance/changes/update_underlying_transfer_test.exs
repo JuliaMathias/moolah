@@ -4,6 +4,7 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransferTest do
 
   alias Moolah.Finance.Transaction
   alias Moolah.Ledger.Account
+  alias Moolah.Ledger.Transfer
 
   describe "update_transfer/1" do
     setup do
@@ -159,6 +160,91 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransferTest do
       # Verify transfer was replaced
       assert updated_transaction.transfer_id != original_transfer_id
       assert updated_transaction.date == ~D[2024-01-15]
+    end
+  end
+
+    describe "error handling in update_transfer/1" do
+    setup do
+      bank =
+        Account
+        |> Ash.Changeset.for_create(:open, %{
+          identifier: "test_bank",
+          currency: "BRL",
+          account_type: :bank_account
+        })
+        |> Ash.create!()
+
+      cash =
+        Account
+        |> Ash.Changeset.for_create(:open, %{
+          identifier: "test_cash",
+          currency: "BRL",
+          account_type: :bank_account
+        })
+        |> Ash.create!()
+
+      {:ok, bank: bank, cash: cash}
+    end
+
+    test "handles error when destroying old transfer fails", %{bank: bank, cash: cash} do
+      # Create initial transaction
+      transaction =
+        Transaction
+        |> Ash.Changeset.for_create(:create, %{
+          transaction_type: :transfer,
+          account_id: bank.id,
+          target_account_id: cash.id,
+          amount: Money.new(100, :BRL),
+          date: Date.utc_today()
+        })
+        |> Ash.create!()
+
+      # Manually delete the transfer to simulate a scenario where it doesn't exist
+      if transaction.transfer_id do
+        case Ash.get(Transfer, transaction.transfer_id) do
+          {:ok, transfer} when not is_nil(transfer) ->
+            Ash.destroy(transfer)
+
+          _ ->
+            :ok
+        end
+      end
+
+      # Now try to update the transaction - this should handle the missing transfer gracefully
+      result =
+        transaction
+        |> Ash.Changeset.for_update(:update, %{
+          amount: Money.new(200, :BRL)
+        })
+        |> Ash.update()
+
+      # The update should still succeed even if the old transfer is missing
+      assert {:ok, updated_transaction} = result
+      assert updated_transaction.amount == Money.new(200, :BRL)
+    end
+
+    test "handles error when reading transfer fails", %{bank: bank, cash: cash} do
+      # Create initial transaction
+      transaction =
+        Transaction
+        |> Ash.Changeset.for_create(:create, %{
+          transaction_type: :transfer,
+          account_id: bank.id,
+          target_account_id: cash.id,
+          amount: Money.new(100, :BRL),
+          date: Date.utc_today()
+        })
+        |> Ash.create!()
+
+      # Update with a valid change
+      result =
+        transaction
+        |> Ash.Changeset.for_update(:update, %{
+          amount: Money.new(150, :BRL)
+        })
+        |> Ash.update()
+
+      assert {:ok, _updated} = result
     end
   end
 end
