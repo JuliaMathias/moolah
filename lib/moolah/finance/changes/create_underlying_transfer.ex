@@ -70,42 +70,47 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   def create_transfer_for_transaction(changeset) do
     type = Changeset.get_attribute(changeset, :transaction_type)
     amount_money = Changeset.get_attribute(changeset, :amount)
-    source_amount_money = Changeset.get_attribute(changeset, :source_amount)
 
-    # Extract amount and currency
-    amount = amount_money.amount
-    currency = amount_money.currency
+    if is_nil(amount_money) do
+      {:error, "Transaction amount is required"}
+    else
+      source_amount_money = Changeset.get_attribute(changeset, :source_amount)
 
-    # For source amount (optional, defaults to amount)
-    source_amount = if source_amount_money, do: source_amount_money.amount, else: amount
-    source_currency = if source_amount_money, do: source_amount_money.currency, else: currency
+      # Extract amount and currency
+      amount = amount_money.amount
+      currency = amount_money.currency
 
-    account_id = Changeset.get_attribute(changeset, :account_id)
-    target_account_id = Changeset.get_attribute(changeset, :target_account_id)
+      # For source amount (optional, defaults to amount)
+      source_amount = if source_amount_money, do: source_amount_money.amount, else: amount
+      source_currency = if source_amount_money, do: source_amount_money.currency, else: currency
 
-    budget_category_id = Changeset.get_attribute(changeset, :budget_category_id)
-    life_area_category_id = Changeset.get_attribute(changeset, :life_area_category_id)
+      account_id = Changeset.get_attribute(changeset, :account_id)
+      target_account_id = Changeset.get_attribute(changeset, :target_account_id)
 
-    case type do
-      :debit ->
-        # Debits use Budget Category for the virtual account
-        # Always use primary amount/currency for debits to maintain integrity
-        create_debit_transfer(account_id, budget_category_id, amount, currency)
+      budget_category_id = Changeset.get_attribute(changeset, :budget_category_id)
+      life_area_category_id = Changeset.get_attribute(changeset, :life_area_category_id)
 
-      :credit ->
-        # Credits use Life Area Category for the virtual account (Income)
-        # Always use primary amount/currency for credits
-        create_credit_transfer(account_id, life_area_category_id, amount, currency)
+      case type do
+        :debit ->
+          # Debits use Budget Category for the virtual account
+          # Always use primary amount/currency for debits to maintain integrity
+          create_debit_transfer(account_id, budget_category_id, amount, currency)
 
-      :transfer ->
-        create_account_transfer(
-          account_id,
-          target_account_id,
-          amount,
-          currency,
-          source_amount,
-          source_currency
-        )
+        :credit ->
+          # Credits use Life Area Category for the virtual account (Income)
+          # Always use primary amount/currency for credits
+          create_credit_transfer(account_id, life_area_category_id, amount, currency)
+
+        :transfer ->
+          create_account_transfer(
+            account_id,
+            target_account_id,
+            amount,
+            currency,
+            source_amount,
+            source_currency
+          )
+      end
     end
   end
 
