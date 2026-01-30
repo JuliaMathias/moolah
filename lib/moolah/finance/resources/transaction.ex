@@ -124,10 +124,6 @@ defmodule Moolah.Finance.Transaction do
       default &Date.utc_today/0
     end
 
-    attribute :source_transfer_id, AshDoubleEntry.ULID do
-      public? true
-    end
-
     attribute :exchange_rate, :decimal do
       public? true
     end
@@ -161,6 +157,12 @@ defmodule Moolah.Finance.Transaction do
 
       # Ledger transfers use ULID(binary) as primary key usually, but check Moolah.Ledger.Transfer definition
       attribute_type AshDoubleEntry.ULID
+    end
+
+    belongs_to :source_transfer, Moolah.Ledger.Transfer do
+      allow_nil? true
+      attribute_type AshDoubleEntry.ULID
+      public? true
     end
   end
 end
