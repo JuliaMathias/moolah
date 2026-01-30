@@ -163,7 +163,7 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransferTest do
     end
   end
 
-    describe "error handling in update_transfer/1" do
+  describe "error handling in update_transfer/1" do
     setup do
       bank =
         Account

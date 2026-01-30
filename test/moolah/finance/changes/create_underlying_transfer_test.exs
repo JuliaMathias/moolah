@@ -142,7 +142,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransferTest do
         Transaction
         |> Ash.Changeset.for_create(:create, %{
           transaction_type: :transfer,
-          account_id: Ash.UUID.generate(),  # Non-existent account
+          # Non-existent account
+          account_id: Ash.UUID.generate(),
           target_account_id: Ash.UUID.generate(),
           amount: Money.new(100, :BRL),
           date: Date.utc_today()
