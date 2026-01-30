@@ -23,14 +23,12 @@ defmodule Moolah.Finance.Changes.UpdateUnderlyingTransfer do
   @impl true
   def change(changeset, _opts, _context) do
     Changeset.before_transaction(changeset, fn changeset ->
-      # Only process if amount, date, or category/account changed
+      # Only process if amount, date, or category changed
       if Changeset.changing_attribute?(changeset, :amount) or
            Changeset.changing_attribute?(changeset, :source_amount) or
            Changeset.changing_attribute?(changeset, :date) or
            Changeset.changing_attribute?(changeset, :budget_category_id) or
-           Changeset.changing_attribute?(changeset, :life_area_category_id) or
-           Changeset.changing_attribute?(changeset, :account_id) or
-           Changeset.changing_attribute?(changeset, :target_account_id) do
+           Changeset.changing_attribute?(changeset, :life_area_category_id) do
         update_transfer(changeset)
       else
         changeset
