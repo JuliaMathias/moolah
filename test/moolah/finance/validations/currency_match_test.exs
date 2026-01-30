@@ -146,6 +146,29 @@ defmodule Moolah.Finance.Validations.CurrencyMatchTest do
              end)
     end
 
+    test "fails when source_amount is provided for single-currency transfer", %{
+      bank: bank
+    } do
+      # Bank and Cash are both BRL
+      changeset =
+        Transaction
+        |> Ash.Changeset.for_create(:create, %{
+          transaction_type: :transfer,
+          account_id: bank.id,
+          target_account_id: bank.id,
+          amount: Money.new("100.00", :BRL),
+          source_amount: Money.new("100.00", :BRL)
+        })
+
+      assert {:error, error} = Ash.create(changeset)
+
+      assert Enum.any?(error.errors, fn e ->
+               e.field == :source_amount &&
+                 to_string(e.message) =~
+                   "must be nil for single-currency transfers (it matches the amount automatically)"
+             end)
+    end
+
     test "succeeds when currencies match their respective accounts in multi-currency", %{
       bank: bank,
       dollar: dollar

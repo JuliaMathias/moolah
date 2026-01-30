@@ -62,15 +62,23 @@ defmodule Moolah.Finance.Validations.CurrencyMatch do
     # Detection logic similar to CreateUnderlyingTransfer
     multi_currency? = source_amount && source_amount.currency != amount.currency
 
-    if multi_currency? do
-      with :ok <- check_match(source_amount, account, :account_id) do
-        check_match(amount, target_account, :target_account_id)
-      end
-    else
-      # Simple transfer (or source_amount same as amount)
-      with :ok <- check_match(amount, account, :account_id) do
-        check_match(amount, target_account, :target_account_id)
-      end
+    cond do
+      source_amount && source_amount.currency == amount.currency ->
+        {:error,
+         field: :source_amount,
+         message:
+           "must be nil for single-currency transfers (it matches the amount automatically)"}
+
+      multi_currency? ->
+        with :ok <- check_match(source_amount, account, :account_id) do
+          check_match(amount, target_account, :target_account_id)
+        end
+
+      true ->
+        # Simple transfer (or source_amount is nil)
+        with :ok <- check_match(amount, account, :account_id) do
+          check_match(amount, target_account, :target_account_id)
+        end
     end
   end
 

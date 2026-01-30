@@ -26,7 +26,7 @@ defmodule Moolah.Repo.Migrations.ModelSourceTransferRelationship do
   def down do
     drop_if_exists index(:transactions, [:source_transfer_id])
 
-    drop constraint(:transactions, "transactions_source_transfer_id_fkey")
+    drop_if_exists constraint(:transactions, "transactions_source_transfer_id_fkey")
 
     alter table(:transactions) do
       modify :source_transfer_id, :binary
