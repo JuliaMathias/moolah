@@ -26,7 +26,7 @@ defmodule Moolah.Finance.TransactionTest do
         account_type: :bank_account
       })
       |> Ash.create!()
-      # Start with 200
+      # Start with 20_000 (R$20,000)
       |> give_balance(Money.new(20_000, :BRL))
 
     credit_card =
