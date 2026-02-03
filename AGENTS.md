@@ -8,6 +8,10 @@ This is a web application written using the Phoenix web framework.
 - Always run `mix format` after creating or editing a file.
 - Use the already included and available `:req` (`Req`) library for HTTP requests, **avoid** `:httpoison`, `:tesla`, and `:httpc`. Req is included by default and is the preferred HTTP client for Phoenix apps
 - When a task references a GitHub issue, fetch the issue text with `gh issue view <number>` (using the current repo) and copy it into a `private_docs/issues/issue-<number>-*.md` file.
+- All new functions must have `@spec` and all public functions must have `@doc`, except standard callbacks like `change/3` and migration `up/down`.
+- Module docs must be detailed and include examples when appropriate (especially change modules).
+- Migrations must include a `@moduledoc` that explains why the changes are being introduced.
+- Private functions should have explanatory comments when necessary; complex functions should include inline comments to clarify logic. Tests may include comments to explain scenarios when helpful.
 
 ### Phoenix v1.8 guidelines
 
