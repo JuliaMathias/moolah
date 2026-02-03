@@ -57,7 +57,7 @@ defmodule Moolah.Finance.TransactionTagTest do
 
     transaction = Ash.load!(transaction, :tags)
 
-    tag_names = MapSet.new(Enum.map(transaction.tags, & &1.name))
+    tag_names = MapSet.new(Enum.map(transaction.tags, &to_string(&1.name)))
     assert tag_names == MapSet.new(["Groceries", "Weekend"])
   end
 
@@ -89,7 +89,7 @@ defmodule Moolah.Finance.TransactionTagTest do
       |> Ash.update!()
 
     updated = Ash.load!(updated, :tags)
-    assert MapSet.new(Enum.map(updated.tags, & &1.name)) == MapSet.new(["Groceries"])
+    assert MapSet.new(Enum.map(updated.tags, &to_string(&1.name))) == MapSet.new(["Groceries"])
   end
 
   test "clears tags when an empty list is provided", %{
@@ -118,6 +118,31 @@ defmodule Moolah.Finance.TransactionTagTest do
 
     cleared = Ash.load!(cleared, :tags)
     assert cleared.tags == []
+  end
+
+  test "dedupes duplicate tag inputs by name", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: account.id,
+        budget_category_id: budget_category.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(15, :BRL),
+        tags: [
+          %{name: "Groceries", color: "#22C55E"},
+          %{name: "groceries", color: "#22C55E"}
+        ]
+      })
+      |> Ash.create!()
+
+    transaction = Ash.load!(transaction, :tags)
+
+    assert Enum.map(transaction.tags, &to_string(&1.name)) == ["Groceries"]
   end
 
   test "relates to existing tags case-insensitively", %{
@@ -150,6 +175,34 @@ defmodule Moolah.Finance.TransactionTagTest do
     assert Enum.map(transaction.tags, & &1.id) == [tag.id]
   end
 
+  test "fails when trying to reuse an archived tag name", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    {:ok, tag} =
+      Moolah.Finance.Tag
+      |> Ash.Changeset.for_create(:create, %{
+        name: "Archived",
+        color: "#F59E0B"
+      })
+      |> Ash.create()
+
+    assert :ok = Ash.destroy(tag)
+
+    assert {:error, %Ash.Error.Invalid{}} =
+             Transaction
+             |> Ash.Changeset.for_create(:create, %{
+               transaction_type: :debit,
+               account_id: account.id,
+               budget_category_id: budget_category.id,
+               life_area_category_id: life_area.id,
+               amount: Money.new(9, :BRL),
+               tags: [%{name: "Archived", color: "#F59E0B"}]
+             })
+             |> Ash.create()
+  end
+
   test "requires color when creating a brand new tag via transaction input", %{
     account: account,
     budget_category: budget_category,
@@ -168,6 +221,7 @@ defmodule Moolah.Finance.TransactionTagTest do
              |> Ash.create()
   end
 
+  @spec create_budget_category(String.t()) :: BudgetCategory.t()
   defp create_budget_category(name) do
     now = DateTime.utc_now()
 
@@ -181,6 +235,7 @@ defmodule Moolah.Finance.TransactionTagTest do
     })
   end
 
+  @spec unique_id(String.t()) :: String.t()
   defp unique_id(prefix) do
     "#{prefix}-#{System.unique_integer([:positive])}"
   end
