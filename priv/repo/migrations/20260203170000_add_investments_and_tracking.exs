@@ -72,6 +72,7 @@ defmodule Moolah.Repo.Migrations.AddInvestmentsAndTracking do
           references(:investments,
             column: :id,
             name: "investment_histories_investment_id_fkey",
+            on_delete: :delete_all,
             type: :uuid,
             prefix: "public"
           ),
@@ -98,6 +99,7 @@ defmodule Moolah.Repo.Migrations.AddInvestmentsAndTracking do
           references(:investments,
             column: :id,
             name: "investment_operations_investment_id_fkey",
+            on_delete: :delete_all,
             type: :uuid,
             prefix: "public"
           ),
