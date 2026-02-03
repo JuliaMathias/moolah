@@ -12,7 +12,7 @@ config :ash, policies: [show_policy_breakdowns?: true], disable_async?: true
 config :moolah, Moolah.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: System.get_env("DB_HOST") || "localhost",
   database: "moolah_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
