@@ -28,8 +28,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          elixir_version="$(awk '$1 == \"elixir\" { print $2 }' .tool-versions)"
-          otp_version="$(awk '$1 == \"erlang\" { print $2 }' .tool-versions)"
+          elixir_version="$(awk '$1 == "elixir" { print $2 }' .tool-versions)"
+          otp_version="$(awk '$1 == "erlang" { print $2 }' .tool-versions)"
 
           if [ -z "$elixir_version" ] || [ -z "$otp_version" ]; then
             echo "Failed to read Elixir/OTP versions from .tool-versions"
