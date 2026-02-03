@@ -6,6 +6,8 @@ defmodule Moolah.Finance.InvestmentTest do
   alias Moolah.Finance.Investment
   alias Moolah.Finance.InvestmentHistory
   alias Moolah.Finance.InvestmentOperation
+  alias Moolah.Finance.Validations.ValidateInvestmentAccountType
+  alias Moolah.Finance.Validations.ValidateInvestmentCurrency
   alias Moolah.Ledger.Account
 
   require Ash.Query
@@ -207,7 +209,7 @@ defmodule Moolah.Finance.InvestmentTest do
       })
 
     assert {:error, _} =
-             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+             ValidateInvestmentCurrency.validate(changeset, [], %{})
   end
 
   test "validation skips when money values are invalid" do
@@ -227,7 +229,7 @@ defmodule Moolah.Finance.InvestmentTest do
       |> Ash.Changeset.force_change_attribute(:current_value, "oops")
 
     assert :ok =
-             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+             ValidateInvestmentCurrency.validate(changeset, [], %{})
   end
 
   test "validation skips when current_value is nil" do
@@ -246,7 +248,7 @@ defmodule Moolah.Finance.InvestmentTest do
       })
 
     assert :ok =
-             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+             ValidateInvestmentCurrency.validate(changeset, [], %{})
   end
 
   test "rejects non-investment accounts" do
@@ -279,7 +281,7 @@ defmodule Moolah.Finance.InvestmentTest do
       })
 
     assert :ok =
-             Moolah.Finance.Validations.ValidateInvestmentAccountType.validate(changeset, [], %{})
+             ValidateInvestmentAccountType.validate(changeset, [], %{})
   end
 
   test "update fails when operation delta cannot be computed" do
