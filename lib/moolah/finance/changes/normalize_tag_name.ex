@@ -42,6 +42,22 @@ defmodule Moolah.Finance.Changes.NormalizeTagName do
         else
           Changeset.force_change_attribute(changeset, field, normalized)
         end
+
+      value when is_struct(value, Ash.CiString) ->
+        normalized =
+          value
+          |> to_string()
+          |> String.trim()
+          |> String.replace(~r/\s+/u, " ")
+
+        if normalized == "" do
+          Changeset.add_error(changeset, field: field, message: "must be present")
+        else
+          Changeset.force_change_attribute(changeset, field, normalized)
+        end
+
+      _ ->
+        changeset
     end
   end
 end
