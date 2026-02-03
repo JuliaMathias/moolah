@@ -14,5 +14,8 @@ defmodule Moolah.Finance do
     resource Moolah.Finance.Tag
     resource Moolah.Finance.TransactionTag
     resource Moolah.Finance.Transaction
+    resource Moolah.Finance.Investment
+    resource Moolah.Finance.InvestmentHistory
+    resource Moolah.Finance.InvestmentOperation
   end
 end
