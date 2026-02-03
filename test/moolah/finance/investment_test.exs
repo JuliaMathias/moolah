@@ -8,6 +8,7 @@ defmodule Moolah.Finance.InvestmentTest do
   alias Moolah.Finance.InvestmentOperation
   alias Moolah.Finance.Validations.ValidateInvestmentAccountType
   alias Moolah.Finance.Validations.ValidateInvestmentCurrency
+  alias Moolah.Finance.Validations.ValidateInvestmentPurchaseDate
   alias Moolah.Ledger.Account
 
   require Ash.Query
@@ -249,6 +250,26 @@ defmodule Moolah.Finance.InvestmentTest do
 
     assert :ok =
              ValidateInvestmentCurrency.validate(changeset, [], %{})
+  end
+
+  test "purchase_date cannot be in the future" do
+    # Scenario: future dates should be rejected to avoid forward-dated snapshots.
+    future_date = Date.add(Date.utc_today(), 1)
+
+    changeset =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("FuturePurchaseDate"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: Money.new(100, :BRL),
+        purchase_date: future_date,
+        account_id: Ash.UUID.generate()
+      })
+
+    assert {:error, _} =
+             ValidateInvestmentPurchaseDate.validate(changeset, [], %{})
   end
 
   test "rejects non-investment accounts" do
