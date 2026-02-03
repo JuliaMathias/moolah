@@ -127,7 +127,13 @@ defmodule Moolah.MixProject do
         "esbuild moolah --minify",
         "phx.digest"
       ],
-      precommit: ["compile --warning-as-errors", "deps.unlock --unused", "format", "test"],
+      precommit: [
+        "compile --warning-as-errors",
+        "deps.unlock --unused",
+        "format",
+        "test",
+        "credo --strict"
+      ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
     ]
   end
