@@ -54,9 +54,7 @@ defmodule Moolah.Finance.Tag do
 
     create :find_or_create do
       accept [:name, :color, :description]
-      upsert? true
-      upsert_identity :unique_name
-      upsert_fields [:name, :slug]
+      manual Moolah.Finance.Actions.FindOrCreateTag
       change {Moolah.Finance.Changes.NormalizeTagName, field: :name}
       change {Moolah.Finance.Changes.GenerateTagSlug, source: :name, target: :slug}
     end
@@ -69,6 +67,7 @@ defmodule Moolah.Finance.Tag do
     end
 
     destroy :destroy do
+      primary? true
       soft? true
       require_atomic? false
       change set_attribute(:archived_at, &DateTime.utc_now/0)
