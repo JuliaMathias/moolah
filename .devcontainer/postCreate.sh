@@ -20,6 +20,4 @@ wait_for_db() {
 echo "Waiting for Postgres on ${DB_HOST}:5432..."
 wait_for_db
 
-mix deps.get
-mix assets.setup
-mix ash.setup --quiet
+mix devcontainer.setup
