@@ -63,6 +63,33 @@ defmodule Moolah.Finance.InvestmentTest do
     assert Enum.any?(histories, &(&1.recorded_on == Date.utc_today()))
   end
 
+  test "creates a single history record when purchase_date is today and values match" do
+    # Scenario: purchase_date equals today and values match, so only one snapshot is stored.
+    account = create_account()
+    today = Date.utc_today()
+
+    {:ok, investment} =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("Today"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: Money.new(100, :BRL),
+        purchase_date: today,
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    histories =
+      InvestmentHistory
+      |> Ash.Query.filter(investment_id: investment.id)
+      |> Ash.read!()
+
+    assert length(histories) == 1
+    assert Enum.any?(histories, &(&1.recorded_on == today))
+  end
+
   test "updates current_value and records history + operation" do
     # Scenario: a value change should create a new history snapshot and an operation delta.
     account = create_account()
@@ -103,6 +130,35 @@ defmodule Moolah.Finance.InvestmentTest do
     assert Money.equal?(hd(operations).value, Money.new(50, :BRL))
   end
 
+  test "updates with same current_value does not create an operation" do
+    # Scenario: no value change should skip operation tracking.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("NoChange"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(200, :BRL),
+        current_value: Money.new(200, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    {:ok, _updated} =
+      investment
+      |> Ash.Changeset.for_update(:update, %{current_value: Money.new(200, :BRL)})
+      |> Ash.update()
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(investment_id: investment.id)
+      |> Ash.read!()
+
+    assert operations == []
+  end
+
   test "rejects invalid subtype for type" do
     account = create_account()
 
@@ -135,6 +191,64 @@ defmodule Moolah.Finance.InvestmentTest do
              |> Ash.create()
   end
 
+  test "validation fails when current_value currency mismatches account currency" do
+    # Scenario: current_value uses a different currency than the account.
+    account = create_account(%{currency: "BRL"})
+
+    changeset =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("Mismatch"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: Money.new(100, :USD),
+        account_id: account.id
+      })
+
+    assert {:error, _} =
+             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+  end
+
+  test "validation skips when money values are invalid" do
+    # Scenario: malformed money values fall through to :ok (other validations handle it).
+    account = create_account(%{currency: "BRL"})
+
+    changeset =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("InvalidMoney"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: Money.new(100, :BRL),
+        account_id: account.id
+      })
+      |> Ash.Changeset.force_change_attribute(:current_value, "oops")
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+  end
+
+  test "validation skips when current_value is nil" do
+    # Scenario: missing current_value triggers the invalid money fallback.
+    account = create_account(%{currency: "BRL"})
+
+    changeset =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("NilCurrentValue"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: nil,
+        account_id: account.id
+      })
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateInvestmentCurrency.validate(changeset, [], %{})
+  end
+
   test "rejects non-investment accounts" do
     account = create_account(%{account_type: :bank_account})
 
@@ -149,6 +263,47 @@ defmodule Moolah.Finance.InvestmentTest do
                account_id: account.id
              })
              |> Ash.create()
+  end
+
+  test "account type validation skips when account lookup fails" do
+    # Scenario: missing account_id returns :ok so other validations can handle it.
+    changeset =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("MissingAccount"),
+        type: :renda_fixa,
+        subtype: :cdb,
+        initial_value: Money.new(100, :BRL),
+        current_value: Money.new(100, :BRL),
+        account_id: nil
+      })
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateInvestmentAccountType.validate(changeset, [], %{})
+  end
+
+  test "update fails when operation delta cannot be computed" do
+    # Scenario: bypass validations to force a currency mismatch during operation tracking.
+    account = create_account(%{currency: "BRL"})
+
+    {:ok, investment} =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("DeltaError"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(200, :BRL),
+        current_value: Money.new(200, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    result =
+      investment
+      |> Ash.Changeset.for_update(:update, %{current_value: Money.new(10, :USD)})
+      |> Ash.update(validate?: false)
+
+    assert {:error, _} = result
   end
 
   test "enforces unique investment name" do
