@@ -11,6 +11,8 @@ defmodule Moolah.Finance do
   resources do
     resource Moolah.Finance.BudgetCategory
     resource Moolah.Finance.LifeAreaCategory
+    resource Moolah.Finance.Tag
+    resource Moolah.Finance.TransactionTag
     resource Moolah.Finance.Transaction
   end
 end

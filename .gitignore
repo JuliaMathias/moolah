@@ -48,3 +48,4 @@ npm-debug.log
 dist/
 deploy/rendered
 
+.env
