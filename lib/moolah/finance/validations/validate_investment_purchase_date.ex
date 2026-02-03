@@ -36,15 +36,18 @@ defmodule Moolah.Finance.Validations.ValidateInvestmentPurchaseDate do
     purchase_date =
       Changeset.get_attribute(changeset, :purchase_date) || changeset.data.purchase_date
 
+    today = Date.utc_today()
+
     case purchase_date do
       nil ->
         :ok
 
-      date when Date.compare(date, Date.utc_today()) in [:lt, :eq] ->
-        :ok
-
-      _ ->
-        {:error, field: :purchase_date, message: "must not be in the future"}
+      date ->
+        if Date.compare(date, today) in [:lt, :eq] do
+          :ok
+        else
+          {:error, field: :purchase_date, message: "must not be in the future"}
+        end
     end
   end
 end
