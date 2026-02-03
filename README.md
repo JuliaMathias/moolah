@@ -143,6 +143,34 @@ We are actively developing Moolah. Here is what is coming next:
 - `mix ash.codegen`: Generate Ash migrations after resource changes.
 - `mix ash_postgres.create`: Create the database storage.
 
+### Testing & Coverage
+
+Moolah uses **ExCoveralls** for test coverage reporting. To measure and improve coverage:
+
+```bash
+# Run tests with coverage summary
+MIX_ENV=test mix coveralls
+
+# Generate detailed line-by-line coverage
+MIX_ENV=test mix coveralls.detail
+
+# Filter coverage to specific files
+MIX_ENV=test mix coveralls.detail --filter lib/moolah/finance
+
+# Generate HTML coverage report (opens in browser)
+MIX_ENV=test mix coveralls.html
+# Then open: cover/excoveralls.html
+```
+
+The test suite includes comprehensive coverage of:
+- ✅ Validation modules (hierarchy depth, circular references, safe deletion)
+- ✅ Change modules (tag normalization, slug generation)
+- ✅ Action modules (find-or-create patterns)
+- ✅ Ledger modules (balance tracking, transfer operations)
+- ✅ Business logic and edge cases
+
+For more details on test coverage, see [TEST_COVERAGE_SUMMARY.md](TEST_COVERAGE_SUMMARY.md).
+
 ---
 
 Built with ❤️ by [Julia Mathias](https://github.com/JuliaMathias).
