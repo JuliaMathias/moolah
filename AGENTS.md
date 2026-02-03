@@ -6,6 +6,7 @@ This is a web application written using the Phoenix web framework.
 
 - Use `mix precommit` alias when you are done with all changes and fix any pending issues
 - Use the already included and available `:req` (`Req`) library for HTTP requests, **avoid** `:httpoison`, `:tesla`, and `:httpc`. Req is included by default and is the preferred HTTP client for Phoenix apps
+- When a task references a GitHub issue, fetch the issue text with `gh issue view <number>` (using the current repo) and copy it into a `private_docs/issues/issue-<number>-*.md` file.
 
 ### Phoenix v1.8 guidelines
 
