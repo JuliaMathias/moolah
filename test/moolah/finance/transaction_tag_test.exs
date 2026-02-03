@@ -61,6 +61,26 @@ defmodule Moolah.Finance.TransactionTagTest do
     assert tag_names == MapSet.new(["Groceries", "Weekend"])
   end
 
+  test "allows transaction creation without tags", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: account.id,
+        budget_category_id: budget_category.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(25, :BRL)
+      })
+      |> Ash.create!()
+
+    transaction = Ash.load!(transaction, :tags)
+    assert transaction.tags == []
+  end
+
   test "updates transaction tags by replacing the tag list", %{
     account: account,
     budget_category: budget_category,
@@ -143,6 +163,64 @@ defmodule Moolah.Finance.TransactionTagTest do
     transaction = Ash.load!(transaction, :tags)
 
     assert Enum.map(transaction.tags, &to_string(&1.name)) == ["Groceries"]
+  end
+
+  test "relates tags by id and dedupes duplicate ids", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    {:ok, tag} =
+      Moolah.Finance.Tag
+      |> Ash.Changeset.for_create(:create, %{
+        name: "Groceries",
+        color: "#22C55E"
+      })
+      |> Ash.create()
+
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: account.id,
+        budget_category_id: budget_category.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(12, :BRL),
+        tags: [%{id: tag.id}, %{id: tag.id}]
+      })
+      |> Ash.create!()
+
+    transaction = Ash.load!(transaction, :tags)
+    assert Enum.map(transaction.tags, & &1.id) == [tag.id]
+  end
+
+  test "relates to existing tags by slug", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    {:ok, tag} =
+      Moolah.Finance.Tag
+      |> Ash.Changeset.for_create(:create, %{
+        name: "Groceries",
+        color: "#22C55E"
+      })
+      |> Ash.create()
+
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: account.id,
+        budget_category_id: budget_category.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(12, :BRL),
+        tags: [%{slug: tag.slug}]
+      })
+      |> Ash.create!()
+
+    transaction = Ash.load!(transaction, :tags)
+    assert Enum.map(transaction.tags, & &1.id) == [tag.id]
   end
 
   test "relates to existing tags case-insensitively", %{
