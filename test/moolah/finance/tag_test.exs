@@ -20,6 +20,29 @@ defmodule Moolah.Finance.TagTest do
     assert tag.slug == "food-drinks"
   end
 
+  test "rejects whitespace-only names" do
+    assert {:error, %Ash.Error.Invalid{}} =
+             Tag
+             |> Ash.Changeset.for_create(:create, %{
+               name: "   ",
+               color: "#22C55E"
+             })
+             |> Ash.create()
+  end
+
+  test "slugifies special characters and accents" do
+    assert {:ok, tag} =
+             Tag
+             |> Ash.Changeset.for_create(:create, %{
+               name: "  Café & Snacks!! ",
+               color: "#22C55E"
+             })
+             |> Ash.create()
+
+    assert to_string(tag.name) == "Café & Snacks!!"
+    assert tag.slug == "cafe-snacks"
+  end
+
   test "validates color format" do
     assert {:error, %Ash.Error.Invalid{}} =
              Tag
