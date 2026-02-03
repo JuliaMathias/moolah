@@ -748,7 +748,7 @@
   "claudeCode.selectedModel": "default",
   "editor.accessibilitySupport": "off",
   "claudeCode.preferredLocation": "panel",
-  "gitlens.ai.generateCommitMessage.customInstructions": "When talking about functions, modules, variables, column or table names or things of that nature, always surround the name with ``. For example, use `add_numbers` instead of add_numbers. Don't write only the title of the commit, but also a detailed explanation of the changes in the description. Use the imperative mood in the title. For example, use `Add numbers` instead of `Added numbers` or `Adding numbers`. Use the present tense in the description. For example, use `Adds numbers` instead of `Added numbers` or `Adding numbers`. Use the active voice in the description. For example, use `Adds numbers` instead of `Numbers are added`. Only conside the staged changes when generating commits",
+  "gitlens.ai.generateCommitMessage.customInstructions": "When talking about functions, modules, variables, column or table names or things of that nature, always surround the name with ``. For example, use `add_numbers` instead of add_numbers. Don't write only the title of the commit, but also a detailed explanation of the changes in the description. Use the imperative mood in the title. For example, use `Add numbers` instead of `Added numbers` or `Adding numbers`. Use the present tense in the description. For example, use `Adds numbers` instead of `Added numbers` or `Adding numbers`. Use the active voice in the description. For example, use `Adds numbers` instead of `Numbers are added`. Only consider the staged changes when generating commits",
   "chat.tools.terminal.autoApprove": {
     "/^mix credo --strict$/": {
       "approve": true,
