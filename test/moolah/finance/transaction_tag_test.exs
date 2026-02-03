@@ -194,6 +194,35 @@ defmodule Moolah.Finance.TransactionTagTest do
     assert Enum.map(transaction.tags, & &1.id) == [tag.id]
   end
 
+  test "accepts string-key tag input for id", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    {:ok, tag} =
+      Moolah.Finance.Tag
+      |> Ash.Changeset.for_create(:create, %{
+        name: "Groceries",
+        color: "#22C55E"
+      })
+      |> Ash.create()
+
+    transaction =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :debit,
+        account_id: account.id,
+        budget_category_id: budget_category.id,
+        life_area_category_id: life_area.id,
+        amount: Money.new(12, :BRL),
+        tags: [%{"id" => tag.id}]
+      })
+      |> Ash.create!()
+
+    transaction = Ash.load!(transaction, :tags)
+    assert Enum.map(transaction.tags, & &1.id) == [tag.id]
+  end
+
   test "accepts string-key tag input for name", %{
     account: account,
     budget_category: budget_category,
@@ -269,6 +298,24 @@ defmodule Moolah.Finance.TransactionTagTest do
                life_area_category_id: life_area.id,
                amount: Money.new(12, :BRL),
                tags: [%{"foo" => "bar"}]
+             })
+             |> Ash.create()
+  end
+
+  test "returns errors when tags argument is not a list", %{
+    account: account,
+    budget_category: budget_category,
+    life_area: life_area
+  } do
+    assert {:error, %Ash.Error.Invalid{}} =
+             Transaction
+             |> Ash.Changeset.for_create(:create, %{
+               transaction_type: :debit,
+               account_id: account.id,
+               budget_category_id: budget_category.id,
+               life_area_category_id: life_area.id,
+               amount: Money.new(12, :BRL),
+               tags: "oops"
              })
              |> Ash.create()
   end
