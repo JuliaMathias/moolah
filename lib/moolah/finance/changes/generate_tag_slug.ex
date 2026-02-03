@@ -41,6 +41,15 @@ defmodule Moolah.Finance.Changes.GenerateTagSlug do
         else
           Changeset.force_change_attribute(changeset, target, slug)
         end
+
+      value when is_struct(value, Ash.CiString) ->
+        slug = value |> to_string() |> slugify()
+
+        if slug == "" do
+          Changeset.add_error(changeset, field: target, message: "must be present")
+        else
+          Changeset.force_change_attribute(changeset, target, slug)
+        end
     end
   end
 
