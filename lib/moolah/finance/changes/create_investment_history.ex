@@ -5,6 +5,9 @@ defmodule Moolah.Finance.Changes.CreateInvestmentHistory do
   This change is used by the Investment resource to persist time-series snapshots
   for reporting and performance tracking.
 
+  This module intentionally allows multiple snapshots per day for the same
+  investment, so intraday value changes (e.g., stocks) can be captured.
+
   ## Examples
 
       iex> changeset =
