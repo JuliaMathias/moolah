@@ -16,7 +16,7 @@ defmodule Moolah.Finance.TagTest do
              })
              |> Ash.create()
 
-    assert tag.name == "Food & Drinks"
+    assert to_string(tag.name) == "Food & Drinks"
     assert tag.slug == "food-drinks"
   end
 
@@ -68,6 +68,26 @@ defmodule Moolah.Finance.TagTest do
     assert matched.id == tag.id
   end
 
+  test "find_or_create does not resurrect archived tags" do
+    assert {:ok, tag} =
+             Tag
+             |> Ash.Changeset.for_create(:create, %{
+               name: "Archived Find",
+               color: "#F59E0B"
+             })
+             |> Ash.create()
+
+    assert :ok = Ash.destroy(tag)
+
+    assert {:error, %Ash.Error.Invalid{}} =
+             Tag
+             |> Ash.Changeset.for_create(:find_or_create, %{
+               name: "Archived Find",
+               color: "#F59E0B"
+             })
+             |> Ash.create()
+  end
+
   test "soft deletes tags and excludes them from default read" do
     assert {:ok, tag} =
              Tag
@@ -77,7 +97,7 @@ defmodule Moolah.Finance.TagTest do
              })
              |> Ash.create()
 
-    assert {:ok, _} = Ash.destroy(tag)
+    assert :ok = Ash.destroy(tag)
 
     assert {:ok, tags} = Ash.read(Tag)
     refute Enum.any?(tags, &(&1.id == tag.id))
