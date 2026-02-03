@@ -7,13 +7,14 @@ defmodule Moolah.Finance.InvestmentHistory do
 
   ## Examples
 
-      Moolah.Finance.InvestmentHistory
-      |> Ash.Changeset.for_create(:create, %{
-        investment_id: investment.id,
-        recorded_on: Date.utc_today(),
-        value: Money.new(1250, :BRL)
-      })
-      |> Ash.create()
+      iex> Moolah.Finance.InvestmentHistory
+      ...> |> Ash.Changeset.for_create(:create, %{
+      ...>   investment_id: investment.id,
+      ...>   recorded_on: Date.utc_today(),
+      ...>   value: Money.new(1250, :BRL)
+      ...> })
+      ...> |> Ash.create()
+      {:ok, %Moolah.Finance.InvestmentHistory{}}
   """
 
   use Ash.Resource,
