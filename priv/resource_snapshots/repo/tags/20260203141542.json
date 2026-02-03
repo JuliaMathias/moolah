@@ -1,0 +1,154 @@
+{
+  "attributes": [
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"uuid_generate_v7()\")",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": true,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "id",
+      "type": "uuid"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "name",
+      "type": "citext"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "slug",
+      "type": "text"
+    },
+    {
+      "allow_nil?": false,
+      "default": "nil",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "color",
+      "type": "text"
+    },
+    {
+      "allow_nil?": true,
+      "default": "nil",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "description",
+      "type": "text"
+    },
+    {
+      "allow_nil?": true,
+      "default": "nil",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "archived_at",
+      "type": "utc_datetime_usec"
+    },
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"(now() AT TIME ZONE 'utc')\")",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "inserted_at",
+      "type": "utc_datetime_usec"
+    },
+    {
+      "allow_nil?": false,
+      "default": "fragment(\"(now() AT TIME ZONE 'utc')\")",
+      "generated?": false,
+      "precision": null,
+      "primary_key?": false,
+      "references": null,
+      "scale": null,
+      "size": null,
+      "source": "updated_at",
+      "type": "utc_datetime_usec"
+    }
+  ],
+  "base_filter": null,
+  "check_constraints": [
+    {
+      "attribute": [
+        "color"
+      ],
+      "base_filter": null,
+      "check": "color ~* '^#[0-9A-F]{6}$'",
+      "name": "tags_color_hex_check"
+    }
+  ],
+  "create_table_options": null,
+  "custom_indexes": [],
+  "custom_statements": [],
+  "has_create_action": true,
+  "hash": "80AF42AD875E6AAA80881B55BDC700B2F401FDF347397DF38501D3154AABE51C",
+  "identities": [
+    {
+      "all_tenants?": false,
+      "base_filter": null,
+      "index_name": "tags_unique_name_index",
+      "keys": [
+        {
+          "type": "atom",
+          "value": "name"
+        }
+      ],
+      "name": "unique_name",
+      "nils_distinct?": true,
+      "where": null
+    },
+    {
+      "all_tenants?": false,
+      "base_filter": null,
+      "index_name": "tags_unique_slug_index",
+      "keys": [
+        {
+          "type": "atom",
+          "value": "slug"
+        }
+      ],
+      "name": "unique_slug",
+      "nils_distinct?": true,
+      "where": null
+    }
+  ],
+  "multitenancy": {
+    "attribute": null,
+    "global": null,
+    "strategy": null
+  },
+  "repo": "Elixir.Moolah.Repo",
+  "schema": null,
+  "table": "tags"
+}
