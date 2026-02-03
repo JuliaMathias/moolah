@@ -8,8 +8,10 @@ defmodule Moolah.Finance.Changes.TagChangeUnitTest do
   alias Ash.Resource.ManualCreate.Context
   alias Moolah.Finance.Actions.FindOrCreateTag
   alias Moolah.Finance.Changes.GenerateTagSlug
+  alias Moolah.Finance.Changes.ManageTransactionTags
   alias Moolah.Finance.Changes.NormalizeTagName
   alias Moolah.Finance.Tag
+  alias Moolah.Finance.Transaction
 
   test "normalize_tag_name handles binary values and leaves non-strings untouched" do
     changeset =
@@ -41,6 +43,22 @@ defmodule Moolah.Finance.Changes.TagChangeUnitTest do
       Tag
       |> Ash.Changeset.for_create(:create, %{name: "   ", color: "#22C55E"})
       |> Ash.Changeset.force_change_attribute(:name, Ash.CiString.new("   "))
+      |> NormalizeTagName.change([field: :name], %{})
+
+    assert changeset.errors != []
+
+    changeset =
+      Tag
+      |> Ash.Changeset.new()
+      |> Map.update!(:attributes, &Map.put(&1, :name, ""))
+      |> NormalizeTagName.change([field: :name], %{})
+
+    assert changeset.errors != []
+
+    changeset =
+      Tag
+      |> Ash.Changeset.new()
+      |> Map.update!(:attributes, &Map.put(&1, :name, Ash.CiString.new("")))
       |> NormalizeTagName.change([field: :name], %{})
 
     assert changeset.errors != []
@@ -86,5 +104,16 @@ defmodule Moolah.Finance.Changes.TagChangeUnitTest do
     }
 
     assert {:error, _} = FindOrCreateTag.create(changeset, [], context)
+  end
+
+  test "manage_transaction_tags passes through non-list inputs" do
+    changeset =
+      Transaction
+      |> Ash.Changeset.new()
+      |> Map.update!(:arguments, &Map.put(&1, :tags, "oops"))
+      |> ManageTransactionTags.change([], %{})
+
+    assert Ash.Changeset.get_argument(changeset, :tags) == "oops"
+    assert changeset.errors == []
   end
 end
