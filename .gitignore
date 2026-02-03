@@ -40,6 +40,8 @@ npm-debug.log
 /**/.elixir_ls/*
 .erlang.cookie
 .vscode
+!.vscode/settings.json
+!.vscode/extensions.json
 .DS_Store
 /**/tmp
 /node_modules
@@ -47,4 +49,3 @@ npm-debug.log
 
 dist/
 deploy/rendered
-
