@@ -62,6 +62,7 @@ defmodule Moolah.Finance.Changes.ManageTransactionTags do
   end
 
   @spec dedupe_tags(list() | term()) :: list() | term()
+  # "dedupe" = remove duplicates while preserving the first occurrence.
   defp dedupe_tags(tags) when is_list(tags) do
     tags
     |> Enum.reduce({MapSet.new(), []}, fn tag, {seen, acc} ->
