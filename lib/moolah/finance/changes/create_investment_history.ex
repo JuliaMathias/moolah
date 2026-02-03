@@ -7,15 +7,20 @@ defmodule Moolah.Finance.Changes.CreateInvestmentHistory do
 
   ## Examples
 
-      actions do
-        create :create do
-          change {Moolah.Finance.Changes.CreateInvestmentHistory, mode: :create}
-        end
-
-        update :update do
-          change {Moolah.Finance.Changes.CreateInvestmentHistory, mode: :update}
-        end
-      end
+      iex> changeset =
+      ...>   Moolah.Finance.Investment
+      ...>   |> Ash.Changeset.for_create(:create, %{
+      ...>     name: "Sample",
+      ...>     type: :renda_fixa,
+      ...>     subtype: :cdb,
+      ...>     initial_value: Money.new(100, :BRL),
+      ...>     current_value: Money.new(100, :BRL),
+      ...>     account_id: account.id
+      ...>   })
+      iex> changeset =
+      ...>   Moolah.Finance.Changes.CreateInvestmentHistory.change(changeset, [mode: :create], %{})
+      iex> match?(%Ash.Changeset{}, changeset)
+      true
   """
 
   use Ash.Resource.Change
