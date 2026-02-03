@@ -6,11 +6,13 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
 
   ## Examples
 
-      actions do
-        update :update do
-          change Moolah.Finance.Changes.TrackInvestmentOperation
-        end
-      end
+      iex> changeset =
+      ...>   Moolah.Finance.Investment
+      ...>   |> Ash.Changeset.for_update(:update, %{current_value: Money.new(200, :BRL)})
+      iex> changeset =
+      ...>   Moolah.Finance.Changes.TrackInvestmentOperation.change(changeset, [], %{})
+      iex> match?(%Ash.Changeset{}, changeset)
+      true
   """
 
   use Ash.Resource.Change
