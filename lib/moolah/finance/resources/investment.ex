@@ -33,6 +33,7 @@ defmodule Moolah.Finance.Investment do
   alias Moolah.Finance.Changes.TrackInvestmentOperation
   alias Moolah.Finance.Validations.ValidateInvestmentAccountType
   alias Moolah.Finance.Validations.ValidateInvestmentCurrency
+  alias Moolah.Finance.Validations.ValidateInvestmentPurchaseDate
   alias Moolah.Finance.Validations.ValidateInvestmentSubtype
   alias Moolah.Ledger.Account
 
@@ -96,6 +97,7 @@ defmodule Moolah.Finance.Investment do
     validate {ValidateInvestmentSubtype, []}
     validate {ValidateInvestmentCurrency, []}
     validate {ValidateInvestmentAccountType, []}
+    validate {ValidateInvestmentPurchaseDate, []}
   end
 
   attributes do
