@@ -79,7 +79,8 @@ defmodule Moolah.Finance.Changes.ManageTransactionTags do
 
   defp dedupe_tags(tags), do: tags
 
-  @spec dedupe_key(map()) :: {:id, term()} | {:slug, String.t()} | {:name, String.t()} | {:unknown, reference()}
+  @spec dedupe_key(map()) ::
+          {:id, term()} | {:slug, String.t()} | {:name, String.t()} | {:unknown, reference()}
   defp dedupe_key(%{id: id}) when not is_nil(id), do: {:id, id}
   defp dedupe_key(%{"id" => id}) when not is_nil(id), do: {:id, id}
 
