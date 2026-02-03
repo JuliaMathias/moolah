@@ -1,7 +1,7 @@
 defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
   @moduledoc false
 
-  use Moolah.DataCase, async: false
+  use Moolah.DataCase, async: true
 
   alias Ash.Changeset
   alias Moolah.Finance.Changes.CreateInvestmentHistory
