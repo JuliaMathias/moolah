@@ -15,6 +15,8 @@ This is a web application written using the Phoenix web framework.
 - Private functions should have explanatory comments when necessary since they are not allowed an @doc;
 - Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
 - Coveralls commands (`mix coveralls`, `mix coveralls.detail`, `mix coveralls.html`) may require elevated permissions for Mix PubSub sockets; run with escalated permissions when needed.
+- To fetch unresolved PR review comments, use:
+  `gh api graphql -f query='query(\$o:String!,\$r:String!,\$n:Int!){repository(owner:\$o,name:\$r){pullRequest(number:\$n){reviewThreads(first:100){nodes{isResolved comments(first:20){nodes{author{login} body path position}}}}}}}' -f o='<OWNER>' -f r='<REPO>' -F n=<PR_NUMBER> > pr<PR_NUMBER>_review_threads.json`
 
 ### Phoenix v1.8 guidelines
 
