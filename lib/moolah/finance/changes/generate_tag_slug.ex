@@ -44,6 +44,7 @@ defmodule Moolah.Finance.Changes.GenerateTagSlug do
     end
   end
 
+  @spec slugify(String.t()) :: String.t()
   defp slugify(value) do
     value
     |> String.downcase()
