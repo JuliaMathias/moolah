@@ -17,6 +17,10 @@ defmodule Moolah.Finance.Transaction do
     defaults [:read]
 
     create :create do
+      argument :tags, {:array, :map} do
+        allow_nil? true
+      end
+
       accept [
         :transaction_type,
         :amount,
@@ -30,9 +34,14 @@ defmodule Moolah.Finance.Transaction do
       ]
 
       change Moolah.Finance.Changes.CreateUnderlyingTransfer
+      change Moolah.Finance.Changes.ManageTransactionTags
     end
 
     update :update do
+      argument :tags, {:array, :map} do
+        allow_nil? true
+      end
+
       accept [
         :amount,
         :source_amount,
@@ -43,6 +52,7 @@ defmodule Moolah.Finance.Transaction do
       ]
 
       change Moolah.Finance.Changes.UpdateUnderlyingTransfer
+      change Moolah.Finance.Changes.ManageTransactionTags
       require_atomic? false
       transaction? true
     end
@@ -162,6 +172,13 @@ defmodule Moolah.Finance.Transaction do
     belongs_to :source_transfer, Moolah.Ledger.Transfer do
       allow_nil? true
       attribute_type AshDoubleEntry.ULID
+      public? true
+    end
+
+    many_to_many :tags, Moolah.Finance.Tag do
+      through Moolah.Finance.TransactionTag
+      source_attribute_on_join_resource :transaction_id
+      destination_attribute_on_join_resource :tag_id
       public? true
     end
   end
