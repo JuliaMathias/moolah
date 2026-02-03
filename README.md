@@ -6,6 +6,20 @@ Whether you're tracking daily expenses, managing budget categories, or planning 
 
 ---
 
+## 🧰 Devcontainer (Optional)
+
+This repo includes a Dev Container configuration for a reproducible Elixir/Erlang/Node environment with Postgres.
+
+1. Install Docker and the VS Code Dev Containers extension.
+2. Open the repo in VS Code and choose **Reopen in Container**.
+3. The container will run:
+   - `mix deps.get`
+   - `mix assets.setup`
+   - `mix ash.setup --quiet`
+
+The Dev Container is opt-in and does not affect your normal local workflow.
+If you update `.vscode/extensions.json`, run `scripts/sync-devcontainer-extensions.sh` to keep the devcontainer extension list in sync.
+
 ## 🏗️ Technological Foundation: Ash Framework
 
 Moolah is architected using **Ash Framework**, a declarative, resource-oriented framework for building applications in Elixir. Unlike traditional MVC frameworks where you write imperative code for every layer, Ash allows us to *model* our domain logic and derive the rest.
