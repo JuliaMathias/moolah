@@ -133,7 +133,8 @@ defmodule Moolah.MixProject do
         "deps.unlock --unused",
         "format",
         "test",
-        "credo --strict"
+        "credo --strict",
+        "coveralls"
       ],
       "phx.routes": ["phx.routes", "ash_authentication.phoenix.routes"]
     ]
