@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.19.5-erlang-28.3.1-ubuntu-24.04
+FROM elixir:1.19.5-otp-28
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
