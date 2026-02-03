@@ -10,9 +10,10 @@ This is a web application written using the Phoenix web framework.
 - When a task references a GitHub issue, fetch the issue text with `gh issue view <number>` (using the current repo) and copy it into a `private_docs/issues/issue-<number>-*.md` file.
 - All new functions must have `@spec` and all public functions must have `@doc`, except standard callbacks like `change/3` and migration `up/down`.
 - Module docs must be detailed and include examples when appropriate (especially change modules).
-- Examples in docs should follow Elixir `iex>` style and include the expected result when relevant.
-- Migrations must include a `@moduledoc` that explains why the changes are being introduced.
-- Private functions should have explanatory comments when necessary; complex functions should include inline comments to clarify logic. Tests may include comments to explain scenarios when helpful.
+- Examples in docs (both module and function docs)should follow Elixir `iex>` style and include the expected result when relevant.
+- Migrations must include a `@moduledoc` that explains why the changes are being introduced. These should be very detailed. They are supposed to be a historical record of changes, so they should explain things more for someone who might not be familiar with the code and the app.
+- Private functions should have explanatory comments when necessary since they are not allowed an @doc;
+- Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
 
 ### Phoenix v1.8 guidelines
 
