@@ -6,13 +6,14 @@ defmodule Moolah.Finance.InvestmentOperation do
 
   ## Examples
 
-      Moolah.Finance.InvestmentOperation
-      |> Ash.Changeset.for_create(:create, %{
-        investment_id: investment.id,
-        type: :update,
-        value: Money.new(50, :BRL)
-      })
-      |> Ash.create()
+      iex> Moolah.Finance.InvestmentOperation
+      ...> |> Ash.Changeset.for_create(:create, %{
+      ...>   investment_id: investment.id,
+      ...>   type: :update,
+      ...>   value: Money.new(50, :BRL)
+      ...> })
+      ...> |> Ash.create()
+      {:ok, %Moolah.Finance.InvestmentOperation{}}
   """
 
   use Ash.Resource,
