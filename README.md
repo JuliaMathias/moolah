@@ -18,6 +18,7 @@ This repo includes a Dev Container configuration for a reproducible Elixir/Erlan
    - `mix ash.setup --quiet`
 
 The Dev Container is opt-in and does not affect your normal local workflow.
+If you update `.vscode/extensions.json`, run `scripts/sync-devcontainer-extensions.sh` to keep the devcontainer extension list in sync.
 
 ## 🏗️ Technological Foundation: Ash Framework
 
