@@ -9,6 +9,8 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
   alias Moolah.Finance.Investment
   alias Moolah.Ledger.Account
 
+  require Ash.Query
+
   test "create history change ignores unknown mode" do
     # Scenario: unsupported mode should return the record unchanged.
     # The change module only handles :create and :update; any other mode should
@@ -151,6 +153,37 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
     record = %Investment{id: investment.id, current_value: Money.new(10, :BRL)}
 
     assert {:ok, _record, _changeset, _meta} = Changeset.run_after_actions(record, changeset, [])
+
+    # We intentionally avoid asserting on persisted operations here; the goal is
+    # to execute the zero-delta path without making this test dependent on DB state.
+  end
+
+  test "track operation change surfaces insert errors" do
+    # Scenario: the change reaches the insert step, but we supply a record without
+    # an investment id to simulate a broken persistence layer.
+    # Expected: the insert failure bubbles up so callers can see the error.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("MissingId"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(10, :BRL),
+        current_value: Money.new(10, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{current_value: Money.new(12, :BRL)})
+      |> TrackInvestmentOperation.change([], %{})
+
+    record = %Investment{id: nil, current_value: Money.new(12, :BRL)}
+
+    assert {:error, _} = Changeset.run_after_actions(record, changeset, [])
   end
 
   @spec create_account(map()) :: Account.t()
