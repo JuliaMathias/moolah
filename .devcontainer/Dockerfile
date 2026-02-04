@@ -17,3 +17,14 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
   && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
   && mkdir -p /workspaces \
   && chown -R ${USERNAME}:${USERNAME} /workspaces
+
+# Install Hex and Rebar during image build (has network access)
+RUN mix local.hex --force && \
+  mix local.rebar --force
+
+# Optional: Pre-install common dependencies
+COPY mix.exs mix.lock ./
+RUN mix deps.get
+RUN mix deps.compile
+RUN MIX_ENV=test mix deps.get
+RUN MIX_ENV=test mix deps.compile
