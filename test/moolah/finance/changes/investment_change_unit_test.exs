@@ -124,6 +124,35 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
     assert {:error, _} = Changeset.run_after_actions(fake_record, changeset, [])
   end
 
+  test "track operation change emits update when delta is zero" do
+    # Scenario: the change pipeline forces a current_value write even though the
+    # value is identical, simulating an explicit “refresh” event.
+    # Expected: we still record an :update operation with a zero delta.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("ZeroDelta"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(10, :BRL),
+        current_value: Money.new(10, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{})
+      |> Changeset.force_change_attribute(:current_value, Money.new(10, :BRL))
+      |> TrackInvestmentOperation.change([], %{})
+
+    record = %Investment{id: investment.id, current_value: Money.new(10, :BRL)}
+
+    assert {:ok, _record, _changeset, _meta} = Changeset.run_after_actions(record, changeset, [])
+  end
+
   @spec create_account(map()) :: Account.t()
   defp create_account(attrs \\ %{}) do
     params =
