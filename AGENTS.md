@@ -12,6 +12,7 @@ This is a web application written using the Phoenix web framework.
 - Module docs must be detailed and include examples when appropriate (especially change modules).
 - Examples in docs (both module and function docs) should follow Elixir `iex>` style and include the expected result when relevant.
 - Migrations must include a `@moduledoc` that explains why the changes are being introduced. These should be very detailed. They are supposed to be a historical record of changes, so they should explain things more for someone who might not be familiar with the code and the app.
+- Always add `alias` statements for long module names used in a file to keep references concise.
 - Private functions should have explanatory comments when necessary since they are not allowed an @doc;
 - Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
 - Coveralls commands (`mix coveralls`, `mix coveralls.detail`, `mix coveralls.html`) may require elevated permissions for Mix PubSub sockets; run with escalated permissions when needed.
