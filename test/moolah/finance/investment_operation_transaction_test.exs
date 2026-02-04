@@ -82,6 +82,81 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
     assert Money.equal?(hd(operations).value, Money.new(75, :BRL))
   end
 
+  test "updating transfer amount reconciles the investment operation" do
+    # Scenario: a transfer into an investment account is corrected after creation.
+    # Expected: the existing operation is replaced so only one operation remains
+    # and its value matches the updated amount.
+    bank = create_account(%{identifier: unique_id("bank"), account_type: :bank_account})
+
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    investment = create_investment(investment_account)
+
+    {:ok, transaction} =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(100, :BRL),
+        account_id: bank.id,
+        target_account_id: investment_account.id,
+        target_investment_id: investment.id,
+        date: Date.utc_today()
+      })
+      |> Ash.create()
+
+    {:ok, _updated} =
+      transaction
+      |> Ash.Changeset.for_update(:update, %{amount: Money.new(120, :BRL)})
+      |> Ash.update()
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(transaction_id: transaction.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :deposit
+    assert Money.equal?(hd(operations).value, Money.new(120, :BRL))
+  end
+
+  test "updating transfer description does not create additional operations" do
+    # Scenario: a transfer is updated with metadata only (description change).
+    # Expected: no new operations are created and the existing operation is preserved.
+    bank = create_account(%{identifier: unique_id("bank"), account_type: :bank_account})
+
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    investment = create_investment(investment_account)
+
+    {:ok, transaction} =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(100, :BRL),
+        account_id: bank.id,
+        target_account_id: investment_account.id,
+        target_investment_id: investment.id,
+        date: Date.utc_today()
+      })
+      |> Ash.create()
+
+    {:ok, _updated} =
+      transaction
+      |> Ash.Changeset.for_update(:update, %{description: "Correction note"})
+      |> Ash.update()
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(transaction_id: transaction.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :deposit
+    assert Money.equal?(hd(operations).value, Money.new(100, :BRL))
+  end
+
   test "transfer rejects target_investment_id that belongs to a different account" do
     # Scenario: transfer targets an investment that belongs to a different investment account.
     # Expected: validation rejects the transaction.
