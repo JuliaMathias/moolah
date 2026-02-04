@@ -38,17 +38,22 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   """
   @spec validate(Changeset.t(), keyword(), map()) :: :ok | {:error, keyword()}
   def validate(changeset, _opts, _context) do
-    transaction_type = Changeset.get_attribute(changeset, :transaction_type) || changeset.data.transaction_type
+    transaction_type =
+      Changeset.get_attribute(changeset, :transaction_type) || changeset.data.transaction_type
+
     target_investment_id =
-      Changeset.get_attribute(changeset, :target_investment_id) || changeset.data.target_investment_id
+      Changeset.get_attribute(changeset, :target_investment_id) ||
+        changeset.data.target_investment_id
 
     account_id = Changeset.get_attribute(changeset, :account_id) || changeset.data.account_id
+
     target_account_id =
       Changeset.get_attribute(changeset, :target_account_id) || changeset.data.target_account_id
 
     cond do
       transaction_type != :transfer and not is_nil(target_investment_id) ->
-        {:error, field: :target_investment_id, message: "can only be set for transfer transactions"}
+        {:error,
+         field: :target_investment_id, message: "can only be set for transfer transactions"}
 
       transaction_type != :transfer ->
         :ok

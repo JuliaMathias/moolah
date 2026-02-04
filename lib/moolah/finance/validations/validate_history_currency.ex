@@ -34,7 +34,9 @@ defmodule Moolah.Finance.Validations.ValidateHistoryCurrency do
   """
   @spec validate(Changeset.t(), keyword(), map()) :: :ok | {:error, keyword()}
   def validate(changeset, _opts, _context) do
-    investment_id = Changeset.get_attribute(changeset, :investment_id) || changeset.data.investment_id
+    investment_id =
+      Changeset.get_attribute(changeset, :investment_id) || changeset.data.investment_id
+
     value = Changeset.get_attribute(changeset, :value) || changeset.data.value
 
     with {:ok, %Investment{} = investment} when not is_nil(investment_id) <-
