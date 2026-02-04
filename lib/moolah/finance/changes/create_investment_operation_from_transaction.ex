@@ -48,15 +48,17 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
   @spec create_operation_if_needed(Ash.Resource.record()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
   defp create_operation_if_needed(record) do
-    with :transfer <- record.transaction_type,
-         {:ok, target_is_investment} <- investment_transfer?(record),
-         {type, value} <- operation_details(record, target_is_investment),
-         {:ok, _operation} <- insert_operation(record, type, value) do
-      {:ok, record}
+    if record.transaction_type == :transfer do
+      with {:ok, target_is_investment} <- investment_transfer?(record),
+           {type, value} <- operation_details(record, target_is_investment),
+           {:ok, _operation} <- insert_operation(record, type, value) do
+        {:ok, record}
+      else
+        :skip -> {:ok, record}
+        {:error, error} -> {:error, error}
+      end
     else
-      :skip -> {:ok, record}
-      :not_transfer -> {:ok, record}
-      {:error, error} -> {:error, error}
+      {:ok, record}
     end
   end
 
