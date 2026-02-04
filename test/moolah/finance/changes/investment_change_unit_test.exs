@@ -128,8 +128,8 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
   end
 
   test "track operation change emits update when delta is zero" do
-    # Scenario: the change pipeline forces a current_value write even though the
-    # value is identical, simulating an explicit refresh event.
+    # Scenario: the change pipeline forces a current_value write with a value that
+    # is numerically identical but encoded with different precision (10 vs 10.00).
     # Expected: we still record an :update operation with a zero delta.
     account = create_account()
 
@@ -148,10 +148,10 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
     changeset =
       investment
       |> Changeset.for_update(:update, %{})
-      |> Changeset.force_change_attribute(:current_value, Money.new(10, :BRL))
+      |> Changeset.force_change_attribute(:current_value, Money.new("10.00", :BRL))
       |> TrackInvestmentOperation.change([], %{})
 
-    record = %Investment{id: investment.id, current_value: Money.new(10, :BRL)}
+    record = %Investment{id: investment.id, current_value: Money.new("10.00", :BRL)}
 
     assert {:ok, _record, _changeset, _meta} = Changeset.run_after_actions(record, changeset, [])
 
