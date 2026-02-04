@@ -169,7 +169,7 @@ The test suite includes comprehensive coverage of:
 - ✅ Ledger modules (balance tracking, transfer operations)
 - ✅ Business logic and edge cases
 
-For more details on test coverage, see [TEST_COVERAGE_SUMMARY.md](TEST_COVERAGE_SUMMARY.md).
+For more details on test coverage, see the [ExCoveralls documentation](https://github.com/parroty/excoveralls).
 
 ---
 
