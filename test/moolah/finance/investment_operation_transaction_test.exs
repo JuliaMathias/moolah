@@ -7,6 +7,9 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
   alias Moolah.Finance.InvestmentHistory
   alias Moolah.Finance.InvestmentOperation
   alias Moolah.Finance.Transaction
+  alias Moolah.Finance.Validations.ValidateHistoryCurrency
+  alias Moolah.Finance.Validations.ValidateOperationCurrency
+  alias Moolah.Finance.Validations.ValidateTransactionInvestmentTarget
   alias Moolah.Ledger.Account
 
   require Ash.Query
@@ -211,12 +214,17 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
       })
       |> Ash.Changeset.force_change_attribute(:value, "oops")
 
-    assert :ok =
-             Moolah.Finance.Validations.ValidateHistoryCurrency.validate(
-               history_changeset,
-               [],
-               %{}
-             )
+    assert :ok = ValidateHistoryCurrency.validate(history_changeset, [], %{})
+
+    direct_history_changeset =
+      InvestmentHistory
+      |> Ash.Changeset.for_create(:create, %{
+        investment_id: investment.id,
+        recorded_on: Date.utc_today(),
+        value: "oops"
+      })
+
+    assert :ok = ValidateHistoryCurrency.validate(direct_history_changeset, [], %{})
 
     operation_changeset =
       InvestmentOperation
@@ -227,12 +235,17 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
       })
       |> Ash.Changeset.force_change_attribute(:value, "oops")
 
-    assert :ok =
-             Moolah.Finance.Validations.ValidateOperationCurrency.validate(
-               operation_changeset,
-               [],
-               %{}
-             )
+    assert :ok = ValidateOperationCurrency.validate(operation_changeset, [], %{})
+
+    direct_operation_changeset =
+      InvestmentOperation
+      |> Ash.Changeset.for_create(:create, %{
+        investment_id: investment.id,
+        type: :deposit,
+        value: "oops"
+      })
+
+    assert :ok = ValidateOperationCurrency.validate(direct_operation_changeset, [], %{})
   end
 
   test "validation skips when target investment lookup fails" do
@@ -253,12 +266,7 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
         date: Date.utc_today()
       })
 
-    assert :ok =
-             Moolah.Finance.Validations.ValidateTransactionInvestmentTarget.validate(
-               changeset,
-               [],
-               %{}
-             )
+    assert :ok = ValidateTransactionInvestmentTarget.validate(changeset, [], %{})
   end
 
   test "validation skips when accounts are nil" do
@@ -275,12 +283,7 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
         date: Date.utc_today()
       })
 
-    assert :ok =
-             Moolah.Finance.Validations.ValidateTransactionInvestmentTarget.validate(
-               changeset,
-               [],
-               %{}
-             )
+    assert :ok = ValidateTransactionInvestmentTarget.validate(changeset, [], %{})
   end
 
   @spec create_account(map()) :: Account.t()
