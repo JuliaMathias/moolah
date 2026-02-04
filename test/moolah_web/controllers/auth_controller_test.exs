@@ -1,7 +1,5 @@
 defmodule MoolahWeb.AuthControllerTest do
-  @moduledoc """
-  Tests for the MoolahWeb.AuthController module.
-  """
+  @moduledoc false
   use MoolahWeb.ConnCase, async: true
 
   describe "success/4 message content" do

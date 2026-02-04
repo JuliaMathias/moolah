@@ -1,7 +1,5 @@
 defmodule Moolah.SecretsTest do
-  @moduledoc """
-  Tests for the Moolah.Secrets module.
-  """
+  @moduledoc false
   use Moolah.DataCase, async: true
 
   alias Moolah.Accounts.User

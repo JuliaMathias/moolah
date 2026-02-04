@@ -1,7 +1,5 @@
 defmodule Moolah.FinanceTest do
-  @moduledoc """
-  Tests for the Moolah.Finance domain.
-  """
+  @moduledoc false
   use Moolah.DataCase, async: true
 
   alias Moolah.Finance

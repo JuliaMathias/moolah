@@ -1,7 +1,5 @@
 defmodule MoolahWeb.LiveUserAuthTest do
-  @moduledoc """
-  Tests for the MoolahWeb.LiveUserAuth module.
-  """
+  @moduledoc false
   use MoolahWeb.ConnCase, async: true
 
   alias Moolah.Accounts.User

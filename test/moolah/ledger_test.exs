@@ -1,7 +1,5 @@
 defmodule Moolah.LedgerTest do
-  @moduledoc """
-  Tests for the Moolah.Ledger domain.
-  """
+  @moduledoc false
   use Moolah.DataCase, async: true
 
   alias Moolah.Ledger

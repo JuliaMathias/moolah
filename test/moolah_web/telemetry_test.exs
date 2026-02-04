@@ -1,7 +1,5 @@
 defmodule MoolahWeb.TelemetryTest do
-  @moduledoc """
-  Tests for the MoolahWeb.Telemetry module.
-  """
+  @moduledoc false
   use ExUnit.Case, async: true
 
   alias MoolahWeb.Telemetry
