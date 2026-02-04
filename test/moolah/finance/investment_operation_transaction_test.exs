@@ -274,7 +274,6 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
     # which can happen before relationships are set or when data is incomplete.
     # Expected: validation returns :ok and does not crash, allowing other validations
     # to handle missing fields.
-    # Expected: validation returns :ok and does not raise.
     changeset =
       Transaction
       |> Ash.Changeset.for_create(:create, %{
