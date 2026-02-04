@@ -48,35 +48,15 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
   @spec create_operation_if_needed(Ash.Resource.record()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
   defp create_operation_if_needed(record) do
-    if record.transaction_type != :transfer do
+    with :transfer <- record.transaction_type,
+         {:ok, target_is_investment} <- investment_transfer?(record),
+         {type, value} <- operation_details(record, target_is_investment),
+         {:ok, _operation} <- insert_operation(record, type, value) do
       {:ok, record}
     else
-      source_is_investment = investment_account?(record.account_id)
-      target_is_investment = investment_account?(record.target_account_id)
-
-      cond do
-        not source_is_investment and not target_is_investment ->
-          {:ok, record}
-
-        is_nil(record.target_investment_id) ->
-          {:error, "target_investment_id is required for investment transfers"}
-
-        true ->
-          {type, value} = operation_details(record, target_is_investment)
-
-          InvestmentOperation
-          |> Ash.Changeset.for_create(:create, %{
-            investment_id: record.target_investment_id,
-            transaction_id: record.id,
-            type: type,
-            value: value
-          })
-          |> Ash.create()
-          |> case do
-            {:ok, _operation} -> {:ok, record}
-            {:error, error} -> {:error, error}
-          end
-      end
+      :skip -> {:ok, record}
+      :not_transfer -> {:ok, record}
+      {:error, error} -> {:error, error}
     end
   end
 
@@ -90,6 +70,36 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
       source_value = record.source_amount || record.amount
       {:withdraw, source_value}
     end
+  end
+
+  @spec investment_transfer?(Ash.Resource.record()) :: {:ok, boolean()} | :skip | {:error, any()}
+  defp investment_transfer?(record) do
+    source_is_investment = investment_account?(record.account_id)
+    target_is_investment = investment_account?(record.target_account_id)
+
+    cond do
+      not source_is_investment and not target_is_investment ->
+        :skip
+
+      is_nil(record.target_investment_id) ->
+        {:error, "target_investment_id is required for investment transfers"}
+
+      true ->
+        {:ok, target_is_investment}
+    end
+  end
+
+  @spec insert_operation(Ash.Resource.record(), atom(), Money.t()) ::
+          {:ok, Ash.Resource.record()} | {:error, any()}
+  defp insert_operation(record, type, value) do
+    InvestmentOperation
+    |> Ash.Changeset.for_create(:create, %{
+      investment_id: record.target_investment_id,
+      transaction_id: record.id,
+      type: type,
+      value: value
+    })
+    |> Ash.create()
   end
 
   @spec investment_account?(Ecto.UUID.t() | nil) :: boolean()
