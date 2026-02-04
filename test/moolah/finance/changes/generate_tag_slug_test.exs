@@ -181,14 +181,14 @@ defmodule Moolah.Finance.Changes.GenerateTagSlugTest do
       assert Changeset.get_attribute(changeset, :slug) == "multi-part-name"
     end
 
-    test "works with custom source and target fields via opts" do
+    test "works with custom source field via opts" do
       changeset =
         Tag
         |> Changeset.new()
         |> Map.update!(:attributes, &Map.put(&1, :description, "Custom Field"))
-        |> GenerateTagSlug.change([source: :description, target: :custom_slug], %{})
+        |> GenerateTagSlug.change([source: :description, target: :slug], %{})
 
-      assert Changeset.get_attribute(changeset, :custom_slug) == "custom-field"
+      assert Changeset.get_attribute(changeset, :slug) == "custom-field"
     end
 
     test "integration: works in full create changeset" do

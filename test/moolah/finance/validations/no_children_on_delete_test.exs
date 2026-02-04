@@ -17,7 +17,7 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Should succeed since it has no children
-      assert :ok = Ash.destroy(category)
+      assert :ok = Ash.destroy!(category, action: :destroy)
     end
 
     test "prevents deleting a category with one child" do
@@ -45,7 +45,10 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Try to delete parent - should fail
-      assert {:error, error} = Ash.destroy(parent)
+      assert {:error, error} =
+               Ash.Changeset.for_destroy(parent, :destroy)
+               |> Ash.destroy()
+
       assert %Ash.Error.Invalid{} = error
 
       assert Enum.any?(error.errors, fn e ->
@@ -101,7 +104,9 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Try to delete parent - should fail with count
-      assert {:error, error} = Ash.destroy(parent)
+      assert {:error, error} =
+               Ash.Changeset.for_destroy(parent, :destroy)
+               |> Ash.destroy()
 
       assert Enum.any?(error.errors, fn e ->
                e.field == :id &&
@@ -134,10 +139,10 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Delete child first - should succeed
-      assert :ok = Ash.destroy(child)
+      assert :ok = Ash.destroy!(child, action: :destroy)
 
       # Now delete parent - should succeed since it has no children
-      assert :ok = Ash.destroy(parent)
+      assert :ok = Ash.destroy!(parent, action: :destroy)
     end
 
     test "allows deleting a child that has no children of its own" do
@@ -164,7 +169,7 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Parent has no children, so it can be deleted even though grandparent has children
-      assert :ok = Ash.destroy(parent)
+      assert :ok = Ash.destroy!(parent, action: :destroy)
     end
 
     test "proper pluralization in error messages" do
@@ -191,7 +196,9 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Error message should use singular "category"
-      assert {:error, error} = Ash.destroy(parent)
+      assert {:error, error} =
+               Ash.Changeset.for_destroy(parent, :destroy)
+               |> Ash.destroy()
 
       assert Enum.any?(error.errors, fn e ->
                to_string(e.message) =~ "1 child category"
@@ -231,7 +238,9 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
         |> Ash.create()
 
       # Error message should use plural "categories"
-      assert {:error, error2} = Ash.destroy(parent2)
+      assert {:error, error2} =
+               Ash.Changeset.for_destroy(parent2, :destroy)
+               |> Ash.destroy()
 
       assert Enum.any?(error2.errors, fn e ->
                to_string(e.message) =~ "2 child categories"
