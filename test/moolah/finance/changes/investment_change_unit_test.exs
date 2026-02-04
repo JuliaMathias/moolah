@@ -7,6 +7,7 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
   alias Moolah.Finance.Changes.CreateInvestmentHistory
   alias Moolah.Finance.Changes.TrackInvestmentOperation
   alias Moolah.Finance.Investment
+  alias Moolah.Finance.InvestmentOperation
   alias Moolah.Ledger.Account
 
   require Ash.Query
@@ -128,7 +129,7 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
 
   test "track operation change emits update when delta is zero" do
     # Scenario: the change pipeline forces a current_value write even though the
-    # value is identical, simulating an explicit “refresh” event.
+    # value is identical, simulating an explicit refresh event.
     # Expected: we still record an :update operation with a zero delta.
     account = create_account()
 
@@ -154,8 +155,14 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
 
     assert {:ok, _record, _changeset, _meta} = Changeset.run_after_actions(record, changeset, [])
 
-    # We intentionally avoid asserting on persisted operations here; the goal is
-    # to execute the zero-delta path without making this test dependent on DB state.
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(investment_id: investment.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :update
+    assert Money.equal?(hd(operations).value, Money.new(0, :BRL))
   end
 
   test "track operation change surfaces insert errors" do
