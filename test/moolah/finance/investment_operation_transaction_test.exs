@@ -108,6 +108,57 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
     assert {:error, %Ash.Error.Invalid{}} = result
   end
 
+  test "transfer between non-investment accounts rejects target_investment_id" do
+    # Scenario: a user attempts to attach an investment to a transfer that only
+    # involves bank accounts, which should be treated as a plain cash movement.
+    # Expected: validation rejects the transaction because no investment account
+    # participates in the transfer.
+    bank = create_account(%{identifier: unique_id("bank"), account_type: :bank_account})
+    other_bank = create_account(%{identifier: unique_id("bank2"), account_type: :bank_account})
+
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    investment = create_investment(investment_account)
+
+    result =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(50, :BRL),
+        account_id: bank.id,
+        target_account_id: other_bank.id,
+        target_investment_id: investment.id,
+        date: Date.utc_today()
+      })
+      |> Ash.create()
+
+    assert {:error, %Ash.Error.Invalid{}} = result
+  end
+
+  test "transfer into investment account requires target_investment_id" do
+    # Scenario: a transfer sends money into an investment account but omits the
+    # target investment selection, leaving the system unable to attribute the deposit.
+    # Expected: validation rejects the transaction until a target investment is provided.
+    bank = create_account(%{identifier: unique_id("bank"), account_type: :bank_account})
+
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    result =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(60, :BRL),
+        account_id: bank.id,
+        target_account_id: investment_account.id,
+        date: Date.utc_today()
+      })
+      |> Ash.create()
+
+    assert {:error, %Ash.Error.Invalid{}} = result
+  end
+
   test "history and operation currency mismatches are rejected" do
     # Scenario: history/operation values use a currency different from the investment currency.
     # Expected: validation rejects the create attempts.
@@ -139,6 +190,97 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
       |> Ash.create()
 
     assert {:error, %Ash.Error.Invalid{}} = operation_result
+  end
+
+  test "currency validations allow invalid money values to fall through" do
+    # Scenario: we deliberately inject a non-money value into the changeset to simulate
+    # malformed input that should not be handled by currency validations.
+    # Expected: the currency validations return :ok so other validations can surface
+    # the error without this validation raising or failing first.
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    investment = create_investment(investment_account)
+
+    history_changeset =
+      InvestmentHistory
+      |> Ash.Changeset.for_create(:create, %{
+        investment_id: investment.id,
+        recorded_on: Date.utc_today(),
+        value: Money.new(10, :BRL)
+      })
+      |> Ash.Changeset.force_change_attribute(:value, "oops")
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateHistoryCurrency.validate(
+               history_changeset,
+               [],
+               %{}
+             )
+
+    operation_changeset =
+      InvestmentOperation
+      |> Ash.Changeset.for_create(:create, %{
+        investment_id: investment.id,
+        type: :deposit,
+        value: Money.new(10, :BRL)
+      })
+      |> Ash.Changeset.force_change_attribute(:value, "oops")
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateOperationCurrency.validate(
+               operation_changeset,
+               [],
+               %{}
+             )
+  end
+
+  test "validation skips when target investment lookup fails" do
+    # Scenario: a transfer references a target_investment_id that does not exist.
+    # Expected: the validation returns :ok so the missing relationship is handled
+    # elsewhere (we do not want validation to raise on lookup failures).
+    investment_account =
+      create_account(%{identifier: unique_id("invest"), account_type: :investment_account})
+
+    changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(10, :BRL),
+        account_id: investment_account.id,
+        target_account_id: investment_account.id,
+        target_investment_id: Ash.UUID.generate(),
+        date: Date.utc_today()
+      })
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateTransactionInvestmentTarget.validate(
+               changeset,
+               [],
+               %{}
+             )
+  end
+
+  test "validation skips when accounts are nil" do
+    # Scenario: a transfer changeset is built without account ids (nil values),
+    # which can happen before relationships are set or when data is incomplete.
+    # Expected: validation returns :ok and does not crash, allowing other validations
+    # to handle missing fields.
+    # Expected: validation returns :ok and does not raise.
+    changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(10, :BRL),
+        date: Date.utc_today()
+      })
+
+    assert :ok =
+             Moolah.Finance.Validations.ValidateTransactionInvestmentTarget.validate(
+               changeset,
+               [],
+               %{}
+             )
   end
 
   @spec create_account(map()) :: Account.t()
