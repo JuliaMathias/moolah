@@ -1,0 +1,92 @@
+name: Copilot Setup
+
+on:
+  workflow_dispatch:
+
+env:
+  MIX_ENV: dev
+
+jobs:
+  copilot-setup-steps:
+    name: Prepare Copilot Agent Environment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    services:
+      db:
+        image: postgres:18
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: moolah_dev
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Read tool versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          elixir_version="$(awk '$1 == "elixir" { print $2 }' .tool-versions)"
+          otp_version="$(awk '$1 == "erlang" { print $2 }' .tool-versions)"
+
+          if [ -z "$elixir_version" ] || [ -z "$otp_version" ]; then
+            echo "Failed to read Elixir/OTP versions from .tool-versions"
+            cat .tool-versions
+            exit 1
+          fi
+
+          echo "ELIXIR_VERSION=$elixir_version" >> "$GITHUB_ENV"
+          echo "OTP_VERSION=$otp_version" >> "$GITHUB_ENV"
+
+      - name: Set up Elixir
+        uses: erlef/setup-elixir@v1
+        with:
+          elixir-version: ${{ env.ELIXIR_VERSION }}
+          otp-version: ${{ env.OTP_VERSION }}
+
+      - name: Install Hex and Rebar
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+
+      - name: Restore dependencies and build cache
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.hex
+            ~/.mix
+            deps
+            _build
+          key: ${{ runner.os }}-mix-${{ env.ELIXIR_VERSION }}-${{ env.OTP_VERSION }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-${{ env.ELIXIR_VERSION }}-${{ env.OTP_VERSION }}-
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compile dependencies
+        run: mix deps.compile
+
+      - name: Prepare app
+        run: mix compile
+
+      - name: Warm test dependencies
+        run: MIX_ENV=test mix deps.get
+
+      - name: Compile test dependencies
+        run: MIX_ENV=test mix deps.compile
+
+      - name: Build esbuild
+        run: mix esbuild.install
+
+      - name: Install tailwind
+        run: mix tailwind.install
+
+      - name: Verify formatter works
+        run: mix format
