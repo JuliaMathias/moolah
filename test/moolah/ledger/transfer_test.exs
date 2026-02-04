@@ -10,6 +10,8 @@ defmodule Moolah.Ledger.TransferTest do
   alias Moolah.Ledger.Account
   alias Moolah.Ledger.Transfer
 
+  require Ash.Query
+
   describe "transfer creation" do
     setup do
       {:ok, from_account} =
@@ -201,7 +203,7 @@ defmodule Moolah.Ledger.TransferTest do
     } do
       transfers =
         Transfer
-        |> Ash.Query.filter(from_account_id == ^from_account.id)
+        |> Ash.Query.filter(from_account_id: from_account.id)
         |> Ash.read!()
 
       refute Enum.empty?(transfers)
@@ -215,7 +217,7 @@ defmodule Moolah.Ledger.TransferTest do
     } do
       transfers =
         Transfer
-        |> Ash.Query.filter(to_account_id == ^to_account.id)
+        |> Ash.Query.filter(to_account_id: to_account.id)
         |> Ash.read!()
 
       refute Enum.empty?(transfers)

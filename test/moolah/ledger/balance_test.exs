@@ -12,6 +12,8 @@ defmodule Moolah.Ledger.BalanceTest do
   alias Moolah.Ledger.Balance
   alias Moolah.Ledger.Transfer
 
+  require Ash.Query
+
   describe "balance creation and tracking" do
     setup do
       {:ok, from_account} =
@@ -79,13 +81,13 @@ defmodule Moolah.Ledger.BalanceTest do
       # Query balances for from_account
       from_balances =
         Balance
-        |> Ash.Query.filter(account_id == ^from_account.id)
+        |> Ash.Query.filter(account_id: from_account.id)
         |> Ash.read!()
 
       # Query balances for to_account
       to_balances =
         Balance
-        |> Ash.Query.filter(account_id == ^to_account.id)
+        |> Ash.Query.filter(account_id: to_account.id)
         |> Ash.read!()
 
       # Both accounts should have balance records
@@ -211,7 +213,7 @@ defmodule Moolah.Ledger.BalanceTest do
       # Verify no duplicates exist
       balances =
         Balance
-        |> Ash.Query.filter(account_id == ^account.id and transfer_id == ^transfer.id)
+        |> Ash.Query.filter(account_id: account.id, transfer_id: transfer.id)
         |> Ash.read!()
 
       # Should have exactly one balance for this account/transfer combination
