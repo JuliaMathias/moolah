@@ -93,8 +93,8 @@ defmodule Moolah.Finance.InvestmentTest do
     assert Enum.any?(histories, &(&1.recorded_on == today))
   end
 
-  test "updates current_value and records history + operation" do
-    # Scenario: a value change should create a new history snapshot and an operation delta.
+  test "updates current_value and records history + deposit operation" do
+    # Scenario: a value increase should create a new history snapshot and a deposit operation.
     account = create_account()
 
     {:ok, investment} =
@@ -129,7 +129,7 @@ defmodule Moolah.Finance.InvestmentTest do
       |> Ash.read!()
 
     assert length(operations) == 1
-    assert hd(operations).type == :update
+    assert hd(operations).type == :deposit
     assert Money.equal?(hd(operations).value, Money.new(50, :BRL))
   end
 
