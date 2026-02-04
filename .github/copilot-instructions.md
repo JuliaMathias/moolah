@@ -172,6 +172,36 @@ end
 - Reference element IDs from templates in tests
 - Use LazyHTML for parsing and selectors
 
+#### Test Coverage Requirements
+
+**CRITICAL: All new files and edits to existing files must be covered by tests.**
+
+Use **ExCoveralls** to measure and ensure test coverage:
+
+```bash
+# Run tests with coverage summary
+MIX_ENV=test mix coveralls
+
+# Generate detailed line-by-line coverage (shows which specific lines are NOT covered)
+MIX_ENV=test mix coveralls.detail
+
+# Filter coverage to specific files to see uncovered lines
+MIX_ENV=test mix coveralls.detail --filter lib/moolah/finance
+
+# Generate HTML coverage report (best for visual inspection of uncovered code)
+MIX_ENV=test mix coveralls.html
+# Then open: cover/excoveralls.html in your browser
+
+# Run during development (included in mix precommit)
+mix precommit  # Runs coveralls as final step
+```
+
+**Finding uncovered lines:**
+- `mix coveralls.detail` shows percentage + lists all uncovered line numbers per file
+- `mix coveralls.html` generates interactive HTML report highlighting uncovered lines in red
+- Focus on covering new functions, edge cases, and error paths
+- Tests should be added alongside code changes, not as an afterthought
+
 ### UI/UX & Design
 
 - Use **Tailwind CSS** for styling (no daisyUI - build custom components)
