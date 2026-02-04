@@ -52,7 +52,7 @@ defmodule Moolah.Ledger.BalanceTest do
 
       # Balances should be created automatically
       balances = Balance |> Ash.read!()
-      assert length(balances) > 0
+      refute Enum.empty?(balances)
     end
 
     test "can read all balances" do
@@ -89,8 +89,8 @@ defmodule Moolah.Ledger.BalanceTest do
         |> Ash.read!()
 
       # Both accounts should have balance records
-      assert length(from_balances) > 0
-      assert length(to_balances) > 0
+      refute Enum.empty?(from_balances)
+      refute Enum.empty?(to_balances)
 
       # Verify all records belong to the correct account
       assert Enum.all?(from_balances, &(&1.account_id == from_account.id))

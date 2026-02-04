@@ -115,11 +115,11 @@ defmodule Moolah.Finance.Changes.NormalizeTagNameTest do
       changeset =
         Tag
         |> Changeset.new()
-        |> Map.update!(:attributes, &Map.put(&1, :name, 12345))
+        |> Map.update!(:attributes, &Map.put(&1, :name, 12_345))
         |> NormalizeTagName.change([field: :name], %{})
 
       # Non-strings should pass through unchanged
-      assert Changeset.get_attribute(changeset, :name) == 12345
+      assert Changeset.get_attribute(changeset, :name) == 12_345
       assert changeset.errors == []
     end
 

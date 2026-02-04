@@ -192,7 +192,7 @@ defmodule Moolah.Ledger.TransferTest do
     test "can read all transfers" do
       transfers = Transfer |> Ash.read!()
       assert is_list(transfers)
-      assert length(transfers) > 0
+      refute Enum.empty?(transfers)
     end
 
     test "can filter transfers by from_account_id", %{
@@ -204,7 +204,7 @@ defmodule Moolah.Ledger.TransferTest do
         |> Ash.Query.filter(from_account_id == ^from_account.id)
         |> Ash.read!()
 
-      assert length(transfers) > 0
+      refute Enum.empty?(transfers)
       assert transfer.id in Enum.map(transfers, & &1.id)
       assert Enum.all?(transfers, &(&1.from_account_id == from_account.id))
     end
@@ -218,7 +218,7 @@ defmodule Moolah.Ledger.TransferTest do
         |> Ash.Query.filter(to_account_id == ^to_account.id)
         |> Ash.read!()
 
-      assert length(transfers) > 0
+      refute Enum.empty?(transfers)
       assert transfer.id in Enum.map(transfers, & &1.id)
       assert Enum.all?(transfers, &(&1.to_account_id == to_account.id))
     end
