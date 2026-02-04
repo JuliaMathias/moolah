@@ -163,6 +163,119 @@ Your CI workflow already includes:
 
 So the formatting will be validated automatically when the PR runs through CI.
 
+## Can You Whitelist Domains?
+
+### Short Answer
+**No, repository owners cannot whitelist domains in GitHub Actions.** Network access is controlled by GitHub at the infrastructure level, not per-repository.
+
+### Why Not?
+
+**GitHub Actions Runner Level**
+- Network policies are set by GitHub's infrastructure team
+- Applied uniformly to all hosted runners for security/compliance
+- Individual repositories cannot override these settings
+
+**Devcontainer Configuration**
+- Devcontainers don't control network access
+- They inherit network capabilities from the host environment
+- When running in GitHub Actions, they get the runner's restricted network
+
+### What CAN You Do?
+
+#### Option 1: Pre-build Dependencies in Docker Image ✅ **RECOMMENDED**
+
+Modify `.devcontainer/Dockerfile` to install Hex and dependencies during image build:
+
+```dockerfile
+FROM elixir:1.19.5-otp-28
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    inotify-tools \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Hex and Rebar during image build (has network access)
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd --gid ${USER_GID} ${USERNAME} \
+  && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
+  && mkdir -p /workspaces \
+  && chown -R ${USERNAME}:${USERNAME} /workspaces
+
+# Optional: Pre-install common dependencies
+# COPY mix.exs mix.lock ./
+# RUN mix deps.get
+```
+
+**Benefits:**
+- ✅ Hex available immediately
+- ✅ Works in restricted environments
+- ✅ Faster container startup
+- ✅ No code changes needed
+
+#### Option 2: Use GitHub Actions Caching ✅ **ALREADY IMPLEMENTED**
+
+Your `.github/workflows/ci.yml` already caches dependencies:
+
+```yaml
+- name: Restore dependencies and build cache
+  uses: actions/cache@v5
+  with:
+    path: |
+      deps
+      _build
+    key: ${{ runner.os }}-mix-...
+```
+
+This is perfect! CI runs have network access, so they download once and cache.
+
+#### Option 3: Use Self-Hosted Runners
+
+**If you need full control:**
+- Set up your own GitHub Actions runners
+- Full control over network policies
+- Can whitelist any domains you want
+
+**Trade-offs:**
+- ⚠️ Requires infrastructure maintenance
+- ⚠️ Security responsibility on you
+- ⚠️ Cost of hosting
+
+**Setup:**
+```yaml
+# In .github/workflows/ci.yml
+jobs:
+  build:
+    runs-on: self-hosted  # Instead of ubuntu-latest
+```
+
+#### Option 4: Use GitHub Codespaces Instead
+
+**GitHub Codespaces has different network policies:**
+- ✅ Full external network access
+- ✅ Uses your devcontainer config
+- ✅ Great for development
+- ⚠️ Not for CI/CD (that's what Actions is for)
+
+Your devcontainer works perfectly in Codespaces!
+
+### Recommended Approach
+
+For your repository, I recommend **Option 1** (pre-install Hex in Dockerfile):
+
+1. **Minimal change** - just update the Dockerfile
+2. **Works everywhere** - local dev, Codespaces, and GitHub Actions agents
+3. **No trade-offs** - faster startup, more reliable
+
 ## Recommendations
 
 ### For Local Development
@@ -171,14 +284,18 @@ Your devcontainer setup is **perfectly fine** for local development! Developers 
 - Run `mix format`
 - Run all mix commands normally
 
-### For This PR
+### For GitHub Actions CI
 The tests I created are valid and will be verified by your CI, which has:
-- Network access to install dependencies
-- Ability to run `mix format --check-formatted`
-- Ability to run `mix coveralls.github`
+- ✅ Network access to install dependencies
+- ✅ Ability to run `mix format --check-formatted`
+- ✅ Ability to run `mix coveralls.github`
+- ✅ Dependency caching already configured
 
-### Future Improvements
-If you want to optimize the devcontainer for environments with limited network access, consider **Option 1** above - pre-installing Hex and Rebar in the Dockerfile. This would make the container more robust in restricted environments.
+### For This PR
+No changes needed! The CI will validate everything with its full network access.
+
+### Future Optimization
+Consider pre-installing Hex in the Dockerfile (Option 1 above) to make the devcontainer more robust in restricted environments like GitHub Actions agents.
 
 ## Summary
 

@@ -1,0 +1,42 @@
+FROM elixir:1.19.5-otp-28
+
+# System dependencies
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    curl \
+    git \
+    inotify-tools \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install Hex and Rebar (required for mix commands)
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+# Pre-install project dependencies (makes mix format work without network)
+# This happens during Docker build, which has network access
+WORKDIR /tmp/build
+COPY mix.exs mix.lock ./
+RUN mix deps.get && \
+    mix deps.compile
+
+# Create user
+ARG USERNAME=vscode
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+RUN groupadd --gid ${USER_GID} ${USERNAME} \
+  && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
+  && mkdir -p /workspaces \
+  && chown -R ${USERNAME}:${USERNAME} /workspaces
+
+# Copy pre-compiled dependencies to user's home directory
+# This makes them available when the container runs
+RUN mkdir -p /home/${USERNAME}/.mix && \
+    cp -r /root/.mix/* /home/${USERNAME}/.mix/ 2>/dev/null || true && \
+    chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}/.mix
+
+# Switch to non-root user
+USER ${USERNAME}
+WORKDIR /workspaces/moolah
