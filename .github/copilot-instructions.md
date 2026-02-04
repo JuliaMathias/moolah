@@ -182,7 +182,7 @@ end
   @source "../js";
   @source "../../lib/moolah_web";
   ```
-- Avoid using `@apply` in raw CSS - prefer utility classes directly in templates
+- **Never use `@apply`** when writing raw CSS (use utility classes directly in templates)
 - Check `lib/moolah_web/components/` for existing components before creating new ones
 - Use `<.icon name="hero-x-mark">` for icons (imported from `core_components.ex`)
 - Use `<.input>` component for form inputs (imported from `core_components.ex`)
