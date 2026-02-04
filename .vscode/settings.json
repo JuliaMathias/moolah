@@ -755,5 +755,8 @@
       "matchCommandLine": true
     }
   },
-  "chatgpt.followUpQueueMode": "interrupt"
+  "chatgpt.followUpQueueMode": "interrupt",
+  "cSpell.words": [
+    "intraday"
+  ]
 }

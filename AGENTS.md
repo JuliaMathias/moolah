@@ -5,7 +5,18 @@ This is a web application written using the Phoenix web framework.
 ## Project guidelines
 
 - Use `mix precommit` alias when you are done with all changes and fix any pending issues
+- Always run `mix format` after creating or editing a file.
 - Use the already included and available `:req` (`Req`) library for HTTP requests, **avoid** `:httpoison`, `:tesla`, and `:httpc`. Req is included by default and is the preferred HTTP client for Phoenix apps
+- When a task references a GitHub issue, fetch the issue text with `gh issue view <number>` (using the current repo) and copy it into a `private_docs/issues/issue-<number>-*.md` file.
+- All new functions must have `@spec` and all public functions must have `@doc`, except standard callbacks like `change/3` and migration `up/down`.
+- Module docs must be detailed and include examples when appropriate (especially change modules).
+- Examples in docs (both module and function docs) should follow Elixir `iex>` style and include the expected result when relevant.
+- Migrations must include a `@moduledoc` that explains why the changes are being introduced. These should be very detailed. They are supposed to be a historical record of changes, so they should explain things more for someone who might not be familiar with the code and the app.
+- Private functions should have explanatory comments when necessary since they are not allowed an @doc;
+- Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
+- Coveralls commands (`mix coveralls`, `mix coveralls.detail`, `mix coveralls.html`) may require elevated permissions for Mix PubSub sockets; run with escalated permissions when needed.
+- To fetch unresolved PR review comments, use:
+  `gh api graphql -f query='query(\$o:String!,\$r:String!,\$n:Int!){repository(owner:\$o,name:\$r){pullRequest(number:\$n){reviewThreads(first:100){nodes{isResolved comments(first:20){nodes{author{login} body path position}}}}}}}' -f o='<OWNER>' -f r='<REPO>' -F n=<PR_NUMBER> > pr<PR_NUMBER>_review_threads.json`
 
 ### Phoenix v1.8 guidelines
 
