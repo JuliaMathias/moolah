@@ -4,7 +4,7 @@ defmodule Moolah.Finance.Actions.FindOrCreateTagTest do
 
   alias Moolah.Finance.Tag
 
-  describe "FindOrCreateTag action" do
+  describe "find_or_create_tag action" do
     test "creates a new tag when none exists" do
       # Use the find_or_create action
       changeset =

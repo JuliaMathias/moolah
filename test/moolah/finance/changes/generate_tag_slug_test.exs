@@ -6,7 +6,7 @@ defmodule Moolah.Finance.Changes.GenerateTagSlugTest do
   alias Moolah.Finance.Changes.GenerateTagSlug
   alias Moolah.Finance.Tag
 
-  describe "GenerateTagSlug change" do
+  describe "generate_tag_slug change" do
     test "generates lowercase slug from simple name" do
       changeset =
         Tag

@@ -4,7 +4,7 @@ defmodule Moolah.Finance.Validations.MaxDepthTest do
 
   alias Moolah.Finance.LifeAreaCategory
 
-  describe "MaxDepth validation" do
+  describe "max_depth validation" do
     test "allows creating a root category (depth 0)" do
       # Root category with no parent should succeed
       changeset =

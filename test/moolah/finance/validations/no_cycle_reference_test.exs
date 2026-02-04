@@ -4,7 +4,7 @@ defmodule Moolah.Finance.Validations.NoCycleReferenceTest do
 
   alias Moolah.Finance.LifeAreaCategory
 
-  describe "NoCycleReference validation" do
+  describe "no_cycle_reference validation" do
     test "allows creating a root category with no parent" do
       changeset =
         LifeAreaCategory

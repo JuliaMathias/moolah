@@ -6,7 +6,7 @@ defmodule Moolah.Finance.Changes.NormalizeTagNameTest do
   alias Moolah.Finance.Changes.NormalizeTagName
   alias Moolah.Finance.Tag
 
-  describe "NormalizeTagName change" do
+  describe "normalize_tag_name change" do
     test "trims leading and trailing whitespace" do
       changeset =
         Tag

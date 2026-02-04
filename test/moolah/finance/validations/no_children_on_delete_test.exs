@@ -4,7 +4,7 @@ defmodule Moolah.Finance.Validations.NoChildrenOnDeleteTest do
 
   alias Moolah.Finance.LifeAreaCategory
 
-  describe "NoChildrenOnDelete validation" do
+  describe "no_children_on_delete validation" do
     test "allows deleting a category with no children" do
       {:ok, category} =
         LifeAreaCategory
