@@ -51,11 +51,15 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
     old_value = changeset.data.current_value
     new_value = record.current_value
 
-    with {:ok, delta} <- Money.sub(new_value, old_value),
-         {:ok, _operation} <- insert_operation(record.id, delta, mode) do
-      {:ok, record}
-    else
-      {:error, error} -> {:error, error}
+    case Money.sub(new_value, old_value) do
+      {:ok, delta} ->
+        case insert_operation(record.id, delta, mode) do
+          {:ok, _operation} -> {:ok, record}
+          {:error, error} -> {:error, error}
+        end
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
