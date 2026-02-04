@@ -162,6 +162,74 @@ defmodule Moolah.Finance.InvestmentTest do
     assert operations == []
   end
 
+  test "updates current_value decrease records a withdraw operation" do
+    # Scenario: the investment value is reduced to reflect a partial sell-off.
+    # Expected: a single :withdraw operation records the delta amount.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("Withdraw"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(300, :BRL),
+        current_value: Money.new(300, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    {:ok, updated} =
+      investment
+      |> Ash.Changeset.for_update(:update, %{
+        current_value: Money.new(250, :BRL)
+      })
+      |> Ash.update()
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(investment_id: updated.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :withdraw
+    assert Money.equal?(hd(operations).value, Money.new(50, :BRL))
+  end
+
+  test "market update records an update operation with delta" do
+    # Scenario: a market revaluation changes the asset value without cash flow.
+    # Expected: an :update operation is recorded with the delta (positive or negative).
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Ash.Changeset.for_create(:create, %{
+        name: unique_id("Market"),
+        type: :renda_variavel,
+        subtype: :acoes,
+        initial_value: Money.new(200, :BRL),
+        current_value: Money.new(200, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    {:ok, updated} =
+      investment
+      |> Ash.Changeset.for_update(:market_update, %{
+        current_value: Money.new(210, :BRL)
+      })
+      |> Ash.update()
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(investment_id: updated.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :update
+    assert Money.equal?(hd(operations).value, Money.new(10, :BRL))
+  end
+
   test "rejects invalid subtype for type" do
     account = create_account()
 
