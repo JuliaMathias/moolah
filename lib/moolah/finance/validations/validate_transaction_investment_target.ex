@@ -66,34 +66,53 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   @spec validate_transfer_target(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
           :ok | {:error, keyword()}
   defp validate_transfer_target(account_id, target_account_id, target_investment_id) do
+    case investment_involvement(account_id, target_account_id) do
+      :none ->
+        validate_non_investment_transfer(target_investment_id)
+
+      {:investment, expected_account_id} ->
+        validate_investment_selection(expected_account_id, target_investment_id)
+    end
+  end
+
+  @spec investment_involvement(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
+          :none | {:investment, Ecto.UUID.t()}
+  defp investment_involvement(account_id, target_account_id) do
     source_is_investment = investment_account?(account_id)
     target_is_investment = investment_account?(target_account_id)
 
     cond do
-      not source_is_investment and not target_is_investment and is_nil(target_investment_id) ->
+      target_is_investment -> {:investment, target_account_id}
+      source_is_investment -> {:investment, account_id}
+      true -> :none
+    end
+  end
+
+  @spec validate_non_investment_transfer(Ecto.UUID.t() | nil) :: :ok | {:error, keyword()}
+  defp validate_non_investment_transfer(nil), do: :ok
+
+  defp validate_non_investment_transfer(_target_investment_id) do
+    {:error, field: :target_investment_id, message: "only allowed for investment transfers"}
+  end
+
+  @spec validate_investment_selection(Ecto.UUID.t(), Ecto.UUID.t() | nil) ::
+          :ok | {:error, keyword()}
+  defp validate_investment_selection(_expected_account_id, nil) do
+    {:error, field: :target_investment_id, message: "is required for investment transfers"}
+  end
+
+  defp validate_investment_selection(expected_account_id, target_investment_id) do
+    case Ash.get(Investment, target_investment_id) do
+      {:ok, %Investment{account_id: ^expected_account_id}} ->
         :ok
 
-      not source_is_investment and not target_is_investment ->
-        {:error, field: :target_investment_id, message: "only allowed for investment transfers"}
+      {:ok, %Investment{}} ->
+        {:error,
+         field: :target_investment_id,
+         message: "must belong to the investment account involved in the transfer"}
 
-      is_nil(target_investment_id) ->
-        {:error, field: :target_investment_id, message: "is required for investment transfers"}
-
-      true ->
-        expected_account_id = if target_is_investment, do: target_account_id, else: account_id
-
-        case Ash.get(Investment, target_investment_id) do
-          {:ok, %Investment{account_id: ^expected_account_id}} ->
-            :ok
-
-          {:ok, %Investment{}} ->
-            {:error,
-             field: :target_investment_id,
-             message: "must belong to the investment account involved in the transfer"}
-
-          _ ->
-            :ok
-        end
+      _ ->
+        :ok
     end
   end
 
