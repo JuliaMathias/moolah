@@ -31,6 +31,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
   use Ash.Resource.Change
 
   alias Ash.Changeset
+  alias Ash.Query
   alias Moolah.Finance.InvestmentOperation
   alias Moolah.Ledger.Account
 
@@ -40,25 +41,31 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
   """
   @spec change(Changeset.t(), keyword(), map()) :: Changeset.t()
   def change(changeset, _opts, _context) do
-    Changeset.after_action(changeset, fn _changeset, record ->
-      create_operation_if_needed(record)
+    Changeset.after_action(changeset, fn changeset, record ->
+      create_operation_if_needed(changeset, record)
     end)
   end
 
-  @spec create_operation_if_needed(Ash.Resource.record()) ::
+  @spec create_operation_if_needed(Changeset.t(), Ash.Resource.record()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
-  defp create_operation_if_needed(record) do
-    if record.transaction_type == :transfer do
-      with {:ok, target_is_investment} <- investment_transfer?(record),
-           {type, value} <- operation_details(record, target_is_investment),
-           {:ok, _operation} <- insert_operation(record, type, value) do
+  defp create_operation_if_needed(changeset, record) do
+    cond do
+      record.transaction_type != :transfer ->
         {:ok, record}
-      else
-        :skip -> {:ok, record}
-        {:error, error} -> {:error, error}
-      end
-    else
-      {:ok, record}
+
+      not relevant_change?(changeset) ->
+        {:ok, record}
+
+      true ->
+        with {:ok, _} <- delete_existing_operations(record),
+             {:ok, target_is_investment} <- investment_transfer?(record),
+             {type, value} <- operation_details(record, target_is_investment),
+             {:ok, _operation} <- insert_operation(record, type, value) do
+          {:ok, record}
+        else
+          :skip -> {:ok, record}
+          {:error, error} -> {:error, error}
+        end
     end
   end
 
@@ -84,7 +91,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
         :skip
 
       is_nil(record.target_investment_id) ->
-        {:error, "target_investment_id is required for investment transfers"}
+        {:error, field: :target_investment_id, message: "is required for investment transfers"}
 
       true ->
         {:ok, target_is_investment}
@@ -102,6 +109,47 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
       value: value
     })
     |> Ash.create()
+  end
+
+  @spec relevant_change?(Changeset.t()) :: boolean()
+  defp relevant_change?(%Changeset{action_type: :create}), do: true
+
+  defp relevant_change?(changeset) do
+    relevant_fields = [
+      :transaction_type,
+      :amount,
+      :source_amount,
+      :account_id,
+      :target_account_id,
+      :target_investment_id
+    ]
+
+    Enum.any?(relevant_fields, &Changeset.changing_attribute?(changeset, &1))
+  end
+
+  @spec delete_existing_operations(Ash.Resource.record()) ::
+          {:ok, :none | :deleted} | {:error, any()}
+  defp delete_existing_operations(record) do
+    query =
+      InvestmentOperation
+      |> Query.filter(transaction_id: record.id)
+
+    case Ash.read(query) do
+      {:ok, []} -> {:ok, :none}
+      {:ok, operations} -> destroy_operations(operations)
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  @spec destroy_operations(list(Ash.Resource.record())) :: {:ok, :deleted} | {:error, any()}
+  defp destroy_operations(operations) do
+    Enum.reduce_while(operations, {:ok, :deleted}, fn operation, _acc ->
+      case Ash.destroy(operation) do
+        {:ok, _} -> {:cont, {:ok, :deleted}}
+        :ok -> {:cont, {:ok, :deleted}}
+        {:error, error} -> {:halt, {:error, error}}
+      end
+    end)
   end
 
   @spec investment_account?(Ecto.UUID.t() | nil) :: boolean()
