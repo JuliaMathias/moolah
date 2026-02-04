@@ -73,21 +73,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-mix-${{ env.ELIXIR_VERSION }}-${{ env.OTP_VERSION }}-
 
-      - name: Restore Node cache
-        uses: actions/cache@v5
-        with:
-          path: |
-            ~/.npm
-            assets/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('assets/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24.13.0"
-
       - name: Install dependencies
         run: mix deps.get
 
@@ -102,10 +87,6 @@ jobs:
 
       - name: Compile test dependencies
         run: MIX_ENV=test mix deps.compile
-
-      - name: Install Node dependencies
-        run: npm ci
-        working-directory: assets
 
       - name: Build esbuild
         run: mix esbuild.install
