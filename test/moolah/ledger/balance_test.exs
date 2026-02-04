@@ -1,7 +1,7 @@
 defmodule Moolah.Ledger.BalanceTest do
   @moduledoc """
   Tests for the Moolah.Ledger.Balance resource.
-  
+
   Balance records are typically managed by the AshDoubleEntry extension
   and created as side effects of transfers. These tests focus on validating
   the balance tracking behavior and read operations.
@@ -114,7 +114,7 @@ defmodule Moolah.Ledger.BalanceTest do
 
       # Read balances
       balances = Balance |> Ash.read!()
-      
+
       # Find a balance related to this transfer
       balance =
         Enum.find(balances, fn b ->
@@ -211,9 +211,7 @@ defmodule Moolah.Ledger.BalanceTest do
       # Verify no duplicates exist
       balances =
         Balance
-        |> Ash.Query.filter(
-          account_id == ^account.id and transfer_id == ^transfer.id
-        )
+        |> Ash.Query.filter(account_id == ^account.id and transfer_id == ^transfer.id)
         |> Ash.read!()
 
       # Should have exactly one balance for this account/transfer combination

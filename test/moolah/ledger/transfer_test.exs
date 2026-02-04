@@ -1,7 +1,7 @@
 defmodule Moolah.Ledger.TransferTest do
   @moduledoc """
   Tests for the Moolah.Ledger.Transfer resource.
-  
+
   Transfers represent the movement of money between accounts in the
   double-entry bookkeeping system.
   """
