@@ -2,28 +2,37 @@ defmodule Moolah.FinanceTest do
   @moduledoc false
   use Moolah.DataCase, async: true
 
+  alias Ash.Domain.Info
   alias Moolah.Finance
+  alias Moolah.Finance.BudgetCategory
+  alias Moolah.Finance.Investment
+  alias Moolah.Finance.InvestmentHistory
+  alias Moolah.Finance.InvestmentOperation
+  alias Moolah.Finance.LifeAreaCategory
+  alias Moolah.Finance.Tag
+  alias Moolah.Finance.Transaction
+  alias Moolah.Finance.TransactionTag
 
   describe "domain configuration" do
     test "domain is properly configured" do
       # Verify it's a valid Ash domain
-      resources = Ash.Domain.Info.resources(Finance)
+      resources = Info.resources(Finance)
       assert is_list(resources)
       assert resources != []
     end
 
     test "domain includes all expected resources" do
-      resources = Ash.Domain.Info.resources(Finance)
+      resources = Info.resources(Finance)
 
       expected_resources = [
-        Moolah.Finance.BudgetCategory,
-        Moolah.Finance.LifeAreaCategory,
-        Moolah.Finance.Tag,
-        Moolah.Finance.TransactionTag,
-        Moolah.Finance.Transaction,
-        Moolah.Finance.Investment,
-        Moolah.Finance.InvestmentHistory,
-        Moolah.Finance.InvestmentOperation
+        BudgetCategory,
+        LifeAreaCategory,
+        Tag,
+        TransactionTag,
+        Transaction,
+        Investment,
+        InvestmentHistory,
+        InvestmentOperation
       ]
 
       for resource <- expected_resources do

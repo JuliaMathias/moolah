@@ -12,7 +12,7 @@ defmodule MoolahWeb.TelemetryTest do
     test "metrics/0 returns a list of telemetry metrics" do
       metrics = Telemetry.metrics()
       assert is_list(metrics)
-      assert length(metrics) > 0
+      assert metrics != []
     end
 
     test "all metrics have required fields" do
@@ -21,11 +21,11 @@ defmodule MoolahWeb.TelemetryTest do
       for metric <- metrics do
         # Every metric must have an event_name
         assert is_list(metric.event_name)
-        assert length(metric.event_name) > 0
+        assert metric.event_name != []
 
         # Every metric has a name derived from event_name
         assert is_list(metric.name)
-        assert length(metric.name) > 0
+        assert metric.name != []
 
         # Metrics should have a measurement (function or atom)
         assert is_function(metric.measurement) or is_atom(metric.measurement)
@@ -67,7 +67,7 @@ defmodule MoolahWeb.TelemetryTest do
     test "at least 15 metrics are configured" do
       metrics = Telemetry.metrics()
       # Should have a good number of metrics configured
-      assert length(metrics) >= 15
+      assert Enum.count(metrics) >= 15
     end
   end
 end
