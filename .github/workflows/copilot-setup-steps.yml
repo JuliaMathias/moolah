@@ -2,12 +2,6 @@ name: Copilot Setup
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/copilot-setup-steps.yml
-  pull_request:
-    paths:
-      - .github/workflows/copilot-setup-steps.yml
 
 env:
   MIX_ENV: dev
