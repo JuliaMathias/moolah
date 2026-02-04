@@ -12,7 +12,7 @@ defmodule MoolahWeb.TelemetryTest do
     test "metrics/0 returns a list of telemetry metrics" do
       metrics = Telemetry.metrics()
       assert is_list(metrics)
-      assert metrics != []
+      assert Enum.any?(metrics)
     end
 
     test "all metrics have required fields" do
