@@ -2,105 +2,59 @@ defmodule MoolahWeb.AuthControllerTest do
   @moduledoc false
   use MoolahWeb.ConnCase, async: true
 
-  describe "success/4 message content" do
-    test "returns correct message for sign in activity" do
-      # Test the message logic without full integration
-      activity = {:password, :sign_in}
-      expected_message = "You are now signed in"
+  describe "failure/3" do
+    test "redirects to sign-in with generic error for invalid credentials", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{})
+        |> fetch_flash()
+        |> MoolahWeb.AuthController.failure({:password, :sign_in}, :invalid_credentials)
 
-      message =
-        case activity do
-          {:confirm_new_user, :confirm} -> "Your email address has now been confirmed"
-          {:password, :reset} -> "Your password has successfully been reset"
-          _ -> "You are now signed in"
-        end
-
-      assert message == expected_message
+      assert redirected_to(conn) == ~p"/sign-in"
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Incorrect email or password"
     end
 
-    test "returns correct message for password reset activity" do
-      activity = {:password, :reset}
-      expected_message = "Your password has successfully been reset"
-
-      message =
-        case activity do
-          {:confirm_new_user, :confirm} -> "Your email address has now been confirmed"
-          {:password, :reset} -> "Your password has successfully been reset"
-          _ -> "You are now signed in"
-        end
-
-      assert message == expected_message
-    end
-
-    test "returns correct message for email confirmation activity" do
-      activity = {:confirm_new_user, :confirm}
-      expected_message = "Your email address has now been confirmed"
-
-      message =
-        case activity do
-          {:confirm_new_user, :confirm} -> "Your email address has now been confirmed"
-          {:password, :reset} -> "Your password has successfully been reset"
-          _ -> "You are now signed in"
-        end
-
-      assert message == expected_message
-    end
-  end
-
-  describe "failure/3 message content" do
-    test "returns generic error message for most failures" do
-      activity = {:password, :sign_in}
-      reason = :invalid_credentials
-      expected_message = "Incorrect email or password"
-
-      message =
-        case {activity, reason} do
-          {_,
-           %AshAuthentication.Errors.AuthenticationFailed{
-             caused_by: %Ash.Error.Forbidden{
-               errors: [%AshAuthentication.Errors.CannotConfirmUnconfirmedUser{}]
-             }
-           }} ->
-            """
-            You have already signed in another way, but have not confirmed your account.
-            You can confirm your account using the link we sent to you, or by resetting your password.
-            """
-
-          _ ->
-            "Incorrect email or password"
-        end
-
-      assert message == expected_message
-    end
-
-    test "returns special message for unconfirmed user error" do
-      reason = %AshAuthentication.Errors.AuthenticationFailed{
+    test "shows special message for unconfirmed user error", %{conn: conn} do
+      error = %AshAuthentication.Errors.AuthenticationFailed{
         caused_by: %Ash.Error.Forbidden{
           errors: [%AshAuthentication.Errors.CannotConfirmUnconfirmedUser{}]
         }
       }
 
-      activity = {:password, :sign_in}
+      conn =
+        conn
+        |> init_test_session(%{})
+        |> fetch_flash()
+        |> MoolahWeb.AuthController.failure({:password, :sign_in}, error)
 
-      message =
-        case {activity, reason} do
-          {_,
-           %AshAuthentication.Errors.AuthenticationFailed{
-             caused_by: %Ash.Error.Forbidden{
-               errors: [%AshAuthentication.Errors.CannotConfirmUnconfirmedUser{}]
-             }
-           }} ->
-            """
-            You have already signed in another way, but have not confirmed your account.
-            You can confirm your account using the link we sent to you, or by resetting your password.
-            """
+      assert redirected_to(conn) == ~p"/sign-in"
+      flash_error = Phoenix.Flash.get(conn.assigns.flash, :error)
+      assert flash_error =~ "You have already signed in another way"
+      assert flash_error =~ "but have not confirmed your account"
+    end
+  end
 
-          _ ->
-            "Incorrect email or password"
-        end
+  describe "sign_out/2" do
+    test "clears session and redirects to home", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{user_id: "test-user"})
+        |> fetch_flash()
+        |> MoolahWeb.AuthController.sign_out(%{})
 
-      assert message =~ "You have already signed in another way"
-      assert message =~ "but have not confirmed your account"
+      assert redirected_to(conn) == ~p"/"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) == "You are now signed out"
+    end
+
+    test "redirects to return_to path when set", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{user_id: "test-user", return_to: "/custom-path"})
+        |> fetch_flash()
+        |> MoolahWeb.AuthController.sign_out(%{})
+
+      assert redirected_to(conn) == "/custom-path"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) == "You are now signed out"
     end
   end
 end

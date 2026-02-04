@@ -21,8 +21,18 @@ defmodule Moolah.SecretsTest do
     end
 
     test "returns error when secret is not configured" do
+      # Capture the original configuration state
+      original = Application.fetch_env(:moolah, :token_signing_secret)
+
+      # Ensure cleanup happens even if test fails
+      on_exit(fn ->
+        case original do
+          {:ok, value} -> Application.put_env(:moolah, :token_signing_secret, value)
+          :error -> Application.delete_env(:moolah, :token_signing_secret)
+        end
+      end)
+
       # Temporarily clear the config
-      original_value = Application.get_env(:moolah, :token_signing_secret)
       Application.delete_env(:moolah, :token_signing_secret)
 
       assert :error =
@@ -32,11 +42,6 @@ defmodule Moolah.SecretsTest do
                  [],
                  %{}
                )
-
-      # Restore the original value
-      if original_value do
-        Application.put_env(:moolah, :token_signing_secret, original_value)
-      end
     end
   end
 end
