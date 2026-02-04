@@ -62,7 +62,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
           {:error, "target_investment_id is required for investment transfers"}
 
         true ->
-          {type, value} = operation_details(record, source_is_investment, target_is_investment)
+          {type, value} = operation_details(record, target_is_investment)
 
           InvestmentOperation
           |> Ash.Changeset.for_create(:create, %{
@@ -80,8 +80,8 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end
   end
 
-  @spec operation_details(Ash.Resource.record(), boolean(), boolean()) :: {atom(), Money.t()}
-  defp operation_details(record, source_is_investment, target_is_investment) do
+  @spec operation_details(Ash.Resource.record(), boolean()) :: {atom(), Money.t()}
+  defp operation_details(record, target_is_investment) do
     # For transfers into an investment account, use the target amount.
     if target_is_investment do
       {:deposit, record.amount}
