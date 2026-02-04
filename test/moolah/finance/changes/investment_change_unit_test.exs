@@ -193,6 +193,33 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
     assert {:error, _} = Changeset.run_after_actions(record, changeset, [])
   end
 
+  test "track operation change surfaces delta calculation errors" do
+    # Scenario: the record is missing a current_value, so the delta cannot be computed.
+    # Expected: the change returns an error instead of silently swallowing the failure.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("MissingValue"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(20, :BRL),
+        current_value: Money.new(20, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{current_value: Money.new(25, :BRL)})
+      |> TrackInvestmentOperation.change([], %{})
+
+    record = %Investment{id: investment.id, current_value: nil}
+
+    assert {:error, _} = Changeset.run_after_actions(record, changeset, [])
+  end
+
   @spec create_account(map()) :: Account.t()
   defp create_account(attrs \\ %{}) do
     params =
