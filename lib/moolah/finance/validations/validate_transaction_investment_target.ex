@@ -9,8 +9,8 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   2. If a transfer involves an investment account, `target_investment_id` is required.
   3. The selected investment must belong to the investment account involved in the transfer.
 
-  When account or investment lookups fail, the validation returns `:ok` so relationship
-  validations can handle missing data.
+  When account lookups fail, the validation returns a targeted error tuple so callers
+  can distinguish between missing source/target accounts.
 
   ## Examples
 
@@ -69,7 +69,7 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   end
 
   @spec validate_transfer_target(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
-          :ok | {:error, keyword()}
+          :ok | {:error, keyword() | atom()}
   defp validate_transfer_target(account_id, target_account_id, target_investment_id) do
     # Decide whether an investment account participates in the transfer,
     # then apply the appropriate validation rules.
@@ -79,21 +79,38 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
 
       {:investment, expected_account_id} ->
         validate_investment_selection(expected_account_id, target_investment_id)
+
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 
   @spec investment_involvement(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
-          :none | {:investment, Ecto.UUID.t()}
+          :none | {:investment, Ecto.UUID.t()} | {:error, atom()}
   defp investment_involvement(account_id, target_account_id) do
     # Identify whether either side of the transfer is an investment account.
     source_is_investment = investment_account?(account_id)
     target_is_investment = investment_account?(target_account_id)
 
     cond do
+      source_is_investment == :not_found and target_is_investment == :not_found ->
+        {:error, :both_accounts_not_found}
+
+      source_is_investment == :not_found ->
+        {:error, :source_account_not_found}
+
+      target_is_investment == :not_found ->
+        {:error, :target_account_not_found}
+
       # Prefer the target when both are investments (e.g., internal transfers).
-      target_is_investment -> {:investment, target_account_id}
-      source_is_investment -> {:investment, account_id}
-      true -> :none
+      target_is_investment ->
+        {:investment, target_account_id}
+
+      source_is_investment ->
+        {:investment, account_id}
+
+      true ->
+        :none
     end
   end
 
@@ -128,7 +145,7 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
     end
   end
 
-  @spec investment_account?(Ecto.UUID.t() | nil) :: boolean()
+  @spec investment_account?(Ecto.UUID.t() | nil) :: boolean() | :not_found
   # Treat nil accounts as non-investment without raising.
   defp investment_account?(nil), do: false
 
@@ -136,7 +153,8 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
     # Lookup the account type so we can decide whether investment-specific rules apply.
     case Ash.get(Account, account_id) do
       {:ok, %{account_type: :investment_account}} -> true
-      _ -> false
+      {:ok, _account} -> false
+      _ -> :not_found
     end
   end
 end
