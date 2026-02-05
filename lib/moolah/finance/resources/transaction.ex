@@ -8,6 +8,20 @@ defmodule Moolah.Finance.Transaction do
     data_layer: AshPostgres.DataLayer,
     authorizers: [Ash.Policy.Authorizer]
 
+  alias Moolah.Finance.BudgetCategory
+  alias Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction
+  alias Moolah.Finance.Changes.CreateUnderlyingTransfer
+  alias Moolah.Finance.Changes.ManageTransactionTags
+  alias Moolah.Finance.Changes.UpdateUnderlyingTransfer
+  alias Moolah.Finance.Investment
+  alias Moolah.Finance.LifeAreaCategory
+  alias Moolah.Finance.Tag
+  alias Moolah.Finance.TransactionTag
+  alias Moolah.Finance.Validations.CurrencyMatch
+  alias Moolah.Finance.Validations.ValidateTransactionInvestmentTarget
+  alias Moolah.Ledger.Account
+  alias Moolah.Ledger.Transfer
+
   postgres do
     table "transactions"
     repo Moolah.Repo
@@ -29,12 +43,14 @@ defmodule Moolah.Finance.Transaction do
         :date,
         :account_id,
         :target_account_id,
+        :target_investment_id,
         :budget_category_id,
         :life_area_category_id
       ]
 
-      change Moolah.Finance.Changes.CreateUnderlyingTransfer
-      change Moolah.Finance.Changes.ManageTransactionTags
+      change CreateUnderlyingTransfer
+      change ManageTransactionTags
+      change CreateInvestmentOperationFromTransaction
     end
 
     update :update do
@@ -47,12 +63,14 @@ defmodule Moolah.Finance.Transaction do
         :source_amount,
         :description,
         :date,
+        :target_investment_id,
         :budget_category_id,
         :life_area_category_id
       ]
 
-      change Moolah.Finance.Changes.UpdateUnderlyingTransfer
-      change Moolah.Finance.Changes.ManageTransactionTags
+      change UpdateUnderlyingTransfer
+      change ManageTransactionTags
+      change CreateInvestmentOperationFromTransaction
       require_atomic? false
       transaction? true
     end
@@ -101,7 +119,8 @@ defmodule Moolah.Finance.Transaction do
       message "Source Amount can only be set for Transfer transactions"
     end
 
-    validate {Moolah.Finance.Validations.CurrencyMatch, []}
+    validate {CurrencyMatch, []}
+    validate {ValidateTransactionInvestmentTarget, []}
 
     validate compare(:amount, greater_than: 0) do
       message "Transaction amount must be greater than 0"
@@ -142,41 +161,46 @@ defmodule Moolah.Finance.Transaction do
   end
 
   relationships do
-    belongs_to :account, Moolah.Ledger.Account do
+    belongs_to :account, Account do
       allow_nil? false
       attribute_type :uuid
     end
 
-    belongs_to :target_account, Moolah.Ledger.Account do
+    belongs_to :target_account, Account do
       allow_nil? true
       attribute_type :uuid
     end
 
-    belongs_to :budget_category, Moolah.Finance.BudgetCategory do
+    belongs_to :target_investment, Investment do
       allow_nil? true
       attribute_type :uuid
     end
 
-    belongs_to :life_area_category, Moolah.Finance.LifeAreaCategory do
+    belongs_to :budget_category, BudgetCategory do
       allow_nil? true
       attribute_type :uuid
     end
 
-    belongs_to :transfer, Moolah.Ledger.Transfer do
+    belongs_to :life_area_category, LifeAreaCategory do
+      allow_nil? true
+      attribute_type :uuid
+    end
+
+    belongs_to :transfer, Transfer do
       allow_nil? true
 
       # Ledger transfers use ULID(binary) as primary key usually, but check Moolah.Ledger.Transfer definition
       attribute_type AshDoubleEntry.ULID
     end
 
-    belongs_to :source_transfer, Moolah.Ledger.Transfer do
+    belongs_to :source_transfer, Transfer do
       allow_nil? true
       attribute_type AshDoubleEntry.ULID
       public? true
     end
 
-    many_to_many :tags, Moolah.Finance.Tag do
-      through Moolah.Finance.TransactionTag
+    many_to_many :tags, Tag do
+      through TransactionTag
       source_attribute_on_join_resource :transaction_id
       destination_attribute_on_join_resource :tag_id
       public? true

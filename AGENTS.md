@@ -12,6 +12,7 @@ This is a web application written using the Phoenix web framework.
 - Module docs must be detailed and include examples when appropriate (especially change modules).
 - Examples in docs (both module and function docs) should follow Elixir `iex>` style and include the expected result when relevant.
 - Migrations must include a `@moduledoc` that explains why the changes are being introduced. These should be very detailed. They are supposed to be a historical record of changes, so they should explain things more for someone who might not be familiar with the code and the app.
+- Always add `alias` statements for long module names used in a file to keep references concise.
 - Private functions should have explanatory comments when necessary since they are not allowed an @doc;
 - Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
 - Coveralls commands (`mix coveralls`, `mix coveralls.detail`, `mix coveralls.html`) may require elevated permissions for Mix PubSub sockets; run with escalated permissions when needed.
@@ -268,3 +269,32 @@ custom classes must fully style the input
       document = LazyHTML.from_fragment(html)
       matches = LazyHTML.filter(document, "your-complex-selector")
       IO.inspect(matches, label: "Matches")
+
+### Test Scenario Comments
+
+- Scenario comments should explain the real-world setup and why this path matters, not just restate the test name.
+- Expected comments should describe the behavior outcome, including why it is important or what downstream impact it has.
+- Mention any special setup or constraints that make the behavior non-obvious (ex: nil ids, forced changes, invalid data, cross-account transfer).
+- Keep comments concise but specific; prefer 2-3 lines over a single vague sentence.
+
+Good examples:
+
+```elixir
+# Scenario: a transfer moves cash from a bank account into an investment account,
+# and the transaction includes a target investment that belongs to that account.
+# Expected: we persist a :deposit operation linked to the transaction so reporting
+# can attribute the funding source to the investment.
+```
+
+```elixir
+# Scenario: the change reaches the insert step, but we supply a record without
+# an investment id to simulate a broken persistence layer.
+# Expected: the insert failure bubbles up so callers can see the error.
+```
+
+Avoid:
+
+```elixir
+# Scenario: transfer into an investment account.
+# Expected: validation rejects the transaction.
+```

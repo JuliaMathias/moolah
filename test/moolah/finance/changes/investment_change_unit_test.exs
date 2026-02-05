@@ -7,7 +7,10 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
   alias Moolah.Finance.Changes.CreateInvestmentHistory
   alias Moolah.Finance.Changes.TrackInvestmentOperation
   alias Moolah.Finance.Investment
+  alias Moolah.Finance.InvestmentOperation
   alias Moolah.Ledger.Account
+
+  require Ash.Query
 
   test "create history change ignores unknown mode" do
     # Scenario: unsupported mode should return the record unchanged.
@@ -122,6 +125,112 @@ defmodule Moolah.Finance.Changes.InvestmentChangeUnitTest do
     fake_record = %Investment{id: investment.id, current_value: Money.new(12, :USD)}
 
     assert {:error, _} = Changeset.run_after_actions(fake_record, changeset, [])
+  end
+
+  test "track operation change emits update when delta is zero" do
+    # Scenario: the change pipeline forces a current_value write with a value that
+    # is numerically identical but encoded with different precision (10 vs 10.00).
+    # Expected: we still record an :update operation with a zero delta.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("ZeroDelta"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(10, :BRL),
+        current_value: Money.new(10, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{})
+      |> Changeset.force_change_attribute(:current_value, Money.new("10.00", :BRL))
+      |> TrackInvestmentOperation.change([], %{})
+
+    record = %Investment{id: investment.id, current_value: Money.new("10.00", :BRL)}
+
+    assert {:ok, _record, _changeset, _meta} = Changeset.run_after_actions(record, changeset, [])
+
+    operations =
+      InvestmentOperation
+      |> Ash.Query.filter(investment_id: investment.id)
+      |> Ash.read!()
+
+    assert length(operations) == 1
+    assert hd(operations).type == :update
+    assert Money.equal?(hd(operations).value, Money.new(0, :BRL))
+  end
+
+  test "track operation change surfaces insert errors" do
+    # Scenario: we invoke the after_action hook with a record that cannot be persisted
+    # because it is missing an investment id.
+    # Expected: the hook returns {:error, _} so the failure is visible to callers.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("MissingId"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(10, :BRL),
+        current_value: Money.new(10, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{current_value: Money.new(12, :BRL)})
+      |> TrackInvestmentOperation.change([], %{})
+
+    after_action =
+      case List.last(changeset.after_action) do
+        {fun, _context} -> fun
+        fun -> fun
+      end
+
+    record = %Investment{id: nil, current_value: Money.new(12, :BRL)}
+
+    assert {:error, _} = after_action.(changeset, record)
+  end
+
+  test "track operation change surfaces delta calculation errors" do
+    # Scenario: the stored value uses a different currency than the incoming value,
+    # so the delta calculation fails before any operation insert happens.
+    # Expected: the change returns an error instead of silently swallowing the failure.
+    account = create_account()
+
+    {:ok, investment} =
+      Investment
+      |> Changeset.for_create(:create, %{
+        name: unique_id("MissingValue"),
+        type: :fundos,
+        subtype: :multimercado,
+        initial_value: Money.new(20, :BRL),
+        current_value: Money.new(20, :BRL),
+        account_id: account.id
+      })
+      |> Ash.create()
+
+    changeset =
+      investment
+      |> Changeset.for_update(:update, %{current_value: Money.new(25, :BRL)})
+      |> TrackInvestmentOperation.change([], %{})
+
+    after_action =
+      case List.last(changeset.after_action) do
+        {fun, _context} -> fun
+        fun -> fun
+      end
+
+    record = %Investment{id: investment.id, current_value: Money.new(25, :USD)}
+
+    assert {:error, _} = after_action.(changeset, record)
   end
 
   @spec create_account(map()) :: Account.t()

@@ -22,6 +22,8 @@ defmodule Moolah.Finance.InvestmentOperation do
     authorizers: [Ash.Policy.Authorizer]
 
   alias Moolah.Finance.Investment
+  alias Moolah.Finance.Transaction
+  alias Moolah.Finance.Validations.ValidateOperationCurrency
 
   postgres do
     table "investment_operations"
@@ -32,7 +34,7 @@ defmodule Moolah.Finance.InvestmentOperation do
     defaults [:read]
 
     create :create do
-      accept [:type, :value, :investment_id]
+      accept [:type, :value, :investment_id, :transaction_id]
     end
 
     destroy :destroy do
@@ -45,6 +47,10 @@ defmodule Moolah.Finance.InvestmentOperation do
     policy action_type([:read, :create, :destroy]) do
       authorize_if always()
     end
+  end
+
+  validations do
+    validate {ValidateOperationCurrency, []}
   end
 
   attributes do
@@ -66,6 +72,11 @@ defmodule Moolah.Finance.InvestmentOperation do
   relationships do
     belongs_to :investment, Investment do
       allow_nil? false
+      attribute_type :uuid
+    end
+
+    belongs_to :transaction, Transaction do
+      allow_nil? true
       attribute_type :uuid
     end
   end

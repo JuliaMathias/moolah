@@ -2,7 +2,9 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
   @moduledoc """
   Creates an investment operation when the current value changes.
 
-  This is used to track delta updates over time in a consistent way.
+  By default, this change emits `:deposit` or `:withdraw` operations based on the
+  delta sign. When used with `mode: :market_update`, it emits an `:update`
+  operation and keeps the delta as-is.
 
   ## Examples
 
@@ -11,6 +13,14 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
       ...>   |> Ash.Changeset.for_update(:update, %{current_value: Money.new(200, :BRL)})
       iex> changeset =
       ...>   Moolah.Finance.Changes.TrackInvestmentOperation.change(changeset, [], %{})
+      iex> match?(%Ash.Changeset{}, changeset)
+      true
+
+      iex> changeset =
+      ...>   Moolah.Finance.Investment
+      ...>   |> Ash.Changeset.for_update(:market_update, %{current_value: Money.new(210, :BRL)})
+      iex> changeset =
+      ...>   Moolah.Finance.Changes.TrackInvestmentOperation.change(changeset, [mode: :market_update], %{})
       iex> match?(%Ash.Changeset{}, changeset)
       true
   """
@@ -22,40 +32,65 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
 
   @impl true
   @spec change(Changeset.t(), keyword(), map()) :: Changeset.t()
-  def change(changeset, _opts, _context) do
+  def change(changeset, opts, _context) do
     if Changeset.changing_attribute?(changeset, :current_value) do
       Changeset.after_action(changeset, fn _changeset, record ->
-        create_operation(changeset, record)
+        create_operation(changeset, record, opts)
       end)
     else
       changeset
     end
   end
 
-  @spec create_operation(Changeset.t(), Ash.Resource.record()) ::
+  @spec create_operation(Changeset.t(), Ash.Resource.record(), keyword()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
-  defp create_operation(changeset, record) do
+  defp create_operation(changeset, record, opts) do
+    mode = Keyword.get(opts, :mode, :delta)
+
     # Compute the delta between the previous and current values.
     old_value = changeset.data.current_value
     new_value = record.current_value
 
-    with {:ok, delta} <- Money.sub(new_value, old_value),
-         {:ok, _operation} <- insert_operation(record.id, delta) do
-      {:ok, record}
-    else
-      {:error, error} -> {:error, error}
+    case Money.sub(new_value, old_value) do
+      {:ok, delta} ->
+        case insert_operation(record.id, delta, mode) do
+          {:ok, _operation} -> {:ok, record}
+          {:error, error} -> {:error, error}
+        end
+
+      {:error, error} ->
+        {:error, error}
     end
   end
 
-  @spec insert_operation(Ecto.UUID.t(), Money.t()) ::
+  @spec insert_operation(Ecto.UUID.t(), Money.t(), atom()) ::
           {:ok, Ash.Resource.record()} | {:error, any()}
-  defp insert_operation(investment_id, delta) do
+  defp insert_operation(investment_id, delta, mode) do
+    {type, value} = operation_payload(delta, mode)
+
     InvestmentOperation
     |> Ash.Changeset.for_create(:create, %{
       investment_id: investment_id,
-      type: :update,
-      value: delta
+      type: type,
+      value: value
     })
     |> Ash.create()
+  end
+
+  @spec operation_payload(Money.t(), atom()) :: {atom(), Money.t()}
+  defp operation_payload(delta, :market_update), do: {:update, delta}
+
+  defp operation_payload(delta, _mode) do
+    # Default behavior: use deposit/withdraw with an absolute value.
+    case Decimal.compare(delta.amount, 0) do
+      :gt -> {:deposit, abs_money(delta)}
+      :lt -> {:withdraw, abs_money(delta)}
+      :eq -> {:update, delta}
+    end
+  end
+
+  @spec abs_money(Money.t()) :: Money.t()
+  defp abs_money(%Money{amount: amount, currency: currency}) do
+    Money.new(Decimal.abs(amount), currency)
   end
 end

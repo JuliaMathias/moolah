@@ -7,6 +7,11 @@ defmodule Moolah.Cldr do
   """
 
   use Cldr,
-    locales: ["en"],
-    default_locale: "en"
+    locales: ["en", "pt-BR"],
+    default_locale: "en",
+    providers: [
+      Cldr.Number,
+      Cldr.DateTime,
+      Cldr.List
+    ]
 end

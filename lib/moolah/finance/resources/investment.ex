@@ -81,6 +81,14 @@ defmodule Moolah.Finance.Investment do
       change TrackInvestmentOperation
     end
 
+    update :market_update do
+      accept [:current_value, :redemption_date, :purchase_date]
+      require_atomic? false
+
+      change {CreateInvestmentHistory, mode: :update}
+      change {TrackInvestmentOperation, mode: :market_update}
+    end
+
     destroy :destroy do
       primary? true
       require_atomic? false

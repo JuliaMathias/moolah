@@ -23,6 +23,7 @@ defmodule Moolah.Finance.InvestmentHistory do
     authorizers: [Ash.Policy.Authorizer]
 
   alias Moolah.Finance.Investment
+  alias Moolah.Finance.Validations.ValidateHistoryCurrency
 
   postgres do
     table "investment_histories"
@@ -46,6 +47,10 @@ defmodule Moolah.Finance.InvestmentHistory do
     policy action_type([:read, :create, :destroy]) do
       authorize_if always()
     end
+  end
+
+  validations do
+    validate {ValidateHistoryCurrency, []}
   end
 
   attributes do
