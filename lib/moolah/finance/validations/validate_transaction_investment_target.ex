@@ -38,6 +38,8 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   """
   @spec validate(Changeset.t(), keyword(), map()) :: :ok | {:error, keyword()}
   def validate(changeset, _opts, _context) do
+    # Pull attributes from the changeset first so we validate the pending write,
+    # falling back to the record when attributes were not provided.
     transaction_type =
       Changeset.get_attribute(changeset, :transaction_type) || changeset.data.transaction_type
 
@@ -51,13 +53,16 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
       Changeset.get_attribute(changeset, :target_account_id) || changeset.data.target_account_id
 
     cond do
+      # Non-transfer transactions cannot carry a target investment.
       transaction_type != :transfer and not is_nil(target_investment_id) ->
         {:error,
          field: :target_investment_id, message: "can only be set for transfer transactions"}
 
+      # For non-transfer actions, nothing else applies.
       transaction_type != :transfer ->
         :ok
 
+      # Transfers require contextual validation based on which account is an investment account.
       true ->
         validate_transfer_target(account_id, target_account_id, target_investment_id)
     end
@@ -66,6 +71,8 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   @spec validate_transfer_target(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
           :ok | {:error, keyword()}
   defp validate_transfer_target(account_id, target_account_id, target_investment_id) do
+    # Decide whether an investment account participates in the transfer,
+    # then apply the appropriate validation rules.
     case investment_involvement(account_id, target_account_id) do
       :none ->
         validate_non_investment_transfer(target_investment_id)
@@ -78,10 +85,12 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   @spec investment_involvement(Ecto.UUID.t() | nil, Ecto.UUID.t() | nil) ::
           :none | {:investment, Ecto.UUID.t()}
   defp investment_involvement(account_id, target_account_id) do
+    # Identify whether either side of the transfer is an investment account.
     source_is_investment = investment_account?(account_id)
     target_is_investment = investment_account?(target_account_id)
 
     cond do
+      # Prefer the target when both are investments (e.g., internal transfers).
       target_is_investment -> {:investment, target_account_id}
       source_is_investment -> {:investment, account_id}
       true -> :none
@@ -89,6 +98,7 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   end
 
   @spec validate_non_investment_transfer(Ecto.UUID.t() | nil) :: :ok | {:error, keyword()}
+  # If neither account is an investment account, a target_investment_id is forbidden.
   defp validate_non_investment_transfer(nil), do: :ok
 
   defp validate_non_investment_transfer(_target_investment_id) do
@@ -97,11 +107,13 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
 
   @spec validate_investment_selection(Ecto.UUID.t(), Ecto.UUID.t() | nil) ::
           :ok | {:error, keyword()}
+  # When an investment account is involved, a target investment is mandatory.
   defp validate_investment_selection(_expected_account_id, nil) do
     {:error, field: :target_investment_id, message: "is required for investment transfers"}
   end
 
   defp validate_investment_selection(expected_account_id, target_investment_id) do
+    # Ensure the target investment belongs to the same account participating in the transfer.
     case Ash.get(Investment, target_investment_id) do
       {:ok, %Investment{account_id: ^expected_account_id}} ->
         :ok
@@ -117,9 +129,11 @@ defmodule Moolah.Finance.Validations.ValidateTransactionInvestmentTarget do
   end
 
   @spec investment_account?(Ecto.UUID.t() | nil) :: boolean()
+  # Treat nil accounts as non-investment without raising.
   defp investment_account?(nil), do: false
 
   defp investment_account?(account_id) do
+    # Lookup the account type so we can decide whether investment-specific rules apply.
     case Ash.get(Account, account_id) do
       {:ok, %{account_type: :investment_account}} -> true
       _ -> false
