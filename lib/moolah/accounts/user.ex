@@ -153,6 +153,14 @@ defmodule Moolah.Accounts.User do
     create :register_with_password do
       description "Register a new user with a email and password."
 
+      argument :first_name, :string do
+        allow_nil? false
+      end
+
+      argument :last_name, :string do
+        allow_nil? false
+      end
+
       argument :email, :ci_string do
         allow_nil? false
       end
@@ -172,6 +180,8 @@ defmodule Moolah.Accounts.User do
 
       # Sets the email from the argument
       change set_attribute(:email, arg(:email))
+      change set_attribute(:first_name, arg(:first_name))
+      change set_attribute(:last_name, arg(:last_name))
 
       # Hashes the provided password
       change AshAuthentication.Strategy.Password.HashPasswordChange
@@ -283,6 +293,14 @@ defmodule Moolah.Accounts.User do
 
   attributes do
     uuid_primary_key :id
+
+    attribute :first_name, :string do
+      public? true
+    end
+
+    attribute :last_name, :string do
+      public? true
+    end
 
     attribute :email, :ci_string do
       allow_nil? false

@@ -19,8 +19,8 @@ defmodule MoolahWeb.LandingLive do
   alias AshPhoenix.Form
   alias Moolah.Accounts.User
 
-  @auth_routes_prefix "/auth"
   @default_step "create-account"
+  @success_advance_delay_ms 2500
 
   @step_cards [
     %{
@@ -85,7 +85,8 @@ defmodule MoolahWeb.LandingLive do
      |> assign(:registration_form, registration_form)
      |> assign(:form, form)
      |> assign(:form_name, form.name)
-     |> assign(:full_name, nil)
+     |> assign(:registration_message, nil)
+     |> assign(:registration_status, nil)
      |> assign_new(:current_scope, fn -> nil end)}
   end
 
@@ -100,8 +101,7 @@ defmodule MoolahWeb.LandingLive do
   end
 
   def handle_event("register-change", params, socket) do
-    {form_params, full_name} =
-      split_registration_params(params, socket.assigns.form_name, socket.assigns.full_name)
+    form_params = Map.get(params, socket.assigns.form_name, %{})
 
     registration_form =
       socket.assigns.registration_form
@@ -110,20 +110,28 @@ defmodule MoolahWeb.LandingLive do
     {:noreply,
      socket
      |> assign(:registration_form, registration_form)
-     |> assign(:form, to_form(registration_form))
-     |> assign(:full_name, full_name)}
+     |> assign(:form, to_form(registration_form))}
   end
 
   def handle_event("register-submit", params, socket) do
-    {form_params, full_name} =
-      split_registration_params(params, socket.assigns.form_name, socket.assigns.full_name)
-
-    socket = assign(socket, :full_name, full_name)
+    form_params = Map.get(params, socket.assigns.form_name, %{})
 
     if socket.assigns.password_strategy.sign_in_tokens_enabled? do
       submit_with_sign_in(socket, form_params)
     else
       submit_without_sign_in(socket, form_params)
+    end
+  end
+
+  @impl Phoenix.LiveView
+  @doc false
+  @spec handle_info(atom(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  def handle_info(:advance_onboarding_step, socket) do
+    if socket.assigns.registration_status == :success do
+      {:noreply, assign(socket, :selected_step, "connect-account")}
+    else
+      {:noreply, socket}
     end
   end
 
@@ -302,13 +310,33 @@ defmodule MoolahWeb.LandingLive do
                         phx-submit="register-submit"
                         class="landing-form space-y-3"
                       >
+                        <div
+                          :if={@registration_message}
+                          id="landing-register-message"
+                          data-status={@registration_status}
+                          class={[
+                            "landing-register-message rounded-2xl border px-3 py-2 text-sm font-semibold",
+                            @registration_status == :success &&
+                              "border-emerald-400/40 bg-emerald-500/15 text-emerald-100",
+                            @registration_status == :error &&
+                              "border-rose-400/40 bg-rose-500/15 text-rose-100"
+                          ]}
+                        >
+                          {@registration_message}
+                        </div>
                         <.input
-                          name={"#{@form_name}[full_name]"}
-                          id="landing-register-name"
-                          label="Full name"
-                          value={@full_name}
-                          placeholder="Julia Mathias"
-                          autocomplete="name"
+                          field={@form[:first_name]}
+                          id="landing-register-first-name"
+                          label="First name"
+                          placeholder="Julia"
+                          autocomplete="given-name"
+                        />
+                        <.input
+                          field={@form[:last_name]}
+                          id="landing-register-last-name"
+                          label="Last name"
+                          placeholder="Mathias"
+                          autocomplete="family-name"
                         />
                         <.input
                           field={@form[:email]}
@@ -424,18 +452,14 @@ defmodule MoolahWeb.LandingLive do
           {:noreply, Phoenix.LiveView.Socket.t()}
   defp submit_with_sign_in(socket, form_params) do
     case Form.submit(socket.assigns.registration_form, params: form_params, read_one?: true) do
-      {:ok, user} ->
-        redirect_path =
-          Helpers.auth_path(
-            socket,
-            Info.authentication_subject_name!(socket.assigns.password_strategy.resource),
-            @auth_routes_prefix,
-            socket.assigns.password_strategy,
-            :sign_in_with_token,
-            token: user.__metadata__.token
-          )
+      {:ok, _user} ->
+        Process.send_after(self(), :advance_onboarding_step, @success_advance_delay_ms)
 
-        {:noreply, redirect(socket, to: redirect_path)}
+        {:noreply,
+         socket
+         |> assign(:registration_status, :success)
+         |> assign(:registration_message, "Account created. You are ready for the next step.")
+         |> assign(:registration_form, socket.assigns.registration_form)}
 
       {:error, registration_form} ->
         Helpers.debug_form_errors(registration_form)
@@ -443,7 +467,12 @@ defmodule MoolahWeb.LandingLive do
         {:noreply,
          socket
          |> assign(:registration_form, registration_form)
-         |> assign(:form, to_form(registration_form))}
+         |> assign(:form, to_form(registration_form))
+         |> assign(:registration_status, :error)
+         |> assign(
+           :registration_message,
+           "We couldn't create your account. Please review the form."
+         )}
     end
   end
 
@@ -452,10 +481,12 @@ defmodule MoolahWeb.LandingLive do
   defp submit_without_sign_in(socket, form_params) do
     case Form.submit(socket.assigns.registration_form, params: form_params, read_one?: true) do
       {:ok, _user} ->
+        Process.send_after(self(), :advance_onboarding_step, @success_advance_delay_ms)
+
         {:noreply,
          socket
-         |> put_flash(:info, "Account created. Please sign in to continue.")
-         |> push_navigate(to: ~p"/sign-in")}
+         |> assign(:registration_status, :success)
+         |> assign(:registration_message, "Account created. You are ready for the next step.")}
 
       {:error, registration_form} ->
         Helpers.debug_form_errors(registration_form)
@@ -463,17 +494,13 @@ defmodule MoolahWeb.LandingLive do
         {:noreply,
          socket
          |> assign(:registration_form, registration_form)
-         |> assign(:form, to_form(registration_form))}
+         |> assign(:form, to_form(registration_form))
+         |> assign(:registration_status, :error)
+         |> assign(
+           :registration_message,
+           "We couldn't create your account. Please review the form."
+         )}
     end
-  end
-
-  @spec split_registration_params(map(), String.t(), String.t() | nil) ::
-          {map(), String.t() | nil}
-  defp split_registration_params(params, form_name, fallback_full_name) do
-    form_params = Map.get(params, form_name, %{})
-    full_name = Map.get(form_params, "full_name", fallback_full_name)
-
-    {Map.drop(form_params, ["full_name"]), full_name}
   end
 
   @spec build_registration_form(AshAuthentication.Strategy.t()) :: AshPhoenix.Form.t()
