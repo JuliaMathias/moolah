@@ -344,6 +344,54 @@ defmodule Moolah.Finance.InvestmentOperationTransactionTest do
     assert :ok = ValidateTransactionInvestmentTarget.validate(changeset, [], %{})
   end
 
+  test "validation returns an error when accounts are missing" do
+    # Scenario: a transfer references accounts that no longer exist in the database.
+    # Expected: the validation returns targeted errors for missing accounts.
+    missing_both_changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(10, :BRL),
+        account_id: Ash.UUID.generate(),
+        target_account_id: Ash.UUID.generate(),
+        target_investment_id: Ash.UUID.generate(),
+        date: Date.utc_today()
+      })
+
+    assert {:error, :both_accounts_not_found} =
+             ValidateTransactionInvestmentTarget.validate(missing_both_changeset, [], %{})
+
+    account = create_account(%{identifier: unique_id("bank"), account_type: :bank_account})
+
+    missing_target_changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(10, :BRL),
+        account_id: account.id,
+        target_account_id: Ash.UUID.generate(),
+        target_investment_id: Ash.UUID.generate(),
+        date: Date.utc_today()
+      })
+
+    assert {:error, :target_account_not_found} =
+             ValidateTransactionInvestmentTarget.validate(missing_target_changeset, [], %{})
+
+    missing_source_changeset =
+      Transaction
+      |> Ash.Changeset.for_create(:create, %{
+        transaction_type: :transfer,
+        amount: Money.new(10, :BRL),
+        account_id: Ash.UUID.generate(),
+        target_account_id: account.id,
+        target_investment_id: Ash.UUID.generate(),
+        date: Date.utc_today()
+      })
+
+    assert {:error, :source_account_not_found} =
+             ValidateTransactionInvestmentTarget.validate(missing_source_changeset, [], %{})
+  end
+
   test "validation skips when accounts are nil" do
     # Scenario: a transfer changeset is built without account ids (nil values),
     # which can happen before relationships are set or when data is incomplete.
