@@ -449,7 +449,9 @@ defmodule Moolah.Finance.InvestmentTest do
         subtype: :multimercado,
         initial_value: Money.new(100, :BRL),
         current_value: Money.new(100, :BRL),
-        redemption_date: Date.add(Date.utc_today(), -1),
+        # Set the redemption date far enough in the past to avoid flakiness if
+        # the resource filter uses a cached compile-time date.
+        redemption_date: Date.add(Date.utc_today(), -365),
         account_id: account.id
       })
       |> Ash.create()
