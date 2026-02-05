@@ -280,22 +280,16 @@ custom classes must fully style the input
 
 Good examples:
 
-```elixir
-# Scenario: a transfer moves cash from a bank account into an investment account,
-# and the transaction includes a target investment that belongs to that account.
-# Expected: we persist a :deposit operation linked to the transaction so reporting
-# can attribute the funding source to the investment.
-```
+    # Scenario: a transfer moves cash from a bank account into an investment account,
+    # and the transaction includes a target investment that belongs to that account.
+    # Expected: we persist a :deposit operation linked to the transaction so reporting
+    # can attribute the funding source to the investment.
 
-```elixir
-# Scenario: the change reaches the insert step, but we supply a record without
-# an investment id to simulate a broken persistence layer.
-# Expected: the insert failure bubbles up so callers can see the error.
-```
+    # Scenario: the change reaches the insert step, but we supply a record without
+    # an investment id to simulate a broken persistence layer.
+    # Expected: the insert failure bubbles up so callers can see the error.
 
 Avoid:
 
-```elixir
-# Scenario: transfer into an investment account.
-# Expected: validation rejects the transaction.
-```
+    # Scenario: transfer into an investment account.
+    # Expected: validation rejects the transaction.

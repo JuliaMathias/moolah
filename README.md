@@ -163,6 +163,7 @@ MIX_ENV=test mix coveralls.html
 ```
 
 The test suite includes comprehensive coverage of:
+
 - ✅ Validation modules (hierarchy depth, circular references, safe deletion)
 - ✅ Change modules (tag normalization, slug generation)
 - ✅ Action modules (find-or-create patterns)
