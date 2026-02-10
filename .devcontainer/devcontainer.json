@@ -6,7 +6,7 @@
   "remoteUser": "vscode",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "24.13.0"
+      "version": "24.13.1"
     }
   },
   "forwardPorts": [
