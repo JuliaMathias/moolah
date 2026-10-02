@@ -29,7 +29,7 @@ mix precommit
 
 ## Technology Stack
 
-- **Language**: Elixir 1.19+ on Erlang/OTP 28+
+- **Language**: Elixir 1.20.4+ on Erlang/OTP 29.1.1
 - **Web Framework**: Phoenix 1.7+ with LiveView 1.1+
 - **Application Framework**: Ash Framework 3.0 (declarative, resource-oriented)
 - **Database**: PostgreSQL 14+ (via Ecto and ash_postgres)

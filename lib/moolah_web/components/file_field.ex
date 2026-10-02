@@ -398,91 +398,93 @@ defmodule MoolahWeb.Components.FileField do
 
   defp space_class(params) when is_binary(params), do: params
 
+  @doc false
+  @spec color_class(String.t()) :: String.t() | [String.t()]
   defp color_class("base") do
     [
-      "[&_.file-field]:bg-white file:[&_.file-field]:text-[#09090b] [&_.file-field]:text-[#09090b] file:[&_.file-field]:bg-[#e4e4e7]",
-      "dark:[&_.file-field]:bg-[#27272a] dark:file:[&_.file-field]:bg-[#18181B]",
-      "dark:file:[&_.file-field]:text-[#FAFAFA] dark:[&_.file-field]:text-[#FAFAFA]"
+      "[&_.file-field]:bg-white [&_.file-field]:file:text-[#09090b] [&_.file-field]:text-[#09090b] [&_.file-field]:file:bg-[#e4e4e7]",
+      "dark:[&_.file-field]:bg-[#27272a] dark:[&_.file-field]:file:bg-[#18181B]",
+      "dark:[&_.file-field]:file:text-[#FAFAFA] dark:[&_.file-field]:text-[#FAFAFA]"
     ]
   end
 
   defp color_class("natural") do
     [
-      "[&_.file-field]:bg-[#4B4B4B] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#282828]",
-      "dark:[&_.file-field]:bg-[#E8E8E8] dark:file:[&_.file-field]:bg-[#DDDDDD]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#4B4B4B] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#282828]",
+      "dark:[&_.file-field]:bg-[#E8E8E8] dark:[&_.file-field]:file:bg-[#DDDDDD]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("primary") do
     [
-      "[&_.file-field]:bg-[#007F8C] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#016974]",
-      "dark:[&_.file-field]:bg-[#77D5E3] dark:file:[&_.file-field]:bg-[#01B8CA]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#007F8C] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#016974]",
+      "dark:[&_.file-field]:bg-[#77D5E3] dark:[&_.file-field]:file:bg-[#01B8CA]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("secondary") do
     [
-      "[&_.file-field]:bg-[#266EF1] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#175BCC]",
-      "dark:[&_.file-field]:bg-[#A9C9FF] dark:file:[&_.file-field]:bg-[#6DAAFB]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#266EF1] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#175BCC]",
+      "dark:[&_.file-field]:bg-[#A9C9FF] dark:[&_.file-field]:file:bg-[#6DAAFB]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("success") do
     [
-      "[&_.file-field]:bg-[#0E8345] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#166C3B]",
-      "dark:[&_.file-field]:bg-[#7FD99A] dark:file:[&_.file-field]:bg-[#06C167]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#0E8345] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#166C3B]",
+      "dark:[&_.file-field]:bg-[#7FD99A] dark:[&_.file-field]:file:bg-[#06C167]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("warning") do
     [
-      "[&_.file-field]:bg-[#CA8D01] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#976A01]",
-      "dark:[&_.file-field]:bg-[#FDD067] dark:file:[&_.file-field]:bg-[#FDC034]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#CA8D01] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#976A01]",
+      "dark:[&_.file-field]:bg-[#FDD067] dark:[&_.file-field]:file:bg-[#FDC034]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("danger") do
     [
-      "[&_.file-field]:bg-[#DE1135] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#BB032A]",
-      "dark:[&_.file-field]:bg-[#FFB2AB] dark:file:[&_.file-field]:bg-[#FC7F79]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#DE1135] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#BB032A]",
+      "dark:[&_.file-field]:bg-[#FFB2AB] dark:[&_.file-field]:file:bg-[#FC7F79]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("info") do
     [
-      "[&_.file-field]:bg-[#0B84BA] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#08638C]",
-      "dark:[&_.file-field]:bg-[#6EC9F2] dark:file:[&_.file-field]:bg-[#3EB7ED]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#0B84BA] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#08638C]",
+      "dark:[&_.file-field]:bg-[#6EC9F2] dark:[&_.file-field]:file:bg-[#3EB7ED]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("misc") do
     [
-      "[&_.file-field]:bg-[#8750C5] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#653C94]",
-      "dark:[&_.file-field]:bg-[#CBA2FA] dark:file:[&_.file-field]:bg-[#BA83F9]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#8750C5] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#653C94]",
+      "dark:[&_.file-field]:bg-[#CBA2FA] dark:[&_.file-field]:file:bg-[#BA83F9]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("dawn") do
     [
-      "[&_.file-field]:bg-[#A86438] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#7E4B2A]",
-      "dark:[&_.file-field]:bg-[#E4B190] dark:file:[&_.file-field]:bg-[#DB976B]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#A86438] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#7E4B2A]",
+      "dark:[&_.file-field]:bg-[#E4B190] dark:[&_.file-field]:file:bg-[#DB976B]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 
   defp color_class("silver") do
     [
-      "[&_.file-field]:bg-[#868686] file:[&_.file-field]:text-white [&_.file-field]:text-white file:[&_.file-field]:bg-[#727272]",
-      "dark:[&_.file-field]:bg-[#BBBBBB] dark:file:[&_.file-field]:bg-[#A6A6A6]",
-      "dark:file:[&_.file-field]:text-black dark:[&_.file-field]:text-black"
+      "[&_.file-field]:bg-[#868686] [&_.file-field]:file:text-white [&_.file-field]:text-white [&_.file-field]:file:bg-[#727272]",
+      "dark:[&_.file-field]:bg-[#BBBBBB] dark:[&_.file-field]:file:bg-[#A6A6A6]",
+      "dark:[&_.file-field]:file:text-black dark:[&_.file-field]:text-black"
     ]
   end
 

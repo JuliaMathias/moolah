@@ -112,8 +112,7 @@ defmodule MoolahWeb.Components.Tooltip do
         <span
           :if={@show_arrow && @variant != "bordered" && @variant != "base"}
           class={["block absolute size-[8px] bg-inherit rotate-45 -z-[1] tooltip-arrow", @arrow_class]}
-        >
-        </span>
+        ></span>
         {@text}
       </span>
     </span>

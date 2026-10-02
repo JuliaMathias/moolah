@@ -13,9 +13,8 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   use Ash.Resource.Change
 
   alias Ash.Changeset
+  alias Ash.Resource.Record
   alias Moolah.Finance.Services.VirtualAccountService
-
-  require Decimal
 
   @type changeset :: Ash.Changeset.t()
 
@@ -37,7 +36,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
     end)
   end
 
-  @spec handle_transfer_result(changeset(), Ash.Resource.record() | map(), [
+  @spec handle_transfer_result(changeset(), Record.t() | map(), [
           Ash.Notifier.Notification.t()
         ]) :: changeset()
   defp handle_transfer_result(changeset, result, notifications) do
@@ -66,7 +65,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   This is used by both the creation action and the update action.
   """
   @spec create_transfer_for_transaction(changeset()) ::
-          {:ok, Ash.Resource.record() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
+          {:ok, Record.t() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   def create_transfer_for_transaction(changeset) do
     type = Changeset.get_attribute(changeset, :transaction_type)
     amount_money = Changeset.get_attribute(changeset, :amount)
@@ -118,7 +117,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   end
 
   @spec create_debit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom(), DateTime.t()) ::
-          {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
+          {:ok, Record.t(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_debit_transfer(account_id, category_id, amount, currency, timestamp) do
     with {:ok, expense_account} <-
            VirtualAccountService.get_or_create(category_id, :expense, to_string(currency)) do
@@ -188,7 +187,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
   end
 
   @spec create_credit_transfer(Ecto.UUID.t(), Ecto.UUID.t(), Decimal.t(), atom(), DateTime.t()) ::
-          {:ok, Ash.Resource.record(), [Ash.Notifier.Notification.t()]} | {:error, any()}
+          {:ok, Record.t(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_credit_transfer(account_id, category_id, amount, currency, timestamp) do
     with {:ok, income_account} <-
            VirtualAccountService.get_or_create(category_id, :income, to_string(currency)) do
@@ -212,7 +211,7 @@ defmodule Moolah.Finance.Changes.CreateUnderlyingTransfer do
           atom(),
           DateTime.t()
         ) ::
-          {:ok, Ash.Resource.record() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
+          {:ok, Record.t() | map(), [Ash.Notifier.Notification.t()]} | {:error, any()}
   defp create_account_transfer(
          from_id,
          to_id,

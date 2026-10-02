@@ -453,8 +453,7 @@ defmodule MoolahWeb.Components.Progress do
           <span class={[
             "block absolute size-[8px] bg-inherit rotate-45 -z-[1] tooltip-arrow",
             position_class(tooltip[:position])
-          ]}>
-          </span>
+          ]}></span>
           {render_slot(tooltip)}
         </div>
       </div>

@@ -29,6 +29,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentHistory do
   use Ash.Resource.Change
 
   alias Ash.Changeset
+  alias Ash.Resource.Record
   alias Moolah.Finance.InvestmentHistory
 
   @impl true
@@ -45,8 +46,8 @@ defmodule Moolah.Finance.Changes.CreateInvestmentHistory do
     end)
   end
 
-  @spec create_history_on_create(Ash.Resource.record()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+  @spec create_history_on_create(Record.t()) ::
+          {:ok, Record.t()} | {:error, any()}
   defp create_history_on_create(record) do
     # Build history snapshots based on purchase date and current value.
     today = Date.utc_today()
@@ -77,8 +78,8 @@ defmodule Moolah.Finance.Changes.CreateInvestmentHistory do
     end
   end
 
-  @spec create_history_on_update(Changeset.t(), Ash.Resource.record()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+  @spec create_history_on_update(Changeset.t(), Record.t()) ::
+          {:ok, Record.t()} | {:error, any()}
   defp create_history_on_update(changeset, record) do
     if Changeset.changing_attribute?(changeset, :current_value) do
       # On value changes, append a new snapshot for today.

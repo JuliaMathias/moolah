@@ -10,6 +10,7 @@ defmodule Moolah.Finance.TransactionTest do
   """
   use Moolah.DataCase, async: false
 
+  alias Ash.Resource.Record
   alias Moolah.Finance.BudgetCategory
   alias Moolah.Finance.LifeAreaCategory
   alias Moolah.Finance.Services.VirtualAccountService
@@ -105,7 +106,7 @@ defmodule Moolah.Finance.TransactionTest do
   end
 
   # Helper to seed balance
-  @spec give_balance(Ash.Resource.record(), Money.t()) :: Ash.Resource.record()
+  @spec give_balance(Record.t(), Money.t()) :: Record.t()
   defp give_balance(account, amount) do
     # We create a fake initial deposit via a direct transfer from a "Opening Balance" account
     # or just force a balance if possible, but let's do it via transfer to be clean
@@ -129,7 +130,7 @@ defmodule Moolah.Finance.TransactionTest do
     account
   end
 
-  @spec get_balance(Ash.Resource.record()) :: Money.t()
+  @spec get_balance(Record.t()) :: Money.t()
   defp get_balance(account) do
     # Need to verify how to fetch balance.
     # Moolah.Ledger.Account has calculation :balance_as_of?
@@ -454,7 +455,7 @@ defmodule Moolah.Finance.TransactionTest do
     assert error_neg.message == "Transaction amount must be greater than 0"
   end
 
-  @spec assert_balance(Ash.Resource.record(), Money.t()) :: boolean()
+  @spec assert_balance(Record.t(), Money.t()) :: boolean()
   defp assert_balance(account, expected_money) do
     balance = get_balance(account)
 

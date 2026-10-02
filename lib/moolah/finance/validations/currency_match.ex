@@ -12,6 +12,7 @@ defmodule Moolah.Finance.Validations.CurrencyMatch do
   use Ash.Resource.Validation
 
   alias Ash.Changeset
+  alias Ash.Resource.Record
 
   @impl true
   @spec validate(Ash.Changeset.t(), keyword(), map()) :: :ok | {:error, keyword()}
@@ -34,7 +35,7 @@ defmodule Moolah.Finance.Validations.CurrencyMatch do
   end
 
   @spec fetch_accounts(Ecto.UUID.t(), Ecto.UUID.t() | nil) ::
-          {:ok, Ash.Resource.record(), Ash.Resource.record() | nil} | {:error, any()}
+          {:ok, Record.t(), Record.t() | nil} | {:error, any()}
   defp fetch_accounts(account_id, target_account_id) do
     with {:ok, account} when not is_nil(account) <- Ash.get(Moolah.Ledger.Account, account_id),
          {:ok, target_account} <- fetch_target_account(target_account_id) do
@@ -46,7 +47,7 @@ defmodule Moolah.Finance.Validations.CurrencyMatch do
   end
 
   @spec fetch_target_account(Ecto.UUID.t() | nil) ::
-          {:ok, Ash.Resource.record() | nil} | {:error, any()}
+          {:ok, Record.t() | nil} | {:error, any()}
   defp fetch_target_account(nil), do: {:ok, nil}
   defp fetch_target_account(id), do: Ash.get(Moolah.Ledger.Account, id)
 

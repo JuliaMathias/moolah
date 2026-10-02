@@ -321,6 +321,8 @@ defmodule MoolahWeb.Components.NativeSelect do
 
   defp space_class(params) when is_binary(params), do: params
 
+  @doc false
+  @spec color_variant(String.t(), String.t()) :: String.t() | [String.t()]
   defp color_variant("base", _) do
     [
       "text-[#09090b] dark:text-[#FAFAFA] [&_.select-field:not(:has(.select-field-error))]:border-[#e4e4e7] [&_.select-field]:shadow-sm",
@@ -334,7 +336,7 @@ defmodule MoolahWeb.Components.NativeSelect do
 
   defp color_variant("default", "white") do
     [
-      "[&_..select-field]:bg-white text-[#3E3E3E]",
+      "[&_.select-field]:bg-white text-[#3E3E3E]",
       "[&_.select-field.select-field-error]:border-rose-700",
       "focus-within:[&_.select-field]:ring-[#DADADA]"
     ]

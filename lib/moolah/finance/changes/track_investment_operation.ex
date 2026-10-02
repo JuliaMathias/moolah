@@ -28,6 +28,7 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
   use Ash.Resource.Change
 
   alias Ash.Changeset
+  alias Ash.Resource.Record
   alias Moolah.Finance.InvestmentOperation
 
   @impl true
@@ -42,8 +43,8 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
     end
   end
 
-  @spec create_operation(Changeset.t(), Ash.Resource.record(), keyword()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+  @spec create_operation(Changeset.t(), Record.t(), keyword()) ::
+          {:ok, Record.t()} | {:error, any()}
   defp create_operation(changeset, record, opts) do
     mode = Keyword.get(opts, :mode, :delta)
 
@@ -64,7 +65,7 @@ defmodule Moolah.Finance.Changes.TrackInvestmentOperation do
   end
 
   @spec insert_operation(Ecto.UUID.t(), Money.t(), atom()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+          {:ok, Record.t()} | {:error, any()}
   defp insert_operation(investment_id, delta, mode) do
     {type, value} = operation_payload(delta, mode)
 
