@@ -26,17 +26,17 @@ defmodule MoolahWeb.LandingLive do
     %{
       id: "create-account",
       title: "Create account",
-      description: "Quick signup with your email. Takes about 30 seconds."
+      description: "Set up your login. Takes about 30 seconds."
     },
     %{
       id: "connect-account",
-      title: "Connect a financial account",
-      description: "Choose your bank and keep balances in sync."
+      title: "Add a financial account",
+      description: "Pick the bank for your first account."
     },
     %{
       id: "start-tracking",
       title: "Start tracking",
-      description: "Watch your cash flow and investments update instantly."
+      description: "Log transactions and watch your cash flow and investments."
     }
   ]
 
@@ -125,7 +125,7 @@ defmodule MoolahWeb.LandingLive do
 
   @impl Phoenix.LiveView
   @doc false
-  @spec handle_info(atom(), Phoenix.LiveView.Socket.t()) ::
+  @spec handle_info(term(), Phoenix.LiveView.Socket.t()) ::
           {:noreply, Phoenix.LiveView.Socket.t()}
   def handle_info(:advance_onboarding_step, socket) do
     if socket.assigns.registration_status == :success do
@@ -134,6 +134,8 @@ defmodule MoolahWeb.LandingLive do
       {:noreply, socket}
     end
   end
+
+  def handle_info(_message, socket), do: {:noreply, socket}
 
   @impl Phoenix.LiveView
   @doc false
@@ -165,7 +167,7 @@ defmodule MoolahWeb.LandingLive do
               </div>
               <div class="landing-header-text">
                 <p class="text-xs uppercase tracking-[0.24em] text-purple-200/70">Moolah</p>
-                <p class="text-sm font-semibold text-slate-100">Personal finance made calm.</p>
+                <p class="text-sm font-semibold text-slate-100">My money, in one calm place.</p>
               </div>
             </div>
             <div class="hidden items-center gap-3 md:flex">
@@ -194,14 +196,14 @@ defmodule MoolahWeb.LandingLive do
             <div class="space-y-8">
               <div class="space-y-5">
                 <p class="landing-muted text-xs font-semibold uppercase tracking-[0.24em] text-purple-200/70">
-                  Quick setup · Three steps
+                  Personal app · Three steps
                 </p>
                 <h1 class="landing-heading text-4xl font-semibold leading-tight text-white sm:text-5xl">
-                  Let's get you started with a calmer money routine.
+                  Your money, your rules, your dashboard.
                 </h1>
                 <p class="landing-subtitle max-w-xl text-base text-slate-200/80 sm:text-lg">
-                  Connect your Brazilian accounts, track every transaction, and see your investments
-                  grow with clarity.
+                  A private tracker for my own accounts, transactions, and investments in Brazilian
+                  reais and beyond.
                 </p>
               </div>
               <div class="flex flex-wrap items-center gap-4">
@@ -219,14 +221,6 @@ defmodule MoolahWeb.LandingLive do
                 >
                   Sign in
                 </.link>
-              </div>
-              <div class="landing-muted flex items-center gap-3 text-sm text-slate-200/70">
-                <div class="flex -space-x-2">
-                  <div class="size-8 rounded-full border border-white/10 bg-gradient-to-br from-purple-400/80 to-fuchsia-500/80" />
-                  <div class="size-8 rounded-full border border-white/10 bg-gradient-to-br from-purple-300/80 to-pink-400/80" />
-                  <div class="size-8 rounded-full border border-white/10 bg-gradient-to-br from-indigo-300/80 to-purple-400/80" />
-                </div>
-                <p>Trusted by founders building their financial freedom.</p>
               </div>
             </div>
 
@@ -296,10 +290,10 @@ defmodule MoolahWeb.LandingLive do
                         </div>
                         <div>
                           <p class="landing-panel-title text-sm font-semibold text-white">
-                            Create your account
+                            Set up your account
                           </p>
                           <p class="landing-panel-subtitle text-xs text-slate-200/60">
-                            Start with the essentials.
+                            Just the essentials.
                           </p>
                         </div>
                       </div>
@@ -369,9 +363,6 @@ defmodule MoolahWeb.LandingLive do
                         >
                           Create account <.icon name="hero-arrow-right" class="size-4" />
                         </button>
-                        <p class="landing-panel-subtitle text-xs text-slate-200/60">
-                          By continuing, you agree to our Terms of Service and Privacy Policy.
-                        </p>
                       </.form>
                     </div>
                   <% "connect-account" -> %>
@@ -382,10 +373,10 @@ defmodule MoolahWeb.LandingLive do
                         </div>
                         <div>
                           <p class="landing-panel-title text-sm font-semibold text-white">
-                            Connect a bank
+                            Add a bank account
                           </p>
                           <p class="landing-panel-subtitle text-xs text-slate-200/60">
-                            Choose your primary account.
+                            Choose where your first account lives.
                           </p>
                         </div>
                       </div>
@@ -414,17 +405,17 @@ defmodule MoolahWeb.LandingLive do
                         </div>
                         <div>
                           <p class="landing-panel-title text-sm font-semibold text-white">
-                            You are ready
+                            All set
                           </p>
                           <p class="landing-panel-subtitle text-xs text-slate-200/60">
-                            Your dashboard is prepared.
+                            Your tracker is ready to use.
                           </p>
                         </div>
                       </div>
                       <div class="landing-summary-card rounded-2xl border border-white/10 bg-slate-950/50 p-4">
                         <p class="landing-summary-text text-sm text-slate-200/80">
-                          We will automatically create your workspace, pull balances, and show weekly
-                          insights on day one.
+                          Your account exists. Add accounts and transactions next, and balances and
+                          investments will show up here.
                         </p>
                         <div class="landing-summary-status mt-4 flex items-center gap-2 text-xs text-purple-200/80">
                           <.icon name="hero-check-circle" class="size-4" /> Setup complete
@@ -458,7 +449,7 @@ defmodule MoolahWeb.LandingLive do
         {:noreply,
          socket
          |> assign(:registration_status, :success)
-         |> assign(:registration_message, "Account created. You are ready for the next step.")
+         |> assign(:registration_message, "Account created. On to the next step.")
          |> assign(:registration_form, socket.assigns.registration_form)}
 
       {:error, registration_form} ->
@@ -486,7 +477,7 @@ defmodule MoolahWeb.LandingLive do
         {:noreply,
          socket
          |> assign(:registration_status, :success)
-         |> assign(:registration_message, "Account created. You are ready for the next step.")}
+         |> assign(:registration_message, "Account created. On to the next step.")}
 
       {:error, registration_form} ->
         Helpers.debug_form_errors(registration_form)
