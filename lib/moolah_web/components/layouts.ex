@@ -31,11 +31,23 @@ defmodule MoolahWeb.Layouts do
     default: nil,
     doc: "the current [scope](https://hexdocs.pm/phoenix/scopes.html)"
 
+  attr :show_header, :boolean,
+    default: true,
+    doc: "when false, skips rendering the default header"
+
+  attr :main_class, :string,
+    default: "px-4 py-20 sm:px-6 lg:px-8",
+    doc: "CSS classes for the main element"
+
+  attr :container_class, :string,
+    default: "mx-auto max-w-2xl space-y-4",
+    doc: "CSS classes for the main content container"
+
   slot :inner_block, required: true
 
   def app(assigns) do
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
+    <header :if={@show_header} class="navbar px-4 sm:px-6 lg:px-8">
       <div class="flex-1">
         <a href="/" class="flex-1 flex w-fit items-center gap-2">
           <img src={~p"/images/logo.svg"} width="36" />
@@ -62,8 +74,8 @@ defmodule MoolahWeb.Layouts do
       </div>
     </header>
 
-    <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
+    <main class={@main_class}>
+      <div class={@container_class}>
         {render_slot(@inner_block)}
       </div>
     </main>
@@ -123,7 +135,7 @@ defmodule MoolahWeb.Layouts do
   def theme_toggle(assigns) do
     ~H"""
     <div class="card relative flex flex-row items-center border-2 border-base-300 bg-base-300 rounded-full">
-      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme=light]_&]:left-1/3 [[data-theme=dark]_&]:left-2/3 transition-[left]" />
+      <div class="absolute w-1/3 h-full rounded-full border-1 border-base-200 bg-base-100 brightness-200 left-0 [[data-theme-mode=light]_&]:left-1/3 [[data-theme-mode=dark]_&]:left-2/3 transition-[left]" />
 
       <button
         class="flex p-2 cursor-pointer w-1/3"

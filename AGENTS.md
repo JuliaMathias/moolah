@@ -6,6 +6,7 @@ This is a web application written using the Phoenix web framework.
 
 - Use `mix precommit` alias when you are done with all changes and fix any pending issues
 - Always run `mix format` after creating or editing a file.
+- Before starting work on any issue, create an implementation plan in a markdown file and wait for my explicit approval. Look at plans in the `private_docs/issues` directory for examples.
 - Use the already included and available `:req` (`Req`) library for HTTP requests, **avoid** `:httpoison`, `:tesla`, and `:httpc`. Req is included by default and is the preferred HTTP client for Phoenix apps
 - When a task references a GitHub issue, fetch the issue text with `gh issue view <number>` (using the current repo) and copy it into a `private_docs/issues/issue-<number>-*.md` file.
 - All new functions must have `@spec` and all public functions must have `@doc`, except standard callbacks like `change/3` and migration `up/down`.
@@ -16,6 +17,11 @@ This is a web application written using the Phoenix web framework.
 - Private functions should have explanatory comments when necessary since they are not allowed an @doc;
 - Complex functions of any type should include inline comments to clarify logic. Tests may include comments to explain scenarios or what is being done at each step of the test when necessary.
 - Coveralls commands (`mix coveralls`, `mix coveralls.detail`, `mix coveralls.html`) may require elevated permissions for Mix PubSub sockets; run with escalated permissions when needed.
+- Ash migrations/codegen workflow:
+  - After modifying Ash resources, run `mix ash.codegen --dev` while iterating, then `mix ash.migrate`.
+  - Before finalizing, run `mix ash.codegen <descriptive_name>` to replace dev migrations and snapshots with production-ready ones.
+  - If you must hand-write a migration, also update snapshots with `mix ash_postgres.generate_migrations --snapshots-only` (or `mix ash.codegen --dev`) so Ash doesn't report pending codegen on page load.
+  - Use `mix ash.codegen --check` in CI to ensure codegen is up to date and no `--dev` artifacts remain.
 - To fetch unresolved PR review comments, use:
   `gh api graphql -f query='query(\$o:String!,\$r:String!,\$n:Int!){repository(owner:\$o,name:\$r){pullRequest(number:\$n){reviewThreads(first:100){nodes{isResolved comments(first:20){nodes{author{login} body path position}}}}}}}' -f o='<OWNER>' -f r='<REPO>' -F n=<PR_NUMBER> > pr<PR_NUMBER>_review_threads.json`
 
@@ -279,22 +285,16 @@ custom classes must fully style the input
 
 Good examples:
 
-```elixir
-# Scenario: a transfer moves cash from a bank account into an investment account,
-# and the transaction includes a target investment that belongs to that account.
-# Expected: we persist a :deposit operation linked to the transaction so reporting
-# can attribute the funding source to the investment.
-```
+    # Scenario: a transfer moves cash from a bank account into an investment account,
+    # and the transaction includes a target investment that belongs to that account.
+    # Expected: we persist a :deposit operation linked to the transaction so reporting
+    # can attribute the funding source to the investment.
 
-```elixir
-# Scenario: the change reaches the insert step, but we supply a record without
-# an investment id to simulate a broken persistence layer.
-# Expected: the insert failure bubbles up so callers can see the error.
-```
+    # Scenario: the change reaches the insert step, but we supply a record without
+    # an investment id to simulate a broken persistence layer.
+    # Expected: the insert failure bubbles up so callers can see the error.
 
 Avoid:
 
-```elixir
-# Scenario: transfer into an investment account.
-# Expected: validation rejects the transaction.
-```
+    # Scenario: transfer into an investment account.
+    # Expected: validation rejects the transaction.

@@ -36,13 +36,13 @@ defmodule MoolahWeb.Router do
       #
       # If an authenticated user must *not* be present:
       # on_mount {MoolahWeb.LiveUserAuth, :live_no_user}
+      live "/", LandingLive, :index
     end
   end
 
   scope "/", MoolahWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
     auth_routes AuthController, Moolah.Accounts.User, path: "/auth"
     sign_out_route AuthController
 

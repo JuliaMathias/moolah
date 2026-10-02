@@ -1,6 +1,8 @@
 /* See the Tailwind configuration guide for advanced usage
    https://tailwindcss.com/docs/configuration */
 
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
+
 @import "tailwindcss" source(none);
 @source "../../deps/ash_authentication_phoenix";
 @source "../css";
@@ -104,3 +106,324 @@
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
 /* This file is for your main application CSS */
+
+.landing-font {
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.landing-root {
+  background-color: #0b1020;
+  color: #f8fafc;
+}
+
+[data-theme=light] .landing-root {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+.landing-card {
+  background-color: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme=light] .landing-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.landing-panel {
+  background-color: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme=light] .landing-panel {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #0f172a;
+}
+
+.landing-header-link {
+  color: rgba(226, 232, 240, 0.85);
+}
+
+[data-theme=light] .landing-header-link {
+  color: rgba(15, 23, 42, 0.78);
+}
+
+.landing-outline-button {
+  color: rgba(226, 232, 240, 0.9);
+}
+
+[data-theme=light] .landing-outline-button {
+  border-color: rgba(168, 85, 247, 0.45);
+  color: rgba(88, 28, 135, 0.9);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme=light] .landing-outline-button:hover {
+  border-color: rgba(147, 51, 234, 0.6);
+  color: rgba(88, 28, 135, 1);
+}
+
+[data-theme=light] .landing-heading {
+  color: #0f172a;
+}
+
+[data-theme=light] .landing-subtitle {
+  color: rgba(15, 23, 42, 0.72);
+}
+
+[data-theme=light] .landing-muted {
+  color: rgba(71, 85, 105, 0.75);
+}
+
+[data-theme=light] .landing-header-text p {
+  color: rgba(15, 23, 42, 0.85);
+}
+
+[data-theme=light] .landing-header-text p:first-child {
+  letter-spacing: 0.32em;
+}
+
+[data-theme=light] .landing-step-title {
+  color: #0f172a;
+}
+
+[data-theme=light] .landing-step-desc {
+  color: rgba(51, 65, 85, 0.85);
+}
+
+[data-theme=light] .landing-step-badge {
+  background-color: rgba(226, 232, 240, 0.9);
+  border-color: rgba(148, 163, 184, 0.55);
+  color: rgba(15, 23, 42, 0.85);
+}
+
+[data-theme=light] .landing-step-badge[data-active="true"] {
+  background-color: rgba(192, 132, 252, 0.45);
+  border-color: rgba(147, 51, 234, 0.7);
+  color: #4c1d95;
+}
+
+.landing-step-badge[data-active="true"] {
+  background-color: rgba(168, 85, 247, 0.28);
+  border-color: rgba(168, 85, 247, 0.75);
+  color: rgba(237, 233, 254, 0.95);
+}
+
+.landing-step-badge-active {
+  background-color: rgba(168, 85, 247, 0.28);
+  border-color: rgba(168, 85, 247, 0.75);
+  color: rgba(237, 233, 254, 0.95);
+}
+
+.landing-step-badge-inactive {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(148, 163, 184, 0.85);
+}
+
+[data-theme=light] .landing-step-badge-active {
+  background-color: rgba(192, 132, 252, 0.45);
+  border-color: rgba(147, 51, 234, 0.7);
+  color: #4c1d95;
+}
+
+[data-theme=light] .landing-step-badge-inactive {
+  background-color: rgba(226, 232, 240, 0.9);
+  border-color: rgba(148, 163, 184, 0.55);
+  color: rgba(15, 23, 42, 0.7);
+}
+
+[data-theme=light] .landing-logo-badge {
+  background-color: rgba(192, 132, 252, 0.22);
+  border: 1px solid rgba(168, 85, 247, 0.28);
+}
+
+[data-theme=light] .landing-logo-badge .hero-banknotes {
+  color: #6d28d9;
+}
+
+.landing-icon-badge {
+  background-color: rgba(168, 85, 247, 0.2);
+}
+
+[data-theme=light] .landing-icon-badge {
+  background-color: rgba(192, 132, 252, 0.25);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+[data-theme=light] .landing-icon-badge .hero-user-plus,
+[data-theme=light] .landing-icon-badge .hero-building-library,
+[data-theme=light] .landing-icon-badge .hero-sparkles {
+  color: #6d28d9;
+}
+
+.landing-bank-button {
+  color: rgba(226, 232, 240, 0.9);
+}
+
+[data-theme=light] .landing-bank-button {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(148, 163, 184, 0.5);
+  color: rgba(30, 41, 59, 0.85);
+}
+
+[data-theme=light] .landing-bank-button:hover {
+  border-color: rgba(147, 51, 234, 0.5);
+  color: rgba(88, 28, 135, 0.95);
+}
+
+[data-theme=light] .landing-panel-title {
+  color: #0f172a;
+}
+
+[data-theme=light] .landing-panel-subtitle {
+  color: rgba(71, 85, 105, 0.8);
+}
+
+.landing-summary-card {
+  background-color: rgba(15, 23, 42, 0.55);
+}
+
+[data-theme=light] .landing-summary-card {
+  background-color: rgba(241, 245, 249, 0.9);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+[data-theme=light] .landing-summary-text {
+  color: rgba(30, 41, 59, 0.85);
+}
+
+[data-theme=light] .landing-summary-status {
+  color: rgba(88, 28, 135, 0.85);
+}
+
+[data-theme=light] .landing-header .card {
+  background-color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow: 0 10px 30px rgba(148, 163, 184, 0.2);
+}
+
+[data-theme=light] .landing-header .card .hero-moon-micro,
+[data-theme=light] .landing-header .card .hero-sun-micro,
+[data-theme=light] .landing-header .card .hero-computer-desktop-micro {
+  color: rgba(71, 85, 105, 0.9);
+}
+
+.landing-header .card {
+  background-color: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.35);
+}
+
+.landing-header .card > div.absolute {
+  background-color: rgba(248, 250, 252, 0.12);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+[data-theme=light] .landing-header .card > div.absolute {
+  background-color: rgba(255, 255, 255, 0.98);
+  border-color: rgba(88, 28, 135, 0.35);
+  box-shadow: 0 6px 16px rgba(88, 28, 135, 0.18);
+}
+
+[data-theme=light] .landing-header .card button[data-phx-theme="system"] .hero-computer-desktop-micro,
+[data-theme=light] .landing-header .card button[data-phx-theme="light"] .hero-sun-micro,
+[data-theme=light] .landing-header .card button[data-phx-theme="dark"] .hero-moon-micro {
+  color: rgba(88, 28, 135, 0.95);
+}
+
+.landing-header .card button .hero-moon-micro,
+.landing-header .card button .hero-sun-micro,
+.landing-header .card button .hero-computer-desktop-micro {
+  color: rgba(226, 232, 240, 0.85);
+}
+
+@keyframes landing-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -16px, 0);
+  }
+}
+
+.landing-float {
+  animation: landing-float 18s ease-in-out infinite;
+}
+
+.landing-float-slow {
+  animation-duration: 24s;
+}
+
+.landing-float-medium {
+  animation-duration: 20s;
+}
+
+.landing-float-fast {
+  animation-duration: 16s;
+}
+
+.landing-form label {
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.landing-form p {
+  color: rgba(226, 232, 240, 0.65);
+}
+
+.landing-form input,
+.landing-form textarea,
+.landing-form select {
+  color: #f8fafc;
+  background-color: rgba(15, 23, 42, 0.65);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+.landing-form input::placeholder,
+.landing-form textarea::placeholder {
+  color: rgba(148, 163, 184, 0.8);
+}
+
+.landing-form input:focus,
+.landing-form textarea:focus,
+.landing-form select:focus {
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.5);
+}
+
+[data-theme=light] .landing-register-message[data-status="error"] {
+  background-color: rgba(254, 226, 226, 0.9);
+  border-color: rgba(248, 113, 113, 0.7);
+  color: #991b1b;
+}
+
+[data-theme=light] .landing-register-message[data-status="success"] {
+  background-color: rgba(220, 252, 231, 0.9);
+  border-color: rgba(52, 211, 153, 0.7);
+  color: #065f46;
+}
+
+[data-theme=light] .landing-form label {
+  color: rgba(15, 23, 42, 0.92);
+}
+
+[data-theme=light] .landing-form p {
+  color: rgba(15, 23, 42, 0.62);
+}
+
+[data-theme=light] .landing-form input,
+[data-theme=light] .landing-form textarea,
+[data-theme=light] .landing-form select {
+  color: #0f172a;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme=light] .landing-form input::placeholder,
+[data-theme=light] .landing-form textarea::placeholder {
+  color: rgba(100, 116, 139, 0.7);
+}
