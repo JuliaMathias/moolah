@@ -94,7 +94,7 @@ We are actively developing Moolah. Here is what is coming next:
 
 ## 🛠️ Technology Stack
 
-- **Language**: [Elixir](https://elixir-lang.org/) (v1.16+)
+- **Language**: [Elixir](https://elixir-lang.org/) (v1.20.4+)
 - **Web Framework**: [Phoenix](https://www.phoenixframework.org/) (v1.7+) & **LiveView** (v0.20+)
 - **Application Framework**: [Ash Framework](https://www.ash-hq.org/) (v3.0)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
@@ -107,10 +107,10 @@ We are actively developing Moolah. Here is what is coming next:
 
 ### Prerequisites
 
-- Elixir 1.19+
-- Erlang/OTP 28+
+- Elixir 1.20.4+
+- Erlang/OTP 29.1.1
 - PostgreSQL 14+
-- Node.js (for asset management)
+- Node.js 24.21.0 (for asset management)
 
 ### Installation
 

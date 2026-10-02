@@ -7,7 +7,8 @@
 # General application configuration
 import Config
 
-config :ex_cldr, default_backend: Moolah.Cldr
+# CLDR uses :pt for Brazilian Portuguese; "pt-BR" resolves to this locale.
+config :localize, default_locale: :en, supported_locales: [:en, :pt]
 config :ash_oban, pro?: false
 
 config :moolah, Oban,
@@ -15,9 +16,11 @@ config :moolah, Oban,
   notifier: Oban.Notifiers.Postgres,
   queues: [default: 10],
   repo: Moolah.Repo,
-  plugins: [{Oban.Plugins.Cron, []}]
+  cron: []
 
 config :ash,
+  # Preserve the pre-upgrade grapheme validation and SQL string-length behavior.
+  default_string_length_count: :mixed,
   allow_forbidden_field_for_relationships_by_default?: true,
   include_embedded_source_by_default?: false,
   show_keysets_for_all_actions?: false,
@@ -90,7 +93,7 @@ config :moolah, Moolah.Mailer, adapter: Swoosh.Adapters.Local
 
 # Configure esbuild (the version is required)
 config :esbuild,
-  version: "0.25.4",
+  version: "0.28.2",
   moolah: [
     args:
       ~w(js/app.js --bundle --target=es2022 --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/* --alias:@=.),
@@ -100,7 +103,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "4.1.7",
+  version: "4.3.3",
   moolah: [
     args: ~w(
       --input=assets/css/app.css

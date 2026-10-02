@@ -109,7 +109,7 @@ defmodule MoolahWeb.Components.Stepper do
         separator_size(@separator_size),
         col_step_position(@col_step_position),
         @col_step && "col-step",
-        @col_step_position && "col-step-position",
+        "col-step-position",
         @font_weight,
         @class
       ]}
@@ -214,8 +214,7 @@ defmodule MoolahWeb.Components.Stepper do
       {@rest}
     >
       <span class="block relative">
-        <span class={["stepper-separator block h-screen absolute start-1/2", @separator_class]}>
-        </span>
+        <span class={["stepper-separator block h-screen absolute start-1/2", @separator_class]}></span>
         <span
           :if={@icon}
           class={[

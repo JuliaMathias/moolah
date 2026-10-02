@@ -32,6 +32,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
 
   alias Ash.Changeset
   alias Ash.Query
+  alias Ash.Resource.Record
   alias Moolah.Finance.InvestmentOperation
   alias Moolah.Ledger.Account
 
@@ -46,8 +47,8 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end)
   end
 
-  @spec create_operation_if_needed(Changeset.t(), Ash.Resource.record()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+  @spec create_operation_if_needed(Changeset.t(), Record.t()) ::
+          {:ok, Record.t()} | {:error, any()}
   defp create_operation_if_needed(changeset, record) do
     cond do
       record.transaction_type != :transfer ->
@@ -69,7 +70,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end
   end
 
-  @spec operation_details(Ash.Resource.record(), boolean()) :: {atom(), Money.t()}
+  @spec operation_details(Record.t(), boolean()) :: {atom(), Money.t()}
   defp operation_details(record, target_is_investment) do
     # For transfers into an investment account, use the target amount.
     if target_is_investment do
@@ -81,7 +82,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end
   end
 
-  @spec investment_transfer?(Ash.Resource.record()) :: {:ok, boolean()} | :skip | {:error, any()}
+  @spec investment_transfer?(Record.t()) :: {:ok, boolean()} | :skip | {:error, any()}
   defp investment_transfer?(record) do
     source_is_investment = investment_account?(record.account_id)
     target_is_investment = investment_account?(record.target_account_id)
@@ -98,8 +99,8 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end
   end
 
-  @spec insert_operation(Ash.Resource.record(), atom(), Money.t()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+  @spec insert_operation(Record.t(), atom(), Money.t()) ::
+          {:ok, Record.t()} | {:error, any()}
   defp insert_operation(record, type, value) do
     InvestmentOperation
     |> Ash.Changeset.for_create(:create, %{
@@ -127,7 +128,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     Enum.any?(relevant_fields, &Changeset.changing_attribute?(changeset, &1))
   end
 
-  @spec delete_existing_operations(Ash.Resource.record()) ::
+  @spec delete_existing_operations(Record.t()) ::
           {:ok, :none | :deleted} | {:error, any()}
   defp delete_existing_operations(record) do
     query =
@@ -141,7 +142,7 @@ defmodule Moolah.Finance.Changes.CreateInvestmentOperationFromTransaction do
     end
   end
 
-  @spec destroy_operations(list(Ash.Resource.record())) :: {:ok, :deleted} | {:error, any()}
+  @spec destroy_operations(list(Record.t())) :: {:ok, :deleted} | {:error, any()}
   defp destroy_operations(operations) do
     Enum.reduce_while(operations, {:ok, :deleted}, fn operation, _acc ->
       case Ash.destroy(operation) do

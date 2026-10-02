@@ -175,8 +175,7 @@ defmodule MoolahWeb.Components.Popover do
         <span
           :if={@show_arrow && @variant != "bordered" && @variant != "base"}
           class={["block absolute size-[8px] bg-inherit rotate-45 -z-[1] popover-arrow"]}
-        >
-        </span>
+        ></span>
       </span>
       {render_slot(@inner_block)}
     </span>
@@ -235,8 +234,7 @@ defmodule MoolahWeb.Components.Popover do
         <span
           :if={@show_arrow && @variant != "bordered" && @variant != "base"}
           class={["block absolute size-[8px] bg-inherit rotate-45 -z-[1] popover-arrow"]}
-        >
-        </span>
+        ></span>
       </div>
       {render_slot(@inner_block)}
     </div>
@@ -416,8 +414,7 @@ defmodule MoolahWeb.Components.Popover do
       <span
         :if={@show_arrow && @variant != "bordered" && @variant != "base"}
         class={["block absolute size-[8px] bg-inherit rotate-45 -z-[1] popover-arrow"]}
-      >
-      </span>
+      ></span>
       {render_slot(@inner_block)}
     </span>
     """
@@ -450,8 +447,7 @@ defmodule MoolahWeb.Components.Popover do
       <span
         :if={@show_arrow && @variant != "bordered" && @variant != "base"}
         class={["block absolute size-[8px] bg-inherit rotate-45 -z-[1] popover-arrow"]}
-      >
-      </span>
+      ></span>
       {render_slot(@inner_block)}
     </div>
     """

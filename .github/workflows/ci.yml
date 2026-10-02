@@ -27,7 +27,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Read tool versions
         shell: bash
         run: |
@@ -50,7 +50,7 @@ jobs:
           otp-version: ${{ env.OTP_VERSION }}
 
       - name: Restore dependencies and build cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             deps
@@ -68,11 +68,14 @@ jobs:
       - name: Check warnings
         run: mix compile --warnings-as-errors
 
+      - name: Download locale data
+        run: mix localize.download_locales
+
       - name: Run credo
         run: mix credo --strict
 
       - name: Retrieve PLT cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         id: plt-cache
         with:
           path: priv/plts

@@ -219,8 +219,7 @@ defmodule MoolahWeb.Components.Clipboard do
         aria-live="polite"
         aria-hidden="true"
         aria-atomic="true"
-      >
-      </span>
+      ></span>
 
       {render_slot(@inner_block)}
     </span>

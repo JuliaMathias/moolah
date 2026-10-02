@@ -9,13 +9,14 @@ defmodule Moolah.Finance.Actions.FindOrCreateTag do
   use Ash.Resource.ManualCreate
 
   alias Ash.Resource.ManualCreate.Context
+  alias Ash.Resource.Record
   alias Moolah.Finance.Tag
 
   require Ash.Query
 
   @spec create(Ash.Changeset.t(), Keyword.t(), Context.t()) ::
-          {:ok, Ash.Resource.record()}
-          | {:ok, Ash.Resource.record(), %{notifications: [Ash.Notifier.Notification.t()]}}
+          {:ok, Record.t()}
+          | {:ok, Record.t(), %{notifications: [Ash.Notifier.Notification.t()]}}
           | {:error, term()}
   def create(changeset, _opts, %Context{} = context) do
     name = Ash.Changeset.get_attribute(changeset, :name)

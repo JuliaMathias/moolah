@@ -2,6 +2,12 @@ defmodule MoolahWeb.AuthController do
   use MoolahWeb, :controller
   use AshAuthentication.Phoenix.Controller
 
+  alias Ash.Resource.Record
+  alias Plug.Conn
+
+  @doc "Completes sign-in and redirects to the requested page."
+  @spec success(Conn.t(), {atom(), atom()}, Record.t(), String.t() | nil) ::
+          Conn.t()
   def success(conn, activity, user, _token) do
     return_to = get_session(conn, :return_to) || ~p"/"
 
@@ -21,6 +27,8 @@ defmodule MoolahWeb.AuthController do
     |> redirect(to: return_to)
   end
 
+  @doc "Reports an authentication failure and returns to the sign-in page."
+  @spec failure(Conn.t(), {atom(), atom()}, term()) :: Conn.t()
   def failure(conn, activity, reason) do
     message =
       case {activity, reason} do
@@ -44,6 +52,8 @@ defmodule MoolahWeb.AuthController do
     |> redirect(to: ~p"/sign-in")
   end
 
+  @doc "Clears the user session and redirects after sign-out."
+  @spec sign_out(Conn.t(), map()) :: Conn.t()
   def sign_out(conn, _params) do
     return_to = get_session(conn, :return_to) || ~p"/"
 

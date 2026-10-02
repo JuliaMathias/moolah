@@ -3,6 +3,8 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
   Manages creation and retrieval of virtual accounts for double-entry bookkeeping.
   """
 
+  alias Ash.Resource.Record
+
   @doc """
   Gets or creates a virtual account for a category.
 
@@ -12,7 +14,7 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
   """
 
   @spec get_or_create(Ecto.UUID.t(), :expense | :income, String.t()) ::
-          {:ok, Ash.Resource.record()} | {:error, any()}
+          {:ok, Record.t()} | {:error, any()}
   def get_or_create(category_id, key_prefix, currency \\ "BRL") do
     # Construct a stable identifier using prefix, currency, and the category UUID
     identifier = "#{key_prefix}:#{currency}:#{category_id}"
@@ -57,7 +59,7 @@ defmodule Moolah.Finance.Services.VirtualAccountService do
   - This function uses bang (!) versions and will raise on errors
   - If the account already exists, it returns the existing account
   """
-  @spec get_or_create_trading_account!(String.t()) :: Ash.Resource.record()
+  @spec get_or_create_trading_account!(String.t()) :: Record.t()
   def get_or_create_trading_account!(currency) do
     identifier = "trading:#{currency}"
 
