@@ -102,7 +102,7 @@ defmodule Moolah.MixProject do
       {:postgrex, "~> 0.22.4"},
       {:sourceror, "~> 1.12.3"},
       {:req, "~> 0.7.4"},
-      {:swoosh, "~> 1.28.1"},
+      {:swoosh, "~> 1.29.0"},
       {:tailwind, "~> 0.5.1", runtime: Mix.env() == :dev},
       {:tidewave, "~> 0.9.1", only: [:dev]},
       {:heroicons,
