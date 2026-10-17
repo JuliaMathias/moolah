@@ -73,7 +73,7 @@ defmodule Moolah.MixProject do
       {:ash_oban, "~> 0.9.0"},
       {:ash_phoenix, "~> 2.3.25"},
       {:ash_postgres, "~> 2.13.1"},
-      {:bandit, "~> 1.12.5"},
+      {:bandit, "~> 1.13.0"},
       {:splode, "~> 0.3.2", override: true},
       {:reactor, "~> 1.0.7"},
       {:bcrypt_elixir, "~> 3.3.2"},
