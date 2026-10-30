@@ -82,7 +82,7 @@ defmodule Moolah.MixProject do
       {:excoveralls, "~> 0.18.5", only: :test},
       {:ecto_sql, "~> 3.14.0"},
       {:esbuild, "~> 0.10.0", runtime: Mix.env() == :dev},
-      {:localize, "~> 1.3.0"},
+      {:localize, "~> 1.5.0"},
       {:ex_money_sql, "~> 2.1.0"},
       {:igniter, "~> 0.8.4"},
       {:gettext, "~> 1.0.2"},
