@@ -68,7 +68,7 @@ defmodule Moolah.MixProject do
       {:ash_admin, "~> 1.3.2"},
       {:ash_authentication, "~> 4.15.0"},
       {:ash_authentication_phoenix, "~> 2.17.4"},
-      {:ash_double_entry, "~> 1.0.19"},
+      {:ash_double_entry, "~> 1.1.0"},
       {:ash_money, "~> 0.2.6"},
       {:ash_oban, "~> 0.9.0"},
       {:ash_phoenix, "~> 2.3.25"},
