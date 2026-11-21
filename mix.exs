@@ -64,7 +64,7 @@ defmodule Moolah.MixProject do
   defp deps do
     [
       {:mishka_chelekom, "~> 0.0.9", only: [:dev]},
-      {:ash, "~> 3.33.11"},
+      {:ash, "~> 3.37.0"},
       {:ash_admin, "~> 1.3.2"},
       {:ash_authentication, "~> 4.15.0"},
       {:ash_authentication_phoenix, "~> 2.17.4"},
